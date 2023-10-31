@@ -92,6 +92,9 @@ Cov <- H(A,L)
 logit <- function(p){return(log(p/(1-p)))}
 Off <- logit(predict(Q_n,X))
 fm <- glm(Y~ Off + Cov -1, family = "binomial")
+epsilon_n <- fm$coefficients[2]
+expit <- function(x){return(1/(1 + exp(-x)))}
+Q_star <- 
 
 ## Estimating Psi
 Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))[1]*(1-d_n(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))[1]*d_n(L))
