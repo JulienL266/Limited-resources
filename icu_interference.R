@@ -39,7 +39,7 @@ X <- cbind(A,L)
 #g_n <- SL.step.interaction(A, L, family = binomial)
 #g_n <- SL.step.forward(A, L, family = binomial)
 
-g_n <- glm(A~., data = X, family = "binomial")
+#g_n <- glm(A~., data = X, family = "binomial")
 
 ## Estimating Q_0
 
@@ -54,7 +54,7 @@ g_n <- glm(A~., data = X, family = "binomial")
 #Q_n <- SL.step(Y, X, family = binomial)
 #Q_n <- SL.step.interaction(Y, X, family = binomial)
 #Q_n <- SL.step.forward(Y, X, family = binomial)
-Q_n <- glm(Y~., data = X, family = "binomial")
+#Q_n <- glm(Y~., data = X, family = "binomial")
 
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))) + mean(Y) #should be g_0 instead of g_n, if it is known
@@ -69,7 +69,7 @@ Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))
 #Q_b <- SL.step(Y_tilde, L)
 #Q_b <- SL.step.interaction(Y_tilde, L)
 #Q_b <- SL.step.forward(Y_tilde, L)
-Q_b <- lm(Y~., data = L)
+#Q_b <- lm(Y~., data = L)
 
 
 
