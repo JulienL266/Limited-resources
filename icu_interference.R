@@ -69,7 +69,7 @@ Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))
 #Q_b <- SL.step(Y_tilde, L)
 #Q_b <- SL.step.interaction(Y_tilde, L)
 #Q_b <- SL.step.forward(Y_tilde, L)
-Q_b <- glm(Y~., data = L, family = "gaussian")
+Q_b <- lm(Y~., data = L)
 
 ## Estimating d_0 (might change in new setting)
 eta_n <- -quantile(-predict(Q_b,L), probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
