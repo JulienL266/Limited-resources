@@ -15,7 +15,7 @@ data <- select(data, !c(icu_bed))
 ## define kappa (might change later)
 kappa <- mean(A)
 #kappa <- 0.2
-#kappa <- 0.5
+#kappa <- 0.6
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
@@ -108,4 +108,4 @@ sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((
               - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
 
 Psi_hat + c(-qnorm(0.95)*sigma_n/sqrt(n), qnorm(0.95)*sigma_n/sqrt(n))
-
+#need to adapt to setting of our paper
