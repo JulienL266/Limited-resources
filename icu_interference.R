@@ -12,6 +12,9 @@ data <- select(data, !c(dead7, dead28, dead90))
 A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
+## define kappa (might change later)
+kappa <- mean(icu_bed)
+
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
@@ -73,5 +76,11 @@ d_n <- function(l){
   }
 }
 
-##Estimating Psi
+## Estimating Psi
 Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))*(1-d(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))*d(L))
+
+## Confidence interval
+### Estimating sigma_0
+D_n <- function(d,tau){
+  return(mean(I(A = d(L))*(Y - predict(Q_n,X))/((A*predict(g_n, L) + (1-A)*(1-predict(g_n,L)))) + predict(Q_n, cbind(data.frame(A = d(L)), L)) - mean(predict(Q_n, cbind(data.frame(A = d(L)), L))) - tau*(d(L) - kappa)))
+}
