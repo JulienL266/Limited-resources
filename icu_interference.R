@@ -81,9 +81,12 @@ Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))*(1-d(L)) + predict
 
 ## Confidence interval
 ### Estimating sigma_0
-eta_n <- 
+S_n <- function(tau){
+  return(mean(as.integer(d_n(L) > tau)))
+}
+eta_n <- -quantile(-d_n(L), probs = c(-kappa)) #P_n(d_n(L) > tau) = P_n(-d_n(L) <= -tau)
 tau_n <- max(0,eta_n)
-sigma_n <- mean(I(A = d_n(L))*(Y - predict(Q_n,X))/((A*predict(g_n, L) + (1-A)*(1-predict(g_n,L)))) 
+sigma_n <- sqrt(mean((I(A = d_n(L))*(Y - predict(Q_n,X))/((A*predict(g_n, L) + (1-A)*(1-predict(g_n,L)))) 
               + predict(Q_n, cbind(data.frame(A = d_n(L)), L))
-              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))) - tau_n*(d_n(L) - kappa))
+              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))) - tau_n*(d_n(L) - kappa))^2))
 
