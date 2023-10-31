@@ -71,7 +71,6 @@ Q_b <- SL.gam(Y_tilde, L)
 #Q_b <- SL.step.forward(Y_tilde, L)
 #Q_b <- lm(Y~., data = L)
 
-#TMLE procedure
 
 
 ## Estimating d_0 (might change in new setting)
@@ -84,6 +83,15 @@ d_n <- function(l){
     return(0)
   }
 }
+
+## TMLE procedure
+H <- function(a,l){
+  return(a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)[1] + (1-a)*(1-predict(g_n,l))[1])
+}
+Cov <- H(A,L)
+logit <- function(p){return(log(p/(1-p)))}
+Off <- logit(predict(Q_n,X))
+fm <- glm(Y~ Off + Cov -1, family = "binomial")
 
 ## Estimating Psi
 Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))[1]*(1-d_n(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))[1]*d_n(L))
