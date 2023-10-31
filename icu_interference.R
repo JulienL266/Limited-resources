@@ -17,6 +17,8 @@ data <- select(data, !c(icu_bed))
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
+#Luedtke and van der Laan inclusion
+L <- select(data, c(age, male, sofa_score, open_beds_cmp))
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
