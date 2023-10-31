@@ -66,6 +66,10 @@ Q_b <- SL.step.forward(Y_tilde, L)
 
 ## Estimating d_0
 d_n <- function(l){
-  
+  if(predict(Q_b,l) > 0){
+    return(1)
+  }else{
+    return(0)
+  }
 }
 
