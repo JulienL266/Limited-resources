@@ -53,15 +53,19 @@ Q_n <- SL.step.forward(Y, X, family = binomial)
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))) + mean(Y) #should be g_0 instead of g_n, if it is known
 ### Data adaptative
-Q_b <- SL.gam(Y_tilde, X)
-Q_b <- SL.nnet(Y_tilde, X)
+Q_b <- SL.gam(Y_tilde, L)
+Q_b <- SL.nnet(Y_tilde, L)
 ### Parametric
-Q_b <- SL.bayesglm(Y_tilde, X)
-Q_b <- SL.glm(Y_tilde, X)
-Q_b <- SL.glm.interaction(Y_tilde, X)
-Q_b <- SL.mean(Y_tilde, X)
-Q_b <- SL.step(Y_tilde, X)
-Q_b <- SL.step.interaction(Y_tilde, X)
-Q_b <- SL.step.forward(Y_tilde, X)
+Q_b <- SL.bayesglm(Y_tilde, L)
+Q_b <- SL.glm(Y_tilde, L)
+Q_b <- SL.glm.interaction(Y_tilde, L)
+Q_b <- SL.mean(Y_tilde, L)
+Q_b <- SL.step(Y_tilde, L)
+Q_b <- SL.step.interaction(Y_tilde, L)
+Q_b <- SL.step.forward(Y_tilde, L)
 
+## Estimating d_0
+d_n <- function(l){
+  
+}
 
