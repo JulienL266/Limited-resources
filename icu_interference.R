@@ -79,11 +79,7 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 eta_n <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
 tau_n <- max(0,eta_n)
 d_n <- function(l){
-  if(predict(Q_b,l)$pred > tau_n){
-    return(1)
-  }else{
-    return(0)
-  }
+  return(as.integer(predict(Q_b,l)$pred > tau_n))
 }
 
 ## TMLE procedure
