@@ -72,7 +72,7 @@ Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))
 Q_b <- glm(Y~., data = L, family = "gaussian")
 
 ## Estimating d_0 (might change in new setting)
-eta_n <- -quantile(-predict(Q_n,L), probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
+eta_n <- -quantile(-predict(Q_b,L), probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
 tau_n <- max(0,eta_n)
 d_n <- function(l){
   if(predict(Q_b,l)[1] > tau_n){
