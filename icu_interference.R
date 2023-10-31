@@ -28,7 +28,7 @@ library(SuperLearner)
 X <- cbind(A,L)
 ## Estimating g_0 (Luedtke and van der Laan assume they know it)
 ### Data adaptative
-#g_n <- SL.gam(A, L, family = binomial)
+g_n <- SL.gam(A, L, family = binomial)
 #g_n <- SL.nnet(A, L, family = binomial)
 ### Parametric
 #g_n <- SL.bayesglm(A, L, family = binomial)
@@ -39,12 +39,12 @@ X <- cbind(A,L)
 #g_n <- SL.step.interaction(A, L, family = binomial)
 #g_n <- SL.step.forward(A, L, family = binomial)
 
-g_n <- glm(A~., data = X, family = "binomial")
+#g_n <- glm(A~., data = X, family = "binomial")
 
 ## Estimating Q_0
 
 ### Data adaptative
-#Q_n <- SL.gam(Y, X, family = binomial)
+Q_n <- SL.gam(Y, X, family = binomial)
 #Q_n <- SL.nnet(Y, X, family = binomial)
 ### Parametric
 #Q_n <- SL.bayesglm(Y, X, family = binomial)
@@ -54,12 +54,12 @@ g_n <- glm(A~., data = X, family = "binomial")
 #Q_n <- SL.step(Y, X, family = binomial)
 #Q_n <- SL.step.interaction(Y, X, family = binomial)
 #Q_n <- SL.step.forward(Y, X, family = binomial)
-Q_n <- glm(Y~., data = X, family = "binomial")
+#Q_n <- glm(Y~., data = X, family = "binomial")
 
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))) + mean(Y) #should be g_0 instead of g_n, if it is known
 ### Data adaptative
-#Q_b <- SL.gam(Y_tilde, L)
+Q_b <- SL.gam(Y_tilde, L)
 #Q_b <- SL.nnet(Y_tilde, L)
 ### Parametric
 #Q_b <- SL.bayesglm(Y_tilde, L)
@@ -69,7 +69,10 @@ Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))
 #Q_b <- SL.step(Y_tilde, L)
 #Q_b <- SL.step.interaction(Y_tilde, L)
 #Q_b <- SL.step.forward(Y_tilde, L)
-Q_b <- lm(Y~., data = L)
+#Q_b <- lm(Y~., data = L)
+
+#TMLE procedure
+
 
 ## Estimating d_0 (might change in new setting)
 eta_n <- -quantile(-predict(Q_b,L), probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
