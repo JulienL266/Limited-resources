@@ -1,8 +1,15 @@
 # Reading icu data
 library(haven)
+library(dplyr)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
+
+# Defining variables
+Y <- 1 - data$dead7
+Y <- 1 - data$dead28
+Y <- 1 - data$dead90
+data <- select(data, !c(dead7, dead28, dead90))
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
