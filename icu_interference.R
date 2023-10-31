@@ -6,19 +6,21 @@ set.seed(2023)
 n <- nrow(data)
 
 # Defining variables
-Y <- 1 - data$dead7
-Y <- 1 - data$dead28
-Y <- 1 - data$dead90
+Y <- 100*(1 - data$dead7)
+#Y <- 1 - data$dead28
+#Y <- 1 - data$dead90
 data <- select(data, !c(dead7, dead28, dead90))
 
-A <- data$icu_bed
-data <- select(data, !c(icu_bed))
+A <- data$icu_recommend
+data <- select(data, !c(icu_recommend))
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
 #Luedtke and van der Laan inclusion
 L <- select(data, c(age, male, sofa_score, open_beds_cmp))
+Z <- data$news_score
+W <- data$periarrest
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
