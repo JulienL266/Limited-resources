@@ -1,11 +1,23 @@
-#reading icu data
+# Reading icu data
 library(haven)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
 
-#implementing 2016 Luedtke and van der Laan algo
+# Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
-#estimating Q_0
 
-#estimating Q_{b,o}
+## Estimating Q_0
+### Data adaptative
+Q_n <- SL.gam(Y, X, family = binomial)
+Q_n <- SL.nnet(Y, X, family = binomial)
+### Parametric
+Q_n <- SL.bayesglm(Y, X, family = binomial)
+Q_n <- SL.glm(Y, X, family = binomial)
+Q_n <- SL.glm.interaction(Y, X, family = binomial)
+Q_n <- SL.mean(Y, X, family = binomial)
+Q_n <- SL.step(Y, X, family = binomial)
+Q_n <- SL.step.interaction(Y, X, family = binomial)
+Q_n <- SL.step.forward(Y, X, family = binomial)
+
+## Estimating Q_{b,o}
