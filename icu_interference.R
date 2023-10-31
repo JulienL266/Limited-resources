@@ -9,16 +9,15 @@ n <- nrow(data)
 Y <- 100*(1 - data$dead7)
 data <- select(data, !c(dead7, dead28, dead90))
 
-A <- data$icu_recommend
-data <- select(data, !c(icu_recommend))
+A <- data$icu_bed
+data <- select(data, !c(icu_bed))
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
-#Luedtke and van der Laan inclusion
+#chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- select(data, c(age, male, sofa_score, open_beds_cmp))
-Z <- data$news_score
-W <- data$periarrest
+
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
