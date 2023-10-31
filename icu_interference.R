@@ -58,7 +58,7 @@ Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
 #Q_n <- glm(Y~., data = X, family = "binomial")
 
 ## Estimating Q_{b,o}
-Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))) + mean(Y) #should be g_0 instead of g_n, if it is known
+Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred)) + mean(Y) #should be g_0 instead of g_n, if it is known
 ### Data adaptative
 Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.nnet")
