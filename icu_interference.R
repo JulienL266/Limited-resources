@@ -74,3 +74,4 @@ d_n <- function(l){
 }
 
 ##Estimating Psi
+Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))*(1-d(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))*d(L))
