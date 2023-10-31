@@ -101,7 +101,7 @@ Q_star <- function(a,l){
 }
 
 ## Estimating Psi
-Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))[1]*(1-d_n(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))[1]*d_n(L))
+Psi_hat = mean(Q_star(rep(0,n),L)*(1-d_n(L)) + Q_star(rep(1,n),L)*d_n(L))
 Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
