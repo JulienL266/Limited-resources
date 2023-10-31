@@ -11,6 +11,13 @@ Y <- 1 - data$dead28
 Y <- 1 - data$dead90
 data <- select(data, !c(dead7, dead28, dead90))
 
+A <- data$icu_bed
+data <- select(data, !c(icu_bed))
+
+## Removing uninteresting variables
+data <- select(data, !c(id))
+
+
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
 
