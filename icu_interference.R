@@ -90,3 +90,4 @@ sigma_n <- sqrt(mean((I(A = d_n(L))*(Y - predict(Q_n,X))/((A*predict(g_n, L) + (
               + predict(Q_n, cbind(data.frame(A = d_n(L)), L))
               - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))) - tau_n*(d_n(L) - kappa))^2))
 
+Psi_hat + c(qnorm(0.95)*sigma_n/sqrt(n), -qnorm(0.95)*sigma_n/sqrt(n))
