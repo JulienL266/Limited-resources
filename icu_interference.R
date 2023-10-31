@@ -23,7 +23,7 @@ L <- data[,c("age", "male", "sofa_score", "open_beds_cmp")]
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
-
+X <- cbind(A,L)
 ## Estimating g_0 (Luedtke and van der Laan assume they know it)
 ### Data adaptative
 #g_n <- SL.gam(A, L, family = binomial)
@@ -37,10 +37,10 @@ library(SuperLearner)
 #g_n <- SL.step.interaction(A, L, family = binomial)
 #g_n <- SL.step.forward(A, L, family = binomial)
 
-g_n <- glm(A~L, family = "binomial")
+g_n <- glm(A~., data = X, family = "binomial")
 
 ## Estimating Q_0
-X <- cbind(A,L)
+
 ### Data adaptative
 #Q_n <- SL.gam(Y, X, family = binomial)
 #Q_n <- SL.nnet(Y, X, family = binomial)
@@ -71,7 +71,7 @@ Q_b <- glm(Y~., data = L, family = "gaussian")
 
 ## Estimating d_0 (might change in new setting)
 d_n <- function(l){
-  if(predict(Q_b,l) > 0){
+  if(predict(Q_b,l)[1] > 0){
     return(1)
   }else{
     return(0)
@@ -79,17 +79,17 @@ d_n <- function(l){
 }
 
 ## Estimating Psi
-Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))*(1-d(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))*d(L))
-
+Psi_hat = mean(predict(Q_n,cbind(data.frame(A = rep(0,n)),L))[1]*(1-d_n(L)) + predict(Q_n,cbind(data.frame(A = rep(1,n)),L))[1]*d_n(L))
+Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
 S_n <- function(tau){
   return(mean(as.integer(d_n(L) > tau)))
 }
-eta_n <- -quantile(-d_n(L), probs = c(-kappa)) #P_n(d_n(L) > tau) = P_n(-d_n(L) <= -tau)
+eta_n <- -quantile(-d_n(L), probs = c(kappa)) #P_n(d_n(L) > tau) = P_n(-d_n(L) <= -tau)
 tau_n <- max(0,eta_n)
-sigma_n <- sqrt(mean((I(A = d_n(L))*(Y - predict(Q_n,X))/((A*predict(g_n, L) + (1-A)*(1-predict(g_n,L)))) 
-              + predict(Q_n, cbind(data.frame(A = d_n(L)), L))
-              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))) - tau_n*(d_n(L) - kappa))^2))
+sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)[1])/((A*predict(g_n, L)[1] + (1-A)*(1-predict(g_n,L)[1]))) 
+              + predict(Q_n, cbind(data.frame(A = d_n(L)), L))[1]
+              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))[1]) - tau_n*(d_n(L) - kappa))^2))
 
-Psi_hat + c(qnorm(0.95)*sigma_n/sqrt(n), -qnorm(0.95)*sigma_n/sqrt(n))
+Psi_hat + c(-qnorm(0.95)*sigma_n/sqrt(n), qnorm(0.95)*sigma_n/sqrt(n))
