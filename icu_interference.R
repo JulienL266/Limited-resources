@@ -76,10 +76,10 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 
 
 ## Estimating d_0 (might change in new setting)
-eta_n <- -quantile(-predict(Q_b,L), probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
+eta_n <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
 tau_n <- max(0,eta_n)
 d_n <- function(l){
-  if(predict(Q_b,l)[1] > tau_n){
+  if(predict(Q_b,l)$pred > tau_n){
     return(1)
   }else{
     return(0)
@@ -88,16 +88,16 @@ d_n <- function(l){
 
 ## TMLE procedure
 H <- function(a,l){
-  return(a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)[1] + (1-a)*(1-predict(g_n,l))[1])
+  return(a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)$pred + (1-a)*(1-predict(g_n,l)$pred))
 }
 Cov <- H(A,L)
 logit <- function(p){return(log(p/(1-p)))}
-Off <- logit(predict(Q_n,X))
+Off <- logit(predict(Q_n,X)$pred)
 fm <- glm(Y~ Off + Cov -1, family = "binomial")
 epsilon_n <- fm$coefficients[2]
 expit <- function(x){return(1/(1 + exp(-x)))}
 Q_star <- function(a,l){
-  Off_st <- logit(predict(Q_n,cbind(data.frame(A = a), l)))
+  Off_st <- logit(predict(Q_n,cbind(data.frame(A = a), l))$pred)
   Cov_st <- H(a,l)
   return(expit(Off_st + epsilon_n*Cov_st))
 }
@@ -107,9 +107,9 @@ Psi_hat = mean(Q_star(rep(0,n),L)*(1-d_n(L)) + Q_star(rep(1,n),L)*d_n(L))
 Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
-sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)[1])/((A*predict(g_n, L)[1] + (1-A)*(1-predict(g_n,L)[1]))) 
-              + predict(Q_n, cbind(data.frame(A = d_n(L)), L))[1]
-              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))[1]) - tau_n*(d_n(L) - kappa))^2))
+sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred))) 
+              + predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred
+              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
 
 Psi_hat + c(-qnorm(0.95)*sigma_n/sqrt(n), qnorm(0.95)*sigma_n/sqrt(n))
 
