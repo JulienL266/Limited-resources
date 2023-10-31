@@ -64,7 +64,7 @@ Q_b <- SL.step(Y_tilde, L)
 Q_b <- SL.step.interaction(Y_tilde, L)
 Q_b <- SL.step.forward(Y_tilde, L)
 
-## Estimating d_0
+## Estimating d_0 (might change in new setting)
 d_n <- function(l){
   if(predict(Q_b,l) > 0){
     return(1)
@@ -73,3 +73,4 @@ d_n <- function(l){
   }
 }
 
+##Estimating Psi
