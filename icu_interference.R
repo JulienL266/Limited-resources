@@ -7,8 +7,6 @@ n <- nrow(data)
 
 # Defining variables
 Y <- 100*(1 - data$dead7)
-#Y <- 1 - data$dead28
-#Y <- 1 - data$dead90
 data <- select(data, !c(dead7, dead28, dead90))
 
 A <- data$icu_recommend
