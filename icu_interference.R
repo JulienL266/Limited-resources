@@ -21,3 +21,4 @@ Q_n <- SL.step.interaction(Y, X, family = binomial)
 Q_n <- SL.step.forward(Y, X, family = binomial)
 
 ## Estimating Q_{b,o}
+Y_tilde <- (2*A - 1)*(Y - mean(Y))/g_n(A,W) + mean(Y)
