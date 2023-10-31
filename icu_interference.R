@@ -77,7 +77,7 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 
 
 ## Estimating d_0 (might change in new setting)
-eta_n <- quantile(-predict(Q_b,L)$pred, probs = c(1-kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
+eta_n <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
 tau_n <- max(0,eta_n)
 d_n <- function(l){
   return(as.integer(predict(Q_b,l)$pred > tau_n))
