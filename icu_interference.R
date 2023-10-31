@@ -44,31 +44,33 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
 ## Estimating Q_0
 
 ### Data adaptative
-Q_n <- SL.gam(Y, X, family = binomial)
-#Q_n <- SL.nnet(Y, X, family = binomial)
+Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.nnet")
 ### Parametric
-#Q_n <- SL.bayesglm(Y, X, family = binomial)
-#Q_n <- SL.glm(Y, X, family = binomial)
-#Q_n <- SL.glm.interaction(Y, X, family = binomial)
-#Q_n <- SL.mean(Y, X, family = binomial)
-#Q_n <- SL.step(Y, X, family = binomial)
-#Q_n <- SL.step.interaction(Y, X, family = binomial)
-#Q_n <- SL.step.forward(Y, X, family = binomial)
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.bayesglm")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm.interaction)
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.mean")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL .library = "SL.step")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.step.interaction")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.step.forward)
+
 #Q_n <- glm(Y~., data = X, family = "binomial")
 
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L) + (1-A)*(1-predict(g_n,L))) + mean(Y) #should be g_0 instead of g_n, if it is known
 ### Data adaptative
-Q_b <- SL.gam(Y_tilde, L)
-#Q_b <- SL.nnet(Y_tilde, L)
+Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.nnet")
 ### Parametric
-#Q_b <- SL.bayesglm(Y_tilde, L)
-#Q_b <- SL.glm(Y_tilde, L)
-#Q_b <- SL.glm.interaction(Y_tilde, L)
-#Q_b <- SL.mean(Y_tilde, L)
-#Q_b <- SL.step(Y_tilde, L)
-#Q_b <- SL.step.interaction(Y_tilde, L)
-#Q_b <- SL.step.forward(Y_tilde, L)
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.bayesglm")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm.interaction")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.mean")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step.interaction")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step.forward")
+
 #Q_b <- lm(Y~., data = L)
 
 
