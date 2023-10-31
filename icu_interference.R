@@ -37,7 +37,7 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.mean")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step.interaction")
-#g_n <- SL.step.forward(A, L, family = binomial)
+#g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step.forward")
 
 #g_n <- glm(A~., data = X, family = "binomial")
 
