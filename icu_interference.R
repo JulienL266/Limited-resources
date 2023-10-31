@@ -22,7 +22,22 @@ L <- select(data, c(age, male, sofa_score, open_beds_cmp))
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
 
+## Estimating g_0 (Luedtke and van der Laan assume they know it)
+### Data adaptative
+g_n <- SL.gam(A, L, family = binomial)
+g_n <- SL.nnet(A, L, family = binomial)
+### Parametric
+g_n <- SL.bayesglm(A, L, family = binomial)
+g_n <- SL.glm(A, L, family = binomial)
+g_n <- SL.glm.interaction(A, L, family = binomial)
+g_n <- SL.mean(A, L, family = binomial)
+g_n <- SL.step(A, L, family = binomial)
+g_n <- SL.step.interaction(A, L, family = binomial)
+g_n <- SL.step.forward(A, L, family = binomial)
+
+
 ## Estimating Q_0
+X <- cbind(A,L)
 ### Data adaptative
 Q_n <- SL.gam(Y, X, family = binomial)
 Q_n <- SL.nnet(Y, X, family = binomial)
@@ -48,3 +63,5 @@ Q_b <- SL.mean(Y_tilde, X)
 Q_b <- SL.step(Y_tilde, X)
 Q_b <- SL.step.interaction(Y_tilde, X)
 Q_b <- SL.step.forward(Y_tilde, X)
+
+
