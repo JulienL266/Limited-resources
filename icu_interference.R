@@ -40,7 +40,6 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step.interaction")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step.forward")
 
-#g_n <- glm(A~., data = X, family = "binomial")
 
 ## Estimating Q_0
 ### Data adaptative
@@ -55,7 +54,6 @@ Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.step.interaction")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.step.forward)
 
-#Q_n <- glm(Y~., data = X, family = "binomial")
 
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred)) + mean(Y) #should be g_0 instead of g_n, if it is known
@@ -70,8 +68,6 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step.interaction")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step.forward")
-
-#Q_b <- lm(Y~., data = L)
 
 
 
