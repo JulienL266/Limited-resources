@@ -43,7 +43,6 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
 #g_n <- glm(A~., data = X, family = "binomial")
 
 ## Estimating Q_0
-
 ### Data adaptative
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.nnet")
