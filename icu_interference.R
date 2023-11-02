@@ -6,16 +6,16 @@ set.seed(2023)
 n <- nrow(data)
 
 # Defining variables
-Y <- (1 - data$dead28)
+Y <- (1 - data$dead90)
 data <- select(data, !c(dead7, dead28, dead90))
 
 A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
-kappa <- mean(A)
+#kappa <- mean(A)
 #kappa <- 0.2
-#kappa <- 0.6
+kappa <- 0.6
 #kappa <- 0.05
 
 ## Removing uninteresting variables
