@@ -29,11 +29,11 @@ library(SuperLearner)
 X <- cbind(A,L)
 ## Estimating g_0 (Luedtke and van der Laan assume they know it)
 ### Data adaptative
-#g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
+g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.nnet")
 ### Parametric
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.bayesglm")
-g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
+#g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm.interaction")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.mean")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step")
@@ -43,11 +43,11 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
 
 ## Estimating Q_0
 ### Data adaptative
-#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
+Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.nnet")
 ### Parametric
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.bayesglm")
-Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm.interaction)
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.mean")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL .library = "SL.step")
@@ -58,11 +58,11 @@ Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
 ## Estimating Q_{b,o}
 Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred)) + mean(Y) #should be g_0 instead of g_n, if it is known
 ### Data adaptative
-#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
+Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.nnet")
 ### Parametric
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.bayesglm")
-Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm")
+#Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.glm.interaction")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.mean")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.step")
