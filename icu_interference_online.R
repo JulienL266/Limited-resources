@@ -53,3 +53,6 @@ d_n <- function(w,j){
   return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > 0))
 }
 
+D_n <- function(y,a,w,j){
+  return(D_tilde(d_n, Q_n, g_n, y, a, w, j))
+}
