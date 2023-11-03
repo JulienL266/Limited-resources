@@ -23,3 +23,8 @@ data <- select(data, !c(id))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score", "open_beds_cmp")]
+
+#Estimation 
+D_tilde <- function(d, Q, g, y,a,w){
+  D_1 <- (a*d(w) + (1-a)*(1-d(w)))/(a*g(1,w) + (1-a)*g(0,w))
+}
