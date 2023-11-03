@@ -41,6 +41,7 @@ Q(a,w,j){
   A_j <- A[1:j]
   Y_j <- Y[1:j]
   L_j <- L[1:j,]
-  
+  Y_ja <- Y_j[which(A_j == a)]
+  Y_jaw <- Y_ja[]
 }
 
