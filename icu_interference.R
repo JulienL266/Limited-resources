@@ -13,8 +13,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
-#kappa <- mean(A)
-kappa <- 0.2
+kappa <- mean(A)
+#kappa <- 0.2
 #kappa <- 0.6
 #kappa <- 0.05
 
@@ -56,7 +56,7 @@ Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
 
 
 ## Estimating Q_{b,o}
-Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred)) + mean(Y) #should be g_0 instead of g_n, if it is known
+Y_tilde <- (2*A - 1)*(Y - mean(Y))/(A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred)) #+ mean(Y) #, don't need mean(Y), see reference in Luedtke and van der Laan (2016) which is not the same target #should be g_0 instead of g_n, if it is known
 ### Data adaptative
 Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 #Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.nnet")
