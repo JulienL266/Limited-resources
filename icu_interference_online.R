@@ -21,8 +21,8 @@ kappa <- mean(A)
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
-#chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score", "open_beds_cmp")]
+#chosen variables, may change, needs to be low-dimensional
+L <- data[,c("age", "male", "open_beds_cmp")]
 
 #Estimation 
 l_n <- ceiling(sqrt(n))
