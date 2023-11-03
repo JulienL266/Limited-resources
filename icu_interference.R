@@ -1,4 +1,4 @@
-# Reading icu data
+# Reading icu data (semi-parametric estimators)
 library(haven)
 library(dplyr)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
@@ -13,10 +13,10 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
-#kappa <- mean(A)
+kappa <- mean(A)
 #kappa <- 0.2
 #kappa <- 0.6
-kappa <- 0.05
+#kappa <- 0.05
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
