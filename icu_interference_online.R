@@ -72,3 +72,4 @@ for(j in (l_n + 1):n){
   Gamma_n <- Gamma_n + 1/sigma_n(j)
 }
 Gamma_n <- Gamma_n/(n - l_n)
+Psi_hat <- Psi_hat/(Gamma_n*(n - l_n))
