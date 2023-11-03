@@ -29,4 +29,17 @@ D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(a*g(1,w,j) + (1-a)*g(0,w,j)))*(y - Q(a,w,j))
   return(D_1 + Q(d(w,j),w,j))
 }
+g <- function(a,w,j){
+  A_j <- A[1:j]
+  Y_j <- Y[1:j]
+  L_j <- L[1:j,]
+  A_jw <- A_j[which(L_j == w)]
+  return(length(which(A_jw  == a))/length(which(L_j == w)))
+}
+
+Q(a,w,j){
+  A_j <- A[1:j]
+  Y_j <- Y[1:j]
+  L_j <- L[1:j,]
+}
 
