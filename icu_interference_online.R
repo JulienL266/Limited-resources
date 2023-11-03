@@ -35,7 +35,12 @@ g_n <- function(a,w,j){
   A_j <- A[1:j]
   Y_j <- Y[1:j]
   L_j <- L[1:j,]
-  A_jw <- A_j[which(L_j == w)]
+  A_jw <- c()
+  for(i in 1:j){
+    if(L_j[i,] == w){
+      A_jw <- c(A_jw, A_j[i])
+    }
+  }
   return(a*mean(A_jw) + (1-a)*mean(1-A_jw))
 }
 
@@ -45,7 +50,12 @@ Q_n <- function(a,w,j){
   L_j <- L[1:j,]
   Y_ja <- Y_j[which(A_j == a)]
   L_ja <- L_j[which(A_j == a),]
-  Y_jaw <- Y_ja[which(L_ja == w)]
+  Y_jaw <- c()
+  for(i in 1:length(L_ja)){
+    if(L_ja[i,] == w){
+      Y_jaw <- c(Y_jaw, Y_ja[i])
+    }
+  }
   return(mean(Y_jaw))
 }
 
