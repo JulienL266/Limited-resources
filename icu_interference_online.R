@@ -76,4 +76,4 @@ Psi_hat <- Psi_hat/(Gamma_n*(n - l_n))
 #value function
 Psi_hat
 #two-sided CI
-Psi_hat + c(-qnorm(0.975))
+Psi_hat + c(-qnorm(0.975)*1/(Gamma_n*sqrt(n - l_n)), qnorm(0.975)*1/(Gamma_n*sqrt(n - l_n)))
