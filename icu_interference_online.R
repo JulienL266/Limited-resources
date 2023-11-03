@@ -32,11 +32,11 @@ D_tilde <- function(d, Q, g, y,a,w,j){
   return(D_1 + Q(d(w,j),w,j))
 }
 g_n <- function(a,w,j){
-  A_j <- A[1:j]
-  Y_j <- Y[1:j]
-  L_j <- L[1:j,]
+  A_j <- A[1:j-1]
+  Y_j <- Y[1:j-1]
+  L_j <- L[1:j-1,]
   A_jw <- c()
-  for(i in 1:j){
+  for(i in 1:j-1){
     if(L_j[i,] == w){
       A_jw <- c(A_jw, A_j[i])
     }
@@ -45,9 +45,9 @@ g_n <- function(a,w,j){
 }
 
 Q_n <- function(a,w,j){
-  A_j <- A[1:j]
-  Y_j <- Y[1:j]
-  L_j <- L[1:j,]
+  A_j <- A[1:j-1]
+  Y_j <- Y[1:j-1]
+  L_j <- L[1:j-1,]
   Y_ja <- Y_j[which(A_j == a)]
   L_ja <- L_j[which(A_j == a),]
   Y_jaw <- c()
