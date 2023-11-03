@@ -59,8 +59,9 @@ D_n <- function(y,a,w,j){
 
 sigma_n <- function(j){
   res <- c()
-  for(j in l_n:(n-1)){
+  for(j in l_n:j-1){
     res <- c(res, D_n(Y,A,L,j))
   }
   return(sd(res))
 }
+
