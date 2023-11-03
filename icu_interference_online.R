@@ -37,7 +37,7 @@ g_n <- function(a,w,j){
   L_j <- L[1:j-1,]
   A_jw <- c()
   for(i in 1:j-1){
-    if(L_j[i,] == w){
+    if(sum(L_j[i,] == w) == length(w)){
       A_jw <- c(A_jw, A_j[i])
     }
   }
@@ -52,7 +52,7 @@ Q_n <- function(a,w,j){
   L_ja <- L_j[which(A_j == a),]
   Y_jaw <- c()
   for(i in 1:length(L_ja)){
-    if(L_ja[i,] == w){
+    if(sum(L_ja[i,] == w) == length(w)){
       Y_jaw <- c(Y_jaw, Y_ja[i])
     }
   }
