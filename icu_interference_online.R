@@ -73,3 +73,7 @@ for(j in (l_n + 1):n){
 }
 Gamma_n <- Gamma_n/(n - l_n)
 Psi_hat <- Psi_hat/(Gamma_n*(n - l_n))
+#value function
+Psi_hat
+#two-sided CI
+Psi_hat + c(-qnorm(0.975))
