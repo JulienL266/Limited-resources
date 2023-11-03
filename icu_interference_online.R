@@ -59,9 +59,14 @@ D_n <- function(y,a,w,j){
 
 sigma_n <- function(j){
   res <- c()
-  for(j in l_n:j-1){
-    res <- c(res, D_n(Y,A,L,j))
+  for(i in l_n:j-1){
+    res <- c(res, D_n(Y[i],A[i],L[i,],j))
   }
   return(sd(res))
 }
 
+Psi_hat <- 0
+Gamma_n <- 0
+for(j in (l_n + 1):n){
+  Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,])
+}
