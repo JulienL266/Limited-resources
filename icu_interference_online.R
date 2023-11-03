@@ -25,6 +25,8 @@ data <- select(data, !c(id))
 L <- data[,c("age", "male", "sofa_score", "open_beds_cmp")]
 
 #Estimation 
+l_n <- ceiling(sqrt(n))
+  
 D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(a*g(1,w,j) + (1-a)*g(0,w,j)))*(y - Q(a,w,j))
   return(D_1 + Q(d(w,j),w,j))
