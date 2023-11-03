@@ -44,7 +44,7 @@ Q_n <- function(a,w,j){
   Y_j <- Y[1:j]
   L_j <- L[1:j,]
   Y_ja <- Y_j[which(A_j == a)]
-  L_ja <- L_j[which(A_j == a)]
+  L_ja <- L_j[which(A_j == a),]
   Y_jaw <- Y_ja[which(L_ja == w)]
   return(mean(Y_jaw))
 }
