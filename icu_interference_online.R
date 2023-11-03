@@ -56,3 +56,11 @@ d_n <- function(w,j){
 D_n <- function(y,a,w,j){
   return(D_tilde(d_n, Q_n, g_n, y, a, w, j))
 }
+
+sigma_n <- function(j){
+  res <- c()
+  for(j in l_n:(n-1)){
+    res <- c(res, D_n(Y,A,L,j))
+  }
+  return(sd(res))
+}
