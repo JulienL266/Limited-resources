@@ -38,7 +38,6 @@ g_n <- function(a,w,j){
   A_jw <- c()
   for(i in 1:j-1){
     w_i <- L_j[i,]
-    #w_i <- L[i,]
     if(sum(w_i == w) == length(w)){
       A_jw <- c(A_jw, A_j[i])
     }
