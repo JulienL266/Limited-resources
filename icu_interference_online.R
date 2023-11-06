@@ -58,6 +58,9 @@ Q_n <- function(a,w,j){
       Y_jaw <- c(Y_jaw, Y_ja[i])
     }
   }
+  if(length(Y_jaw) == 0){
+    return(0)
+  }
   return(mean(Y_jaw))
 }
 
