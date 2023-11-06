@@ -36,7 +36,7 @@ g_n <- function(a,w,j){
   Y_j <- Y[1:j-1]
   L_j <- L[1:j-1,]
   A_jw <- c()
-  for(i in 1:j-1){
+  for(i in 1:(j-1)){
     w_i <- L_j[i,]
     if(sum(w_i == w) == length(w)){
       A_jw <- c(A_jw, A_j[i])
@@ -73,7 +73,7 @@ D_n <- function(y,a,w,j){
 
 sigma_n <- function(j){
   res <- c()
-  for(i in l_n:j-1){
+  for(i in l_n:(j-1)){
     res <- c(res, D_n(Y[i],A[i],L[i,],j))
   }
   return(sd(res))
