@@ -81,7 +81,10 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
+time <- Sys.time()
 for(j in (l_n + 1):n){
+  print(paste("Iteration number", j))
+  print(paste("Time",Sys.time() - time))
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
   Gamma_n <- Gamma_n + 1/sigma_n(j)
 }
