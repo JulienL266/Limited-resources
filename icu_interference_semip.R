@@ -106,3 +106,8 @@ sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((
 Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
 
 #Survival curve
+kappa_Ao2 <- mean(A)/2
+kappa_A <- mean(A)
+kappa_R <- mean(data$icu_recommend)
+kappa_1 <- 1
+eta_A02 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
