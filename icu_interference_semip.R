@@ -121,7 +121,14 @@ eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
 tau_1 <- max(0, eta_1)
 
 Survival <- function(x){
-  return(mean(as.integer(predict(Q_b,L)$pred > x)))
+  pred <- predict(Q_b,L)$pred
+  sum <- 0
+  for(i in 1:n){
+    if(pred[i] > x){
+      sum <- sum + 1
+    }
+  }
+  return(sum/n)
 }
 
 
