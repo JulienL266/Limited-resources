@@ -111,4 +111,7 @@ kappa_A <- mean(A)
 kappa_R <- mean(data$icu_recommend)
 kappa_1 <- 1
 
-eta_A02 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
+eta_Ao2 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
+eta_A <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_A))
+eta_R <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_R))
+eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
