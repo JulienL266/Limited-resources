@@ -118,4 +118,8 @@ tau_A <- max(0, eta_A)
 eta_R <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_R))
 tau_R <- max(0, eta_R)
 eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
-tau_1 y.- max(0, eta_1)
+tau_1 <- max(0, eta_1)
+
+Survival <- function(x){
+  return(mean(as.integer(predict(Q_b,L)$pred > x)))
+}
