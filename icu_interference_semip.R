@@ -132,6 +132,10 @@ Survival <- function(x){
 }
 x = 0:100
 x <- 2*x/100-1
-
+y <- c()
+for(i in 1:n){
+  y <- c(y, Survival(x[i]))
+}
+plot(x,y)
 
 
