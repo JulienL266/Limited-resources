@@ -1,4 +1,5 @@
 # Reading icu data (semi-parametric estimators)
+#NEED TO IMPLEMENT USING S = (N - L_N)/L_N TO REDUCE COMP TIME
 library(haven)
 library(dplyr)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
