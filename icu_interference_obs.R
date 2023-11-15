@@ -71,16 +71,10 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 
 
 
-## Estimating d_0 (might change in new setting)
-eta_n <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
-tau_n <- max(0,eta_n)
-d_n <- function(l){
-  return(as.integer(predict(Q_b,l)$pred > tau_n))
-}
 
 ## TMLE procedure
 H <- function(a,l){
-  return(a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)$pred + (1-a)*(1-predict(g_n,l)$pred))
+  return(1/(a*predict(g_n, l)$pred + (1-a)*(1-predict(g_n,l)$pred)))
 }
 Cov <- H(A,L)
 logit <- function(p){return(log(p/(1-p)))}

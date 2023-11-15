@@ -80,7 +80,7 @@ d_n <- function(l){
 
 ## TMLE procedure
 H <- function(a,l){
-  return(a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)$pred + (1-a)*(1-predict(g_n,l)$pred))
+  return((a*d_n(l) + (1-a)*(1-d_n(l)))/(a*predict(g_n, l)$pred + (1-a)*(1-predict(g_n,l)$pred)))
 }
 Cov <- H(A,L)
 logit <- function(p){return(log(p/(1-p)))}
