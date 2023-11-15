@@ -123,3 +123,4 @@ tau_1 <- max(0, eta_1)
 Survival <- function(x){
   return(mean(as.integer(predict(Q_b,L)$pred > x)))
 }
+
