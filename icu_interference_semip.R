@@ -112,6 +112,10 @@ kappa_R <- mean(data$icu_recommend)
 kappa_1 <- 1
 
 eta_Ao2 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
+tau_Ao2 <- max(0, eta_Ao2)
 eta_A <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_A))
+tau_A <- max(0, eta_A)
 eta_R <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_R))
+tau_R <- max(0, eta_R)
 eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
+tau_1 y.- max(0, eta_1)
