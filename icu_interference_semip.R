@@ -124,3 +124,4 @@ Survival <- function(x){
   return(mean(as.integer(predict(Q_b,L)$pred > x)))
 }
 
+curve(Survival, from = -1, to = 1, xlab = "x", ylab = "y")
