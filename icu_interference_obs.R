@@ -100,42 +100,7 @@ Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
 sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred))) 
-              + predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred
-              - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
+                      + predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred
+                      - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
 
 Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
-
-#Survival curve
-kappa_Ao2 <- mean(A)/2
-kappa_A <- mean(A)
-kappa_R <- mean(data$icu_recommend)
-kappa_1 <- 1
-
-eta_Ao2 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
-tau_Ao2 <- max(0, eta_Ao2)
-eta_A <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_A))
-tau_A <- max(0, eta_A)
-eta_R <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_R))
-tau_R <- max(0, eta_R)
-eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
-tau_1 <- max(0, eta_1)
-
-Survival <- function(x){
-  pred <- predict(Q_b,L)$pred
-  sum <- 0
-  for(i in 1:n){
-    if(pred[i] > x){
-      sum <- sum + 1
-    }
-  }
-  return(sum/n)
-}
-x = 0:1000
-x <- (2*x/1000-1)*0.2
-y <- c()
-for(i in 1:n){
-  y <- c(y, Survival(x[i]))
-}
-plot(x,y, type = "l")
-
-
