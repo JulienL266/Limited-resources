@@ -130,7 +130,8 @@ Survival <- function(x){
   }
   return(sum/n)
 }
-curve(Survival, from=-1, to=1, , xlab="x", ylab="y")
+x = 0:100
+x <- 2*x/100-1
 
 
 
