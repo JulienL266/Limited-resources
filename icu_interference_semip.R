@@ -124,4 +124,7 @@ Survival <- function(x){
   return(mean(as.integer(predict(Q_b,L)$pred > x)))
 }
 
-curve(Survival, from = -1, to = 1, xlab = "x", ylab = "y")
+library("ggplot2")
+ggplot(data.frame(x=c(-1, 1)), aes(x=x)) + 
+  stat_function(fun=Survival)
+
