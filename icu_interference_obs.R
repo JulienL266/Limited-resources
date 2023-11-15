@@ -71,6 +71,8 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 
 
 
+eta_n <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
+tau_n <- max(0,eta_n)
 
 ## TMLE procedure
 H <- function(a,l){
@@ -89,12 +91,12 @@ Q_star <- function(a,l){
 }
 
 ## Estimating Psi
-Psi_hat = mean(Q_star(rep(0,n),L)*(1-d_n(L)) + Q_star(rep(1,n),L)*d_n(L))
+Psi_hat = mean(Q_star(rep(0,n),L)*(1-A) + Q_star(rep(1,n),L)*A)
 Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
-sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred))) 
-                      + predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred
-                      - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
+sigma_n <- sqrt(mean(((1)*(Y - predict(Q_n,X)$pred)/((A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred))) 
+                      + predict(Q_n, cbind(A, L))$pred
+                      - mean(predict(Q_n, cbind(A, L))$pred) - tau_n*(A - kappa))^2))
 
 Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
