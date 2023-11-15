@@ -130,12 +130,14 @@ Survival <- function(x){
   }
   return(sum/n)
 }
-x = 0:100
-x <- 2*x/100-1
+x = 0:1000
+x <- (2*x/1000-1)*0.2
 y <- c()
 for(i in 1:n){
   y <- c(y, Survival(x[i]))
 }
-plot(x,y)
+plot(x,y, type = "l")
 
-
+#Obs regime
+mean(Y)
+mean(Y) + c(-qnorm(0.975)*sd(Y)/sqrt(n), qnorm(0.975)*sd(Y)/sqrt(n))
