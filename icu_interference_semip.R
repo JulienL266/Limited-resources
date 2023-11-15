@@ -130,9 +130,7 @@ Survival <- function(x){
   }
   return(sum/n)
 }
-library("ggplot2")
-ggplot(data.frame(x=c(-1, 1)), aes(x=x)) + 
-  stat_function(fun=Survival)
+curve(Survival, from=-1, to=1, , xlab="x", ylab="y")
 
 
 
