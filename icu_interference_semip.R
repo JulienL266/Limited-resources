@@ -110,4 +110,5 @@ kappa_Ao2 <- mean(A)/2
 kappa_A <- mean(A)
 kappa_R <- mean(data$icu_recommend)
 kappa_1 <- 1
+
 eta_A02 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
