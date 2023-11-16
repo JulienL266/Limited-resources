@@ -1,5 +1,5 @@
 # Reading icu data (semi-parametric estimators)
-#NEED TO IMPLEMENT USING S = (N - L_N)/L_N TO REDUCE COMP TIME
+# Have issues with certain values not existing
 library(haven)
 library(dplyr)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
@@ -96,9 +96,9 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
-pb = txtProgressBar(min = 0, max = 12896, initial = 0)
+pb = txtProgressBar(min = 115, max = 13011, initial = 115)
 for(j in (l_n + 1):n){
-  setTxtProgressBar(pb,j-l_n)
+  setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
   Gamma_n <- Gamma_n + 1/sigma_n(j)
 }
