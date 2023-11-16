@@ -23,7 +23,7 @@ kappa <- mean(A)
 data <- select(data, !c(id))
 
 #chosen variables, may change, needs to be low-dimensional
-L <- data[,c("age", "male", "open_beds_cmp")]
+L <- data[,c("age", "male", "sofa_score")]
 
 #Estimation 
 l_n <- ceiling(sqrt(n))
