@@ -37,7 +37,11 @@ D_tilde <- function(d, Q, g, y,a,w,j){
   return(D_1 + Q(d(w,j),w,j))
 }
 g_n <- function(a,w,j){
-  k <- max(which(cutoffs < j)) + 1
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
@@ -52,9 +56,14 @@ g_n <- function(a,w,j){
 }
 
 Q_n <- function(a,w,j){
-  A_j <- A[1:j-1]
-  Y_j <- Y[1:j-1]
-  L_j <- L[1:j-1,]
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  A_j <- A[1:k-1]
+  Y_j <- Y[1:k-1]
+  L_j <- L[1:k-1,]
   Y_ja <- Y_j[which(A_j == a)]
   L_ja <- L_j[which(A_j == a),]
   Y_jaw <- c()
@@ -87,10 +96,12 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
+pb = txtProgressBar(min = 0, max = length((l_n + 1):n), initial = 0)
 time <- Sys.time()
 for(j in (l_n + 1):n){
   print(paste("Iteration number", j))
   print(paste("Time",Sys.time() - time))
+  setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
   Gamma_n <- Gamma_n + 1/sigma_n(j)
 }
