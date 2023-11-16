@@ -96,12 +96,9 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
-pb = txtProgressBar(min = 0, max = length((l_n + 1):n), initial = 0)
-time <- Sys.time()
+pb = txtProgressBar(min = 0, max = 12896, initial = 0)
 for(j in (l_n + 1):n){
-  print(paste("Iteration number", j))
-  print(paste("Time",Sys.time() - time))
-  setTxtProgressBar(pb,j)
+  setTxtProgressBar(pb,j-l_n)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
   Gamma_n <- Gamma_n + 1/sigma_n(j)
 }
