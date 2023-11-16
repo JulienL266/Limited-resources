@@ -96,7 +96,7 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
-pb = txtProgressBar(min = 115, max = 13011, initial = 115)
+pb <- txtProgressBar(min = 115, max = 13011, initial = 115)
 for(j in (l_n + 1):n){
   setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
