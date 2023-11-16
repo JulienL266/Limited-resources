@@ -52,6 +52,9 @@ g_n <- function(a,w,j){
       A_jw <- c(A_jw, A_j[i])
     }
   }
+  if(length(A_jw) == 0){
+    return(0)
+  }
   return(a*mean(A_jw) + (1-a)*mean(1-A_jw))
 }
 
@@ -66,6 +69,9 @@ Q_n <- function(a,w,j){
   L_j <- L[1:k-1,]
   Y_ja <- Y_j[which(A_j == a)]
   L_ja <- L_j[which(A_j == a),]
+  if(length(Y_ja == 0)){
+    return(0)
+  }
   Y_jaw <- c()
   for(i in 1:length(L_ja)){
     if(sum(L_ja[i,] == w) == length(w)){
@@ -96,7 +102,7 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
-pb <- txtProgressBar(min = 115, max = 13011, initial = 115)
+pb <- txtProgressBar(min = 115, max = 13011, initial = 115, style = 3)
 for(j in (l_n + 1):n){
   setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
