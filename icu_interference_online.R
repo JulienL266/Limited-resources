@@ -30,6 +30,8 @@ l_n <- ceiling(sqrt(n))
   
 S <- (n-l_n)/l_n
 
+cutoffs <- 
+
 D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(a*g(1,w,j) + (1-a)*g(0,w,j)))*(y - Q(a,w,j))
   return(D_1 + Q(d(w,j),w,j))
