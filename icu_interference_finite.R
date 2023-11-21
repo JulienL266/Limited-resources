@@ -170,9 +170,11 @@ for(b in 1:B){
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
 }
+### Normal approximation
 sigma <- sd(Val.IPW.boot)
-
 Val.IPW + c(-qnorm(0.975)*sd/sqrt(n), qnorm(0.975)*sd/sqrt(n))
+### Bootstrap CI
+2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
 # Parametric g-formula estimator
 
