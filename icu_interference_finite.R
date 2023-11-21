@@ -35,7 +35,9 @@ L <- L[samp,]
 Y <- Y[samp]
 
 # Ranking function Gamma
-
+red <- which(L$sofa_score == "(-1,7]")
+yellow <- which(L$sofa_score == "(7,11]")
+blue <- which(L$sofa_score == "(11,14]")
 
 # IPW estimator
 
