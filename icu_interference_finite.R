@@ -76,7 +76,16 @@ q_star <- function(a,l){
       }
     }
   }
-  return(B_n_samp/L_n_samp)
+  if(L_n_samp == 0){
+    return(0)
+  }else{
+    return(B_n_samp/L_n_samp)
+  }
+}
+
+Val.IPW <- 0 
+for(i in 1:n){
+  
 }
 
 ## Variance estimation with bootstrap
