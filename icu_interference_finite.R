@@ -137,13 +137,14 @@ Val.IPW <- Val.IPW/n
 
 ## Variance estimation with bootstrap[NOT RUN YET, REVIEW]
 ###bootstrapping elements in finite cluster? or in general cluster??
+###bootstrapping elements in finite cluser makes sense as that is what is usual
 B <- 1000
 Val.IPW.boot <- rep(NA,B)
 for(b in 1:B){
   boot_samp <- sample(1:n_samp, size = n_samp, replace = TRUE)
-  A_boot <- A[boot_samp]
-  L_boot <- L[boot_samp,]
-  Y_boot <- Y[boot_samp]
+  A_boot <- A_samp[boot_samp]
+  L_boot <- L_samp[boot_samp,]
+  Y_boot <- Y_samp[boot_samp]
   
   red.boot <- which(L_boot$sofa_score == "(-1,7]")
   order_red.boot <- sample(red.boot, size = length(red.boot))
