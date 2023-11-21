@@ -135,7 +135,7 @@ for(i in 1:n){
 }
 Val.IPW <- Val.IPW/n
 
-## Variance estimation with bootstrap
+## Variance estimation with bootstrap[NOT RUN YET]
 
 # Parametric g-formula estimator
 
