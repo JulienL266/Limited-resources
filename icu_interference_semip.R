@@ -136,6 +136,9 @@ y <- c()
 for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
-plot(x,y, type = "l")
+plot(x,y, type = "l", ylim = c(0,1))
 
-points(x = eta_1, y = 0, type = "p", col = "red", pch = 19)
+eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
+tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
+points(x = eta_1, y = 0, type = "p", col = "red", pch = 20)
+
