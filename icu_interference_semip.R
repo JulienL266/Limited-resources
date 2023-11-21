@@ -136,6 +136,7 @@ y <- c()
 for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
+library(latex2exp)
 plot(x,y, type = "l", ylim = c(0,1), xlab = "Delta", ylab = "P_n(Delta(l) > x)")
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
