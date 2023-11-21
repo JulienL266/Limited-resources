@@ -23,5 +23,6 @@ data <- select(data, !c(id))
 
 ## Categorizing sofa score as in the guidelines
 
+
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score")]
