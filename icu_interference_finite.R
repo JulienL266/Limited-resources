@@ -51,6 +51,19 @@ Gamma <- function(i){
 }
 
 # IPW estimator
+q_n <- function(a,l){
+  B_n <- 0
+  L_n <- 0
+  for(i in 1:n){
+    if(L[i,] == l){
+      L_n <- L_n + 1
+      if(A[i] == a){
+        B_n <- B_n + 1
+      }
+    }
+  }
+  return(B_n/L_n)
+}
 
 ## Variance estimation with bootstrap
 
