@@ -137,7 +137,7 @@ for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
 library(latex2exp)
-plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($\hat{\mathbb{P}}_n(\Delta(l) > x)$)"))
+plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($\hat{P}_n(\Delta(l) > x)$)"))
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
 tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
@@ -145,8 +145,8 @@ kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
 
 
 
-axis(1, at = c(eta_vec), labels = c(TeX(r"($\eta_1$)"), TeX(r"($\eta_R$)"), TeX(r"($\eta_A$)"), TeX(r"($\eta_{A/2}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
-axis(2, at = c(kappa_vec), labels = c(TeX(r"($\kappa_{A/2}$)"), TeX(r"($\kappa_{A}$)"), TeX(r"($\kappa_{R}$)"), TeX(r"($\kappa_{1}$)")), col.ticks = "red", col.axis = "red", tck = 0.02)
+axis(1, at = c(eta_vec), labels = c(TeX(r"($\hat{\eta}_1$)"), TeX(r"($\hat{\eta}_R$)"), TeX(r"($\hat{\eta}_A$)"), TeX(r"($\hat{\eta}_{A/2}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
+axis(2, at = c(kappa_vec), labels = c(TeX(r"($\kappa_{A/2}$)"), TeX(r"($\kappa_{A}$)"), TeX(r"($\kappa_{R}$)"), ""), col.ticks = "red", col.axis = "red", tck = 0.02)
 
 lines(x = c(eta_1, eta_1), y = c(-1,1), col = "red", lty = 2)
 lines(x = c(-1, eta_1), y = c(1,1), col = "red", lty = 2)
