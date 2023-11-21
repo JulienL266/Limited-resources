@@ -140,7 +140,7 @@ plot(x,y, type = "l", ylim = c(0,1), xlab = "Delta", ylab = "P_n(Delta(l) > x)")
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
 tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
-kappa_vec <- c(kappa_A02, kappa_A, kappa_R, kappa_1)
+kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
 
 
 
