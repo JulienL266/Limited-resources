@@ -72,7 +72,7 @@ Q_b <- SuperLearner(Y_tilde, L, SL.library = "SL.gam")
 
 
 ## Estimating d_0 (might change in new setting)
-eta_n <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa)) #P_n(Q_n(L) > tau) = P_n(-Q_n(L) <= -tau)
+eta_n <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa)) 
 tau_n <- max(0,eta_n)
 d_n <- function(l){
   return(as.integer(predict(Q_b,l)$pred > tau_n))
@@ -111,13 +111,13 @@ kappa_A <- mean(A)
 kappa_R <- mean(data$icu_recommend)
 kappa_1 <- 1
 
-eta_Ao2 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_Ao2))
+eta_Ao2 <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_Ao2))
 tau_Ao2 <- max(0, eta_Ao2)
-eta_A <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_A))
+eta_A <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_A))
 tau_A <- max(0, eta_A)
-eta_R <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_R))
+eta_R <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_R))
 tau_R <- max(0, eta_R)
-eta_1 <- quantile(predict(Q_b,L)$pred, probs = c(1-kappa_1))
+eta_1 <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_1))
 tau_1 <- max(0, eta_1)
 
 Survival <- function(x){
