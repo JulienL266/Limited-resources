@@ -144,8 +144,18 @@ kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
 
 
 
-axis(1, at = c(-0.2, eta_vec, 0.2), labels = c(-0.2,"eta_1", "eta_R", "eta_A", "eta_Ao2", 0.2), col.ticks = "red")
+axis(1, at = c(eta_vec), labels = c("eta_1", "eta_R", "eta_A", "eta_Ao2"), col.ticks = "red", col.axis = "red", tck  = 0.02) 
+axis(2, at = c(kappa_vec), labels = c("kappa_Ao2", "kappa_A", "kappa_R", "kappa_1"), col.ticks = "red", col.axis = "red", tck = 0.02)
+
 lines(x = c(eta_1, eta_1), y = c(-1,1), col = "red", lty = 2)
 lines(x = c(-1, eta_1), y = c(1,1), col = "red", lty = 2)
-axis(2, at = c(0, kappa_vec, 1), labels = c(0,"kappa_Ao2", "kappa_A", "kappa_R", "kappa_1", 1), col.ticks = "red")
 
+
+lines(x = c(eta_R, eta_R), y = c(-1,kappa_R), col = "red", lty = 2)
+lines(x = c(-1, eta_R), y = c(kappa_R,kappa_R), col = "red", lty = 2)
+
+lines(x = c(eta_A, eta_A), y = c(-1,kappa_A), col = "red", lty = 2)
+lines(x = c(-1, eta_A), y = c(kappa_A,kappa_A), col = "red", lty = 2)
+
+lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,kappa_Ao2), col = "red", lty = 2)
+lines(x = c(-1, eta_Ao2), y = c(kappa_Ao2,kappa_Ao2), col = "red", lty = 2)
