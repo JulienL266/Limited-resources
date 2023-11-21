@@ -140,7 +140,7 @@ Val.IPW <- Val.IPW/n
 ## Variance estimation with bootstrap[NOT RUN YET]
 ### bootstrapping elements in super cluster, as finite cluster propensity is known
 ### n goes to infinity, but our finite sample is fixed
-B <- 1000
+B <- 100
 Val.IPW.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 for(b in 1:B){
