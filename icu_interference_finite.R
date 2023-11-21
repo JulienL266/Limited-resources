@@ -136,7 +136,7 @@ for(i in 1:n){
 Val.IPW <- Val.IPW/n
 
 ## Variance estimation with bootstrap[NOT RUN YET, REVIEW]
-###bootstrapping elements in finite cluster? or in general cluster??
+###bootstrapping elements in finite cluster? or in general cluster??both???
 ###bootstrapping elements in finite cluser makes sense as that is what is usual
 B <- 1000
 Val.IPW.boot <- rep(NA,B)
