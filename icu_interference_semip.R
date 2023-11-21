@@ -13,8 +13,8 @@ A <- data$icu_accept
 data <- select(data, !c(icu_accept))
 
 ## define kappa (might change later)
-kappa <- mean(A)/2
-#kappa <- mean(A)
+#kappa <- mean(A)/2
+kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -133,7 +133,7 @@ Survival <- function(x){
 x = 0:1000
 x <- (2*x/1000-1)*0.2
 y <- c()
-for(i in 1:n){
+for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
 plot(x,y, type = "l")
