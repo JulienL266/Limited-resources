@@ -140,5 +140,8 @@ plot(x,y, type = "l", ylim = c(0,1))
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
 tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
-points(x = eta_1, y = 0, type = "p", col = "red", pch = 20)
 
+points(x = eta_1, y = 0, type = "p", col = "red", pch = 20)
+lines(x = c(eta_1, eta_1), y = c(0,1), col = "red", lty = 2)
+lines(x = c(-0.2, eta_1), y = c(1,1), col = "red", lty = 2)
+points(x = -0.2, y = 1, type = "p", col = "red", pch = 20)
