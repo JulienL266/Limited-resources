@@ -22,7 +22,25 @@ kappa <- mean(A)/2
 data <- select(data, !c(id))
 
 ## Categorizing sofa score as in the guidelines
-data$sofa_score <- cut(data$sofa_score, breaks = c(1,7,11,14))
+data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score")]
+
+# Selecting finite sample 
+n <- 20
+samp <- sample(1:n, size = 20)
+A <- A[samp]
+L <- L[samp,]
+Y <- Y[samp]
+
+# Ranking function Gamma
+
+
+# IPW estimator
+
+## Variance estimation with bootstrap
+
+# Parametric g-formula estimator
+
+## Variance estimation with bootstrap
