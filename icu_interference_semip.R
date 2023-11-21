@@ -148,10 +148,6 @@ kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
 axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
 axis(2, at = c(kappa_vec[1:3]), labels = c(TeX(r"($\kappa_{A/2}$)"), TeX(r"($\kappa_{A}$)"), TeX(r"($\kappa_{R}$)")), col.ticks = "red", col.axis = "red", tck = 0.02)
 
-lines(x = c(eta_1, eta_1), y = c(-1,1), col = "red", lty = 2)
-lines(x = c(-1, eta_1), y = c(1,1), col = "red", lty = 2)
-
-
 lines(x = c(eta_R, eta_R), y = c(-1,kappa_R), col = "red", lty = 2)
 lines(x = c(-1, eta_R), y = c(kappa_R,kappa_R), col = "red", lty = 2)
 
