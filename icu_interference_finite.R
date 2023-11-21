@@ -55,7 +55,7 @@ q_n <- function(a,l){
   B_n <- 0
   L_n <- 0
   for(i in 1:n){
-    if(L[i,] == l){
+    if(L[i,]$sofa_score == l$sofa_score){
       L_n <- L_n + 1
       if(A[i] == a){
         B_n <- B_n + 1
@@ -129,18 +129,22 @@ q_star <- function(a,l){
   }
 }
 
-Val.IPW <- 0 
+Val.IPW <- 0
+pb <- txtProgressBar(min = 0, max = n, initial = 0, style = 3)
 for(i in 1:n){
+  setTxtProgressBar(pb,i)
   Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/q_n(A[i], L[i,])
 }
 Val.IPW <- Val.IPW/n
 
-## Variance estimation with bootstrap[NOT RUN YET, REVIEW]
+## Variance estimation with bootstrap[NOT RUN YET]
 ### bootstrapping elements in super cluster, as finite cluster propensity is known
 ### n goes to infinity, but our finite sample is fixed
 B <- 1000
 Val.IPW.boot <- rep(NA,B)
+pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 for(b in 1:B){
+  setTxtProgressBar(pb,b)
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
@@ -150,7 +154,7 @@ for(b in 1:B){
     B_n <- 0
     L_n <- 0
     for(i in 1:n){
-      if(L_boot[i,] == l){
+      if(L_boot[i,]$sofa_score == l$sofa_score){
         L_n <- L_n + 1
         if(A_boot[i] == a){
           B_n <- B_n + 1
@@ -166,6 +170,9 @@ for(b in 1:B){
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
 }
+sigma <- sd(Val.IPW.boot)
+
+Val.IPW + c(-qnorm(0.975)*sd/sqrt(n), qnorm(0.975)*sd/sqrt(n))
 
 # Parametric g-formula estimator
 
