@@ -136,6 +136,11 @@ for(i in 1:n){
 Val.IPW <- Val.IPW/n
 
 ## Variance estimation with bootstrap[NOT RUN YET]
+B <- 1000
+Val.IPW.boot <- rep(NA,B)
+for(b in 1:B){
+  boot_samp <- sample(1:n_samp, size = n_samp, replace = TRUE)
+}
 
 # Parametric g-formula estimator
 
