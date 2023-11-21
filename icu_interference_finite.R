@@ -65,7 +65,7 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-q_star <- function(a,l){
+q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
   B_n_samp <- 0
   L_n_samp <- 0
   for(i in 1:n_samp){
