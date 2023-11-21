@@ -138,4 +138,4 @@ for(i in 1:1001){
 }
 plot(x,y, type = "l")
 
-
+points(x = eta_1, y = 0, type = "p", col = "red", pch = 19)
