@@ -22,7 +22,7 @@ kappa <- mean(A)/2
 data <- select(data, !c(id))
 
 ## Categorizing sofa score as in the guidelines
-data$sofa_score <- cut(data$sofa_score, breaks = c(7,11))
+data$sofa_score <- cut(data$sofa_score, breaks = c(1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score")]
