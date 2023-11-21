@@ -135,11 +135,79 @@ for(i in 1:n){
 }
 Val.IPW <- Val.IPW/n
 
-## Variance estimation with bootstrap[NOT RUN YET]
+## Variance estimation with bootstrap[NOT RUN YET, REVIEW]
+###bootstrapping elements in finite cluster? or in general cluster??
 B <- 1000
 Val.IPW.boot <- rep(NA,B)
 for(b in 1:B){
   boot_samp <- sample(1:n_samp, size = n_samp, replace = TRUE)
+  A_boot <- A[boot_samp]
+  L_boot <- L[boot_samp,]
+  Y_boot <- Y[boot_samp]
+  
+  red.boot <- which(L_boot$sofa_score == "(-1,7]")
+  order_red.boot <- sample(red.boot, size = length(red.boot))
+  
+  yellow.boot <- which(L_boot$sofa_score == "(7,11]")
+  order_yellow.boot <- sample(yellow.boot, size = length(yellow.boot))
+  
+  blue.boot <- which(L_boot$sofa_score == "(11,14]")
+  order_blue.boot <- sample(blue.boot, size = length(blue.boot))
+  
+  order.boot <- c(order_red.boot, order_yellow.boot, order_blue.boot)
+  
+  q_boot <- function(a,l){
+    treated <- order.boot[1:floor(kappa*n_samp)]
+    if(l$sofa_score == "(-1,7]"){
+      a_count <- 0
+      for(i in 1:length(red.boot)){
+        if(i <= length(treated)){
+          if(a == 1){
+            a_count <- a_count + 1
+          }
+        }else{
+          if(a == 0){
+            a_count <- a_count + 1
+          }
+        }
+      }
+      return(a_count/length(red.boot))
+    }else if(l$sofa_score == "(7,11]"){
+      a_count <- 0
+      for(i in 1:length(yellow.boot)){
+        if(i + length(red.boot) <= length(treated)){
+          if(a == 1){
+            a_count <- a_count + 1
+          }
+        }else{
+          if(a == 0){
+            a_count <- a_count + 1
+          }
+        }
+      }
+      return(a_count/length(yellow.boot))
+    }else if(l$sofa_score == "(11,14]"){
+      a_count <- 0
+      for(i in 1:length(blue.boot)){
+        if(i + length(red.boot) + length(yellow.boot) <= length(treated)){
+          if(a == 1){
+            a_count <- a_count + 1
+          }
+        }else{
+          if(a == 0){
+            a_count <- a_count + 1
+          }
+        }
+      }
+      return(a_count/length(blue.boot))
+    }
+  }
+  
+  Val.IPW.boot[b] <- 0 
+  for(i in 1:n){
+    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y[i]*q_star(A[i], L[i,])/q_n(A[i], L[i,])
+  }
+  Val.IPW.boot[b] <- Val.IPW.boot[b]/n
 }
 
 # Parametric g-formula estimator
