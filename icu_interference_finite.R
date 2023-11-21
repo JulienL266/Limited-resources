@@ -65,21 +65,67 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
-  B_n_samp <- 0
-  L_n_samp <- 0
-  for(i in 1:n_samp){
-    if(L_samp[i,]$sofa_score == l$sofa_score){
-      L_n_samp <- L_n_samp + 1
-      if(A_samp[i] == a){
-        B_n_samp <- B_n_samp + 1
+#q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
+ # B_n_samp <- 0
+  #L_n_samp <- 0
+  #for(i in 1:n_samp){
+   # if(L_samp[i,]$sofa_score == l$sofa_score){
+    #  L_n_samp <- L_n_samp + 1
+     # if(A_samp[i] == a){
+      #  B_n_samp <- B_n_samp + 1
+      #}
+    #}
+  #}
+  #if(L_n_samp == 0){
+   # return(0)
+  #}else{
+   # return(B_n_samp/L_n_samp)
+  #}
+#}
+q_star <- function(a,l){
+  treated <- order[1:floor(kappa*n_samp)]
+  if(l$sofa_score == "(-1,7]"){
+    a_count <- 0
+    for(i in 1:length(red)){
+      if(i <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
       }
     }
-  }
-  if(L_n_samp == 0){
-    return(0)
-  }else{
-    return(B_n_samp/L_n_samp)
+    return(a_count/length(red))
+  }else if(l$sofa_score == "(7,11]"){
+    a_count <- 0
+    for(i in 1:length(yellow)){
+      if(i + length(red) <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
+      }
+    }
+    return(a_count/length(yellow))
+  }else if(l$sofa_score == "(11,14]"){
+    a_count <- 0
+    for(i in 1:length(blue)){
+      if(i + length(red) + length(yellow) <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
+      }
+    }
+    return(a_count/length(blue))
   }
 }
 
