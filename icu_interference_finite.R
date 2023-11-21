@@ -28,26 +28,26 @@ data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 L <- data[,c("age", "male", "sofa_score")]
 
 # Selecting finite sample 
-n <- 20
-samp <- sample(1:n, size = 20)
-A <- A[samp]
-L <- L[samp,]
-Y <- Y[samp]
+n_samp <- 20
+samp <- sample(1:n, size = n_samp)
+A_samp <- A[samp]
+L_samp <- L[samp,]
+Y_samp <- Y[samp]
 
 # Ranking function Gamma
-red <- which(L$sofa_score == "(-1,7]")
+red <- which(L_samp$sofa_score == "(-1,7]")
 order_red <- sample(red, size = length(red))
 
-yellow <- which(L$sofa_score == "(7,11]")
+yellow <- which(L_samp$sofa_score == "(7,11]")
 order_yellow <- sample(yellow, size = length(yellow))
 
-blue <- which(L$sofa_score == "(11,14]")
+blue <- which(L_samp$sofa_score == "(11,14]")
 order_blue <- sample(blue, size = length(blue))
 
 order <- c(order_red, order_yellow, order_blue)
 
-Gamma <- function(i){
-  return(which(order == i))
+Gamma <- function(i_samp){
+  return(which(order == i_samp))
 }
 
 # IPW estimator
@@ -63,6 +63,20 @@ q_n <- function(a,l){
     }
   }
   return(B_n/L_n)
+}
+
+q_star <- function(a,l){
+  B_n_samp <- 0
+  L_n_samp <- 0
+  for(i in 1:n_samp){
+    if(L_samp[i,] == l){
+      L_n_samp <- L_n_samp + 1
+      if(A_samp[i] == a){
+        B_n_samp <- B_n_samp + 1
+      }
+    }
+  }
+  return(B_n_samp/L_n_samp)
 }
 
 ## Variance estimation with bootstrap
