@@ -137,7 +137,7 @@ for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
 library(latex2exp)
-plot(x,y, type = "l", ylim = c(0,1), xlab = "Delta", ylab = "P_n(Delta(l) > x)")
+plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = Tex(r"($\hat{\mathbb{P}}_n(\Delta(l) > x)$)"))
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
 tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
@@ -145,8 +145,8 @@ kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
 
 
 
-axis(1, at = c(eta_vec), labels = c("eta_1", "eta_R", "eta_A", "eta_Ao2"), col.ticks = "red", col.axis = "red", tck  = 0.02) 
-axis(2, at = c(kappa_vec), labels = c("kappa_Ao2", "kappa_A", "kappa_R", "kappa_1"), col.ticks = "red", col.axis = "red", tck = 0.02)
+axis(1, at = c(eta_vec), labels = c(Tex(r"($\eta_1$)"), Tex(r"($\eta_R$)"), Tex(r"($\eta_A$)"), Tex(r"($\eta_{A/2}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
+axis(2, at = c(kappa_vec), labels = c(Tex(r"($\kappa_{A/2}$)"), Tex(r"($\kappa_{A}$)"), Tex(r"($\kappa_{R}$)"), Tex(r"($\kappa_{1}$)")), col.ticks = "red", col.axis = "red", tck = 0.02)
 
 lines(x = c(eta_1, eta_1), y = c(-1,1), col = "red", lty = 2)
 lines(x = c(-1, eta_1), y = c(1,1), col = "red", lty = 2)
