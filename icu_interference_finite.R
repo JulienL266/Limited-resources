@@ -37,10 +37,18 @@ Y <- Y[samp]
 # Ranking function Gamma
 red <- which(L$sofa_score == "(-1,7]")
 order_red <- sample(red, size = length(red))
+
 yellow <- which(L$sofa_score == "(7,11]")
 order_yellow <- sample(yellow, size = length(yellow))
+
 blue <- which(L$sofa_score == "(11,14]")
 order_blue <- sample(blue, size = length(blue))
+
+order <- c(order_red, order_yellow, order_blue)
+
+Gamma <- function(i){
+  return(which(order == i))
+}
 
 # IPW estimator
 
