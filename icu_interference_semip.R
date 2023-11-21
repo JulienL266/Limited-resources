@@ -136,12 +136,16 @@ y <- c()
 for(i in 1:1001){
   y <- c(y, Survival(x[i]))
 }
-plot(x,y, type = "l", ylim = c(0,1))
+plot(x,y, type = "l", ylim = c(0,1), xlab = "Delta", ylab = "P_n(Delta(l) > x)")
 
 eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
 tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
+kappa_vec <- c(kappa_A02, kappa_A, kappa_R, kappa_1)
 
-points(x = eta_1, y = 0, type = "p", col = "red", pch = 20)
-lines(x = c(eta_1, eta_1), y = c(0,1), col = "red", lty = 2)
-lines(x = c(-0.2, eta_1), y = c(1,1), col = "red", lty = 2)
-points(x = -0.2, y = 1, type = "p", col = "red", pch = 20)
+
+#points(x = eta_1, y = 0, type = "p", col = "red", pch = 20)
+axis(1, at = c(-0.2, eta_vec, 0.2), labels = c(-0.2,"eta_1", "eta_R", "eta_A", "eta_Ao2", 0.2), col = "red")
+lines(x = c(eta_1, eta_1), y = c(-1,1), col = "red", lty = 2)
+lines(x = c(-1, eta_1), y = c(1,1), col = "red", lty = 2)
+axis(2, at = c(0, kappa_vec, 1), labels = c(0,"kappa_Ao2", "kappa_A", "kappa_R", "kappa_1", 1), col = "red")
+
