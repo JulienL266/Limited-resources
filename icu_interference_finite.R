@@ -153,7 +153,7 @@ for(i in 1:n){
 }
 
 
-## Variance estimation with bootstrap[NOT RUN YET]
+## Variance estimation with bootstrap
 ### bootstrapping elements in super cluster, as finite cluster propensity is known
 ### n goes to infinity, but our finite sample is fixed
 B <- 100
@@ -192,7 +192,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
 ### Bootstrap CI
 2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
-# Parametric g-formula estimator
+# Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
 Q_Y <- glm(Y~ A + L)
 
