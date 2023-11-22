@@ -199,4 +199,9 @@ Q_Y <- glm(Y~ A + L)
 f <- function(y,a,l){
   return(predict(Q_Y, data.frame(A = a, L = l))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
 }
+
+Val.g <- 0
+for(i in 1:n){
+  Val.g <- Val.g + f(Y[i], A[i], L[i,])
+}
 ## Variance estimation with bootstrap
