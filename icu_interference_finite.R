@@ -136,6 +136,10 @@ for(i in 1:n){
   if(q_n(A[i], L[i,]) == 0){
     print("problem!")
   }
+  if(is.nan(Val.IPW)){ 
+    print("NaN problem")
+    break
+    }
   Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
 }
 
