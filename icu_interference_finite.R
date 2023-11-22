@@ -206,9 +206,11 @@ for(i in 1:n){
 }
 ## Variance estimation with bootstrap
 B <- 100
+pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 for(b in 1:B){
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
+  setTxtProgressBar(pb,b)
 }
