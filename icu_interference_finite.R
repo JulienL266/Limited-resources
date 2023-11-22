@@ -145,7 +145,7 @@ for(i in 1:n){
   if(q_n(A[i], L[i,]) == 0){
     print("problem!")
   }
-  if(is.nan(Val.IPW)){ 
+  if(is.nan(Val.IPW)){
     print("NaN problem")
     break
     }
