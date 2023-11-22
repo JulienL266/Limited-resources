@@ -188,7 +188,7 @@ for(b in 1:B){
 }
 ### Normal approximation
 sigma <- sd(Val.IPW.boot)
-Val.IPW + c(-qnorm(0.975)*sd/sqrt(n), qnorm(0.975)*sd/sqrt(n))
+Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
 ### Bootstrap CI
 2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
@@ -206,11 +206,27 @@ for(i in 1:n){
 }
 ## Variance estimation with bootstrap
 B <- 100
+Val.g.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 for(b in 1:B){
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
+  Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
+  
+  f <- function(y,a,l){
+    return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
+  }
+  
+  Val.g.boot[b] <- 0
+  for(i in 1:n){
+    Val.g.boot[b] <- Val.g.boot[b] + Y[i]*f(Y[i], A[i], L[i,])
+  }
   setTxtProgressBar(pb,b)
 }
+### Normal approximation
+sigma.g <- sd(Val.g.boot)
+Val.g + c(-qnorm(0.975)*sigma.g/sqrt(n), qnorm(0.975)*sigma.g/sqrt(n))
+### Bootstrap CI
+2*Val.IPW - c(quantile(Val.g.boot, 0.975), quantile(Val.g.boot, 0.025))
