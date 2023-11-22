@@ -97,6 +97,7 @@ q_star <- function(a,l){
         }
       }
     }
+    if(length(red) == 0){return(0)}
     return(a_count/length(red))
   }else if(l$sofa_score == "(7,11]"){
     a_count <- 0
@@ -111,6 +112,7 @@ q_star <- function(a,l){
         }
       }
     }
+    if(length(yellow) == 0){return(0)}
     return(a_count/length(yellow))
   }else if(l$sofa_score == "(11,14]"){
     a_count <- 0
@@ -125,6 +127,7 @@ q_star <- function(a,l){
         }
       }
     }
+    if(length(blue) == 0){return(0)}
     return(a_count/length(blue))
   }
 }
