@@ -141,7 +141,6 @@ q_star <- function(a,l){
 Val.IPW <- 0
 pb <- txtProgressBar(min = 0, max = n, initial = 0, style = 3)
 for(i in 1:n){
-  setTxtProgressBar(pb,i)
   if(q_n(A[i], L[i,]) == 0){
     print("problem!")
   }
@@ -150,6 +149,7 @@ for(i in 1:n){
     break
     }
   Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
+  setTxtProgressBar(pb,i)
 }
 
 
@@ -160,7 +160,6 @@ B <- 100
 Val.IPW.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 for(b in 1:B){
-  setTxtProgressBar(pb,b)
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
@@ -185,6 +184,7 @@ for(b in 1:B){
     Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot(A_boot[i], L_boot[i,])
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
+  setTxtProgressBar(pb,b)
 }
 ### Normal approximation
 sigma <- sd(Val.IPW.boot)
@@ -205,3 +205,10 @@ for(i in 1:n){
   Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
 }
 ## Variance estimation with bootstrap
+B <- 100
+for(b in 1:B){
+  boot_samp <- sample(1:n, size = n, replace = TRUE)
+  A_boot <- A[boot_samp]
+  L_boot <- L[boot_samp,]
+  Y_boot <- Y[boot_samp]
+}
