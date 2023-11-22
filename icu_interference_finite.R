@@ -133,9 +133,12 @@ Val.IPW <- 0
 pb <- txtProgressBar(min = 0, max = n, initial = 0, style = 3)
 for(i in 1:n){
   setTxtProgressBar(pb,i)
-  Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/q_n(A[i], L[i,])
+  if(q_n(A[i], L[i,]) == 0){
+    print("problem!")
+  }
+  Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
 }
-Val.IPW <- Val.IPW/n
+
 
 ## Variance estimation with bootstrap[NOT RUN YET]
 ### bootstrapping elements in super cluster, as finite cluster propensity is known
