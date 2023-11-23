@@ -196,13 +196,13 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
 Q_Y <- glm(Y~ A + L)
 
-f <- function(y,a,l){
+f <- function(a,l){
   return(predict(Q_Y, data.frame(A = a, L = l))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
 }
 
 Val.g <- 0
 for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
+  Val.g <- Val.g + Y[i]*f( A[i], L[i,])
 }
 ## Variance estimation with bootstrap
 B <- 100
