@@ -202,7 +202,7 @@ f <- function(y,a,l){
 
 Val.g <- 0
 for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f( Y[i], A[i], L[i,])
+  Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
 }
 ## Variance estimation with bootstrap
 B <- 100
