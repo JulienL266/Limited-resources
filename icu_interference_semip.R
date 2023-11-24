@@ -15,8 +15,8 @@ data <- select(data, !c(icu_accept))
 ## define kappa (might change later)
 #kappa <- mean(A)/2
 #kappa <- mean(A)
-kappa <- mean(data$icu_recommend)
-#kappa <- 1
+#kappa <- mean(data$icu_recommend)
+kappa <- 1
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
