@@ -14,8 +14,8 @@ data <- select(data, !c(icu_accept))
 
 ## define kappa (might change later)
 #kappa <- mean(A)/2
-kappa <- mean(A)
-#kappa <- mean(data$icu_recommend)
+#kappa <- mean(A)
+kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
 ## Removing uninteresting variables
@@ -29,12 +29,12 @@ library(SuperLearner)
 X <- cbind(A,L)
 ## Estimating g_0 (Luedtke and van der Laan assume they know it)
 ### Data adaptative
-#g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
+g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.gam")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.nnet")
 ### Parametric
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.bayesglm")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm")
-g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm.interaction")
+#g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm.interaction")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.mean")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step")
 #g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.step.interaction")
@@ -43,12 +43,12 @@ g_n <- SuperLearner(A, L, family = binomial, SL.library = "SL.glm.interaction")
 
 ## Estimating Q_0
 ### Data adaptative
-#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
+Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.gam")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.nnet")
 ### Parametric
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.bayesglm")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm")
-Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm.interaction")
+#Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.glm.interaction")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.mean")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL .library = "SL.step")
 #Q_n <- SuperLearner(Y, X, family = binomial, SL.library = "SL.step.interaction")
