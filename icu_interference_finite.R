@@ -213,11 +213,7 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
   
-  f <- function(y,a,l){
-    return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
-  }
   
   Val.g.boot[b] <- 0
   for(i in 1:n){
