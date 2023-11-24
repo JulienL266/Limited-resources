@@ -22,7 +22,7 @@ kappa <- mean(A)
 data <- select(data, !c(id))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score")]
+L <- data[,c("age", "male", "sofa_score", "icu_recommend", "sepsis_dx")]
 
 # Implementing 2016 Luedtke and van der Laan algo
 library(SuperLearner)
