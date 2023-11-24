@@ -194,10 +194,10 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
 
 # Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-Q_Y <- glm(Y_samp~ A_samp + L_samp)
+Q_Y <- glm(Y~ A + L)
 
 f <- function(y,a,l){
-  return((predict(Q_Y, data.frame(A_samp = a, L_samp = l))*y + (1-y)*(1-predict(Q_Y, data.frame(A_samp = a, L_samp = l))))*q_star(a,l)*length(which(L_samp$sofa_score == l$sofa_score))/n_samp)
+  return((predict(Q_Y, data.frame(A = a, L = l))*y + (1-y)*(1-predict(Q_Y, data.frame(A = a, L = l))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
 }
 
 Val.g <- 0
@@ -213,11 +213,16 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
+  Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
+  
+  f.boot <- function(y,a,l){
+    return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
+  }
   
   
   Val.g.boot[b] <- 0
   for(i in 1:n){
-    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f(Y_boot[i], A_boot[i], L_boot[i,])
+    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i], A_boot[i], L_boot[i,])
   }
   setTxtProgressBar(pb,b)
 }
