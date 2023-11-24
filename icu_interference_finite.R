@@ -197,7 +197,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
 Q_Y <- glm(Y_samp~ A_samp + L_samp)
 
 f <- function(y,a,l){
-  return((predict(Q_Y, data.frame(A_samp = a, L_samp = l))*y + (1-y)*(1-predict(Q_Y, data.frame(A_samp = a, L_samp = l))))*q_star(a,l)*length(which(L_samp$sofa_score == l$sofa_score))/n)
+  return((predict(Q_Y, data.frame(A_samp = a, L_samp = l))*y + (1-y)*(1-predict(Q_Y, data.frame(A_samp = a, L_samp = l))))*q_star(a,l)*length(which(L_samp$sofa_score == l$sofa_score))/n_samp)
 }
 
 Val.g <- 0
