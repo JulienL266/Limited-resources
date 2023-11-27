@@ -159,7 +159,7 @@ lines(x = c(-1, eta_Ao2), y = c(kappa_Ao2,kappa_Ao2), col = "red", lty = 2)
 
 #Propensity on CATE plot
 Q_pred <- predict(Q_b,L)$pred
-fm <- SuperLearner(predict(g_n,L)$pred, data.frame(X = Q_pred), SL.library = "SL.gam")
+fm <- SuperLearner(predict(g_n,L)$pred, data.frame(X = Q_pred), SL.library = "SL.randomForest")
 x = 0:1000
 x <- (2*x/1000-1)*0.2
 y <- c()
