@@ -179,5 +179,3 @@ lines(x = c(-1, eta_A), y = c(predict(fm, data.frame(X = eta_A))$pred,predict(fm
 
 lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
 lines(x = c(-1, eta_Ao2), y = c(predict(fm, data.frame(X = eta_Ao2))$pred,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
-
-#SuperCATEs comparison plot
