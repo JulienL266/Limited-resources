@@ -156,3 +156,5 @@ lines(x = c(-1, eta_A), y = c(kappa_A,kappa_A), col = "red", lty = 2)
 
 lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,kappa_Ao2), col = "red", lty = 2)
 lines(x = c(-1, eta_Ao2), y = c(kappa_Ao2,kappa_Ao2), col = "red", lty = 2)
+
+#Propensity on CATE plot
