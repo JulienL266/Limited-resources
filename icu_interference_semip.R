@@ -164,7 +164,7 @@ x = 0:1000
 x <- (2*x/1000-1)*0.2
 y <- c()
 for(i in 1:1001){
-  y <- c(y, predict(fm,data.frame(X = x))$pred)
+  y <- c(y, predict(fm,data.frame(X = x[i]))$pred)
 }
 
 plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(a | l)$)"))
