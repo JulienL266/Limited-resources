@@ -168,14 +168,7 @@ for(i in 1:1001){
 
 plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(a | l)$)"))
 
-eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
-tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
-kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
-
-
-
 axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
-axis(2, at = c(kappa_vec[1:3]), labels = c(TeX(r"($\kappa_{A/2}$)"), TeX(r"($\kappa_{A}$)"), TeX(r"($\kappa_{R}$)")), col.ticks = "red", col.axis = "red", tck = 0.02)
 
 lines(x = c(eta_R, eta_R), y = c(-1,kappa_R), col = "red", lty = 2)
 lines(x = c(-1, eta_R), y = c(kappa_R,kappa_R), col = "red", lty = 2)
