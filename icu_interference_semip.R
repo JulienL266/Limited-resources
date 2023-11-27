@@ -164,18 +164,18 @@ x = 0:1000
 x <- (2*x/1000-1)*0.2
 y <- c()
 for(i in 1:1001){
-  y <- c(y, predict(fm,x))
+  y <- c(y, predict(fm,data.frame(X = x))$pred)
 }
 
 plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(a | l)$)"))
 
 axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
 
-lines(x = c(eta_R, eta_R), y = c(-1,predict(fm, eta_R)), col = "red", lty = 2)
-lines(x = c(-1, eta_R), y = c(predict(fm, eta_R),predict(fm, eta_R)), col = "red", lty = 2)
+lines(x = c(eta_R, eta_R), y = c(-1,predict(fm,data.frame(X = eta_R))$pred), col = "red", lty = 2)
+lines(x = c(-1, eta_R), y = c(predict(fm,data.frame(X = eta_R))$pred,predict(fm, data.frame(X = eta_R))$pred), col = "red", lty = 2)
 
-lines(x = c(eta_A, eta_A), y = c(-1,predict(fm, eta_A)), col = "red", lty = 2)
-lines(x = c(-1, eta_A), y = c(predict(fm, eta_A),predict(fm, eta_A)), col = "red", lty = 2)
+lines(x = c(eta_A, eta_A), y = c(-1,predict(fm, data.frame(X = eta_A))$pred), col = "red", lty = 2)
+lines(x = c(-1, eta_A), y = c(predict(fm, data.frame(X = eta_A))$pred,predict(fm, data.frame(X = eta_A))$pred), col = "red", lty = 2)
 
-lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,predict(fm, eta_Ao2)), col = "red", lty = 2)
-lines(x = c(-1, eta_Ao2), y = c(predict(fm, eta_Ao2),predict(fm, eta_Ao2)), col = "red", lty = 2)
+lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
+lines(x = c(-1, eta_Ao2), y = c(predict(fm, data.frame(X = eta_Ao2))$pred,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
