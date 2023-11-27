@@ -158,3 +158,4 @@ lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,kappa_Ao2), col = "red", lty = 2)
 lines(x = c(-1, eta_Ao2), y = c(kappa_Ao2,kappa_Ao2), col = "red", lty = 2)
 
 #Propensity on CATE plot
+fm <- SuperLearner(predict(g_n,L)$pred, predict(Q_b,L)$pred, family = binomial, SL.library = "SL.gam")
