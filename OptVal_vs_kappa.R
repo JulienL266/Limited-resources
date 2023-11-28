@@ -105,6 +105,12 @@ sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((
 CI <- Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
 return(c(Psi_hat, CI))
 }
-for(kappa in seq(from = 0, to = 1, by = 1000)){
-  
+Val <- c()
+CI <- matrix(data = rep(NA,2*1000), nrow = 2 , ncol = 1000)
+pb <- txtProgressBar(min = 0, max = 1, initial = 0, style = 3)
+for(kappa in seq(from = 0, to = 1, by = 0.001)){
+  P <- Psi_CI(kappa)
+  Val <- c(Val, P[1])
+  CI[,kappa*1000 + 1] <- P[2:3]
+  setTxtProgressBar(pb,kappa)
 }
