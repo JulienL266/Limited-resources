@@ -114,3 +114,5 @@ for(kappa in seq(from = 0, to = 1, by = 0.001)){
   CI[,kappa*1000 + 1] <- P[2:3]
   setTxtProgressBar(pb,kappa)
 }
+x <- seq(from = 0, to = 1, by = 0.001)
+plot(x, Val, type = "l")
