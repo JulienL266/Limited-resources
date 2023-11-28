@@ -17,7 +17,7 @@ data <- select(data, !c(icu_accept))
 #kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 kappa <- 1
-
+Psi_CI <- function(kappa){
 ## Removing uninteresting variables
 data <- select(data, !c(id))
 
@@ -96,87 +96,15 @@ Q_star <- function(a,l){
 
 ## Estimating Psi
 Psi_hat = mean(Q_star(rep(0,n),L)*(1-d_n(L)) + Q_star(rep(1,n),L)*d_n(L))
-Psi_hat
 ## Confidence interval
 ### Estimating sigma_0
 sigma_n <- sqrt(mean(((A*d_n(L) + (1-A)*(1-d_n(L)))*(Y - predict(Q_n,X)$pred)/((A*predict(g_n, L)$pred + (1-A)*(1-predict(g_n,L)$pred))) 
                       + predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred
                       - mean(predict(Q_n, cbind(data.frame(A = d_n(L)), L))$pred) - tau_n*(d_n(L) - kappa))^2))
 
-Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
-
-#Survival curve
-kappa_Ao2 <- mean(A)/2
-kappa_A <- mean(A)
-kappa_R <- mean(data$icu_recommend)
-kappa_1 <- 1
-
-eta_Ao2 <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_Ao2))
-tau_Ao2 <- max(0, eta_Ao2)
-eta_A <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_A))
-tau_A <- max(0, eta_A)
-eta_R <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_R))
-tau_R <- max(0, eta_R)
-eta_1 <- -quantile(-predict(Q_b,L)$pred, probs = c(kappa_1))
-tau_1 <- max(0, eta_1)
-
-Survival <- function(x){
-  pred <- predict(Q_b,L)$pred
-  sum <- 0
-  for(i in 1:n){
-    if(pred[i] > x){
-      sum <- sum + 1
-    }
-  }
-  return(sum/n)
+CI <- Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
+return(c(Psi_hat, CI))
 }
-x = 0:1000
-x <- (2*x/1000-1)*0.2
-y <- c()
-for(i in 1:1001){
-  y <- c(y, Survival(x[i]))
+for(kappa in seq(from = 0, to = 1, by = 1000)){
+  
 }
-library(latex2exp)
-plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($\hat{P}_n(\Delta(l) > x)$)"))
-
-eta_vec <- c(eta_1, eta_R, eta_A, eta_Ao2)
-tau_vec <- c(tau_1, tau_R, tau_A, tau_Ao2)
-kappa_vec <- c(kappa_Ao2, kappa_A, kappa_R, kappa_1)
-
-
-
-axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
-axis(2, at = c(kappa_vec[1:3]), labels = c(TeX(r"($\kappa_{A/2}$)"), TeX(r"($\kappa_{A}$)"), TeX(r"($\kappa_{R}$)")), col.ticks = "red", col.axis = "red", tck = 0.02)
-
-lines(x = c(eta_R, eta_R), y = c(-1,kappa_R), col = "red", lty = 2)
-lines(x = c(-1, eta_R), y = c(kappa_R,kappa_R), col = "red", lty = 2)
-
-lines(x = c(eta_A, eta_A), y = c(-1,kappa_A), col = "red", lty = 2)
-lines(x = c(-1, eta_A), y = c(kappa_A,kappa_A), col = "red", lty = 2)
-
-lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,kappa_Ao2), col = "red", lty = 2)
-lines(x = c(-1, eta_Ao2), y = c(kappa_Ao2,kappa_Ao2), col = "red", lty = 2)
-
-#Propensity on CATE plot
-Q_pred <- predict(Q_b,L)$pred
-fm <- SuperLearner(predict(g_n,L)$pred, data.frame(X = Q_pred), SL.library = "SL.gam")
-x = 0:1000
-x <- (2*x/1000-1)*0.2
-y <- c()
-for(i in 1:1001){
-  y <- c(y, predict(fm,data.frame(X = x[i]))$pred)
-}
-
-plot(x,y, type = "l", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(1 | l)$)"))
-
-axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
-
-lines(x = c(eta_R, eta_R), y = c(-1,predict(fm,data.frame(X = eta_R))$pred), col = "red", lty = 2)
-lines(x = c(-1, eta_R), y = c(predict(fm,data.frame(X = eta_R))$pred,predict(fm, data.frame(X = eta_R))$pred), col = "red", lty = 2)
-
-lines(x = c(eta_A, eta_A), y = c(-1,predict(fm, data.frame(X = eta_A))$pred), col = "red", lty = 2)
-lines(x = c(-1, eta_A), y = c(predict(fm, data.frame(X = eta_A))$pred,predict(fm, data.frame(X = eta_A))$pred), col = "red", lty = 2)
-
-lines(x = c(eta_Ao2, eta_Ao2), y = c(-1,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
-lines(x = c(-1, eta_Ao2), y = c(predict(fm, data.frame(X = eta_Ao2))$pred,predict(fm, data.frame(X = eta_Ao2))$pred), col = "red", lty = 2)
-points(Q_pred,predict(g_n,L)$pred, col = "cyan")
