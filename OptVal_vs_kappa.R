@@ -106,13 +106,13 @@ CI <- Psi_hat + c(-qnorm(0.975)*sigma_n/sqrt(n), qnorm(0.975)*sigma_n/sqrt(n))
 return(c(Psi_hat, CI))
 }
 Val <- c()
-CI <- matrix(data = rep(NA,2*1001), nrow = 2 , ncol = 1001)
+CI <- matrix(data = rep(NA,2*101), nrow = 2 , ncol = 101)
 pb <- txtProgressBar(min = 0, max = 1, initial = 0, style = 3)
-for(kappa in seq(from = 0, to = 1, by = 0.001)){
+for(kappa in seq(from = 0, to = 1, by = 0.01)){
   P <- Psi_CI(kappa)
   Val <- c(Val, P[1])
-  CI[,kappa*1000 + 1] <- P[2:3]
+  CI[,kappa*100 + 1] <- P[2:3]
   setTxtProgressBar(pb,kappa)
 }
-x <- seq(from = 0, to = 1, by = 0.001)
+x <- seq(from = 0, to = 1, by = 0.01)
 plot(x, Val, type = "l")
