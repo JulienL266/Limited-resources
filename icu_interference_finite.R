@@ -84,6 +84,7 @@ q_n <- function(a,l){
    # return(B_n_samp/L_n_samp)
   #}
 #}
+#pre-calculate these!! (see below)
 q_star <- function(a,l){
   treated <- order[1:floor(kappa*n_samp)]
   if(l$sofa_score == "(-1,7]"){
