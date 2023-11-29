@@ -197,10 +197,11 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-Q_Y <- glm(Y~ A + L$sofa_score)
+X <- L$sofa_score
+Q_Y <- glm(Y~ A + X)
 
 f <- function(y,a,l){
-  return((predict(Q_Y, c(a,l$sofa_score))*y + (1-y)*(1-predict(Q_Y, c(a,l$sofa_score))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
+  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
 }
 
 Val.g <- 0
