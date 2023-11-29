@@ -285,12 +285,14 @@ for(b in 1:B){
     return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
 }
   
-  
   Val.g.boot[b] <- 0
-  for(i in 1:n){
-    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i], A_boot[i], L_boot[i,])
+  for(y in 0:1){
+    for(a in 0:1){
+      for(l in as.factor(c("(-1,7]", "(7,11]", "(11,14]"))){
+        Val.g.boot[b] <- Val.g.boot[b] + y*f(y, a, l)
+      }
+    }
   }
-  Val.g.boot[b] <- Val.g.boot[b]
   setTxtProgressBar(pb,b)
 }
 ### Normal approximation
