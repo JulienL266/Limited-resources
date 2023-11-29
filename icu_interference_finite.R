@@ -208,6 +208,7 @@ for(i in 1:n){
   Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
 }
 ## Variance estimation with bootstrap
+
 B <- 100
 Val.g.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
@@ -228,7 +229,7 @@ for(b in 1:B){
     }else if(L_boot$sofa_score == "(11,14]"){
       return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_blue)
     }
-  }
+}
   
   
   Val.g.boot[b] <- 0
