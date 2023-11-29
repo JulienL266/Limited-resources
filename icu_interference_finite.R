@@ -225,11 +225,11 @@ for(b in 1:B){
   p_blue <- length(which(L_boot$sofa_score == "(11,14]"))/n
   f.boot <- function(y,a,l){
     if(L_boot$sofa_score == "(-1,7]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_red)
+      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_red)
     }else if(L_boot$sofa_score == "(7,11]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_yellow)
+      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_yellow)
     }else if(L_boot$sofa_score == "(11,14]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_blue)
+      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_blue)
     }
 }
   
