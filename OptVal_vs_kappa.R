@@ -115,4 +115,8 @@ for(kappa in seq(from = 0, to = 1, by = 0.001)){
   setTxtProgressBar(pb,kappa)
 }
 x <- seq(from = 0, to = 1, by = 0.001)
-plot(x, Val, type = "l")
+plot(x, Val, type = "l", ylim = c(0.68, 0.74))
+polygon(c(x, rev(x)), c(CI[1,], rev(CI[2,])), col = "grey75", border = FALSE)
+lines(x, Val)
+lines(x, CI[2,], col="red",lty=2)
+lines(x, CI[1,], col="red",lty=2)
