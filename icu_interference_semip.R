@@ -168,7 +168,7 @@ y <- c()
 for(i in 1:1001){
   y <- c(y, predict(fm,data.frame(X = x[i]))$pred)
 }
-plot(Q_pred,predict(g_n,L)$pred, col = "cyan", ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(1 | l)$)"))
+plot(Q_pred,predict(g_n,L)$pred, col = "cyan", xlim = c(-0.2, 0.2), ylim = c(0,1), xlab = TeX(r"($\Delta$)"), ylab = TeX(r"($q(1 | l)$)"))
 lines(x,y)
 
 axis(1, at = c(eta_vec[2:4]), labels = c(TeX(r"($\hat{\eta}_{0,R}$)"), TeX(r"($\hat{\eta}_{0,A}$)"), TeX(r"($\hat{\eta}_{0,\frac{A}{2}}$)")), col.ticks = "red", col.axis = "red", tck  = 0.02) 
