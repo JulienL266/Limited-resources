@@ -218,7 +218,8 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
+  X.boot <- L_boot$sofa_score
+  Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
   p_red <- length(which(L_boot$sofa_score == "(-1,7]"))/n
   p_yellow <- length(which(L_boot$sofa_score == "(7,11]"))/n
   p_blue <- length(which(L_boot$sofa_score == "(11,14]"))/n
