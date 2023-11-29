@@ -191,7 +191,7 @@ for(b in 1:B){
 }
 ### Normal approximation
 sigma <- sd(Val.IPW.boot)
-Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigm/sqrt(n))
+Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 ### Bootstrap CI
 2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
