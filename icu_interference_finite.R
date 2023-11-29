@@ -223,7 +223,7 @@ for(b in 1:B){
   Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
 
   f.boot <- function(y,a,l){
-    return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l))
+    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
 }
   
   
