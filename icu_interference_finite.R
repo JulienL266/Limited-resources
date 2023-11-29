@@ -198,17 +198,21 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 # Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
 X <- L$sofa_score
-Q_Y <- glm(Y~ A + X)
+Q_Y <- glm(Y~ A + X, family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l))
+  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
 }
 
 Val.g <- 0
-for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
+for(y in 0:1){
+  for(a in 0:1){
+    for(l in as.factor(c("(-1,7]", "(7,11]", "(11,14]"))){
+      Val.g <- Val.g + y*f(y, a, l)
+    }
+  }
 }
-Val.g <- Val.g/n
+Val.g <- Val.g
 ## Variance estimation with bootstrap
 
 B <- 100
@@ -223,7 +227,7 @@ for(b in 1:B){
   Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
 
   f.boot <- function(y,a,l){
-    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
+    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
 }
   
   
@@ -231,7 +235,7 @@ for(b in 1:B){
   for(i in 1:n){
     Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i], A_boot[i], L_boot[i,])
   }
-  Val.g.boot[b] <- Val.g.boot[b]/n
+  Val.g.boot[b] <- Val.g.boot[b]
   setTxtProgressBar(pb,b)
 }
 ### Normal approximation
