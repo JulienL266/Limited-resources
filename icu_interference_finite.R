@@ -51,6 +51,7 @@ Gamma <- function(i_samp){
 }
 
 # IPW estimator
+#precalculate these!!
 q_n <- function(a,l){
   B_n <- 0
   L_n <- 0
@@ -64,6 +65,7 @@ q_n <- function(a,l){
   }
   return(B_n/L_n)
 }
+
 
 #q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
  # B_n_samp <- 0
@@ -214,7 +216,7 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
-  
+  p_red <- length(which(L_boot$sofa_score == "(-1,7]"))/n
   f.boot <- function(y,a,l){
     return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
   }
