@@ -257,17 +257,14 @@ X <- L$sofa_score
 Q_Y <- glm(Y~ A + X, family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, list(A = a, X = l))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l))))*q_star(a,l)*length(which(L$sofa_score == l))/n)
+  return((predict(Q_Y, list(A = a, X = l))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l))))*q_star(a,l))
 }
 
 Val.g <- 0
-for(y in 0:1){
-  for(a in 0:1){
-    for(l in as.factor(c("(-1,7]", "(7,11]", "(11,14]"))){
-      Val.g <- Val.g + y*f(y, a, l)
-    }
-  }
+for(i in 1:n){
+  Val.g <- Val.g + Y[i]*f(Y[i],A[i],L[i,]$sofa_score)
 }
+Val.g <- Val.g/n
 ## Variance estimation with bootstrap
 
 B <- 100
@@ -286,13 +283,10 @@ for(b in 1:B){
 }
   
   Val.g.boot[b] <- 0
-  for(y in 0:1){
-    for(a in 0:1){
-      for(l in as.factor(c("(-1,7]", "(7,11]", "(11,14]"))){
-        Val.g.boot[b] <- Val.g.boot[b] + y*f(y, a, l)
-      }
-    }
+  for(i in 1:n){
+    Val.g.boot[b] <- Val.g.boot[b] + Y[i]*f(Y[i],A[i],L[i,])
   }
+  Val.g <- Val.g/n
   setTxtProgressBar(pb,b)
 }
 ### Normal approximation
