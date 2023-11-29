@@ -197,11 +197,67 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
+q_star <- function(a,l){
+  treated <- order[1:floor(kappa*n_samp)]
+  if(l == "(-1,7]"){
+    a_count <- 0
+    for(i in 1:length(red)){
+      if(i <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
+      }
+    }
+    if(length(red) == 0){
+      if(length(treated) > 0){return(1)}else{return(0)}
+    }
+    return(a_count/length(red))
+  }else if(l == "(7,11]"){
+    a_count <- 0
+    for(i in 1:length(yellow)){
+      if(i + length(red) <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
+      }
+    }
+    if(length(yellow) == 0){
+      if(length(treated) > length(red)){return(1)}else{return(0)}
+    }
+    return(a_count/length(yellow))
+  }else if(l == "(11,14]"){
+    a_count <- 0
+    for(i in 1:length(blue)){
+      if(i + length(red) + length(yellow) <= length(treated)){
+        if(a == 1){
+          a_count <- a_count + 1
+        }
+      }else{
+        if(a == 0){
+          a_count <- a_count + 1
+        }
+      }
+    }
+    if(length(yellow) == 0){
+      if(length(treated) > length(red) + length(yellow)){return(1)}else{return(0)}
+    }
+    return(a_count/length(blue))
+  }
+}
+
 X <- L$sofa_score
 Q_Y <- glm(Y~ A + X, family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
+  return((predict(Q_Y, list(A = a, X = l))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l))))*q_star(a,l)*length(which(L$sofa_score == l))/n)
 }
 
 Val.g <- 0
@@ -212,7 +268,6 @@ for(y in 0:1){
     }
   }
 }
-Val.g <- Val.g
 ## Variance estimation with bootstrap
 
 B <- 100
