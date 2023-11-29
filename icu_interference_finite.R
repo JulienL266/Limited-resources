@@ -201,13 +201,14 @@ X <- L$sofa_score
 Q_Y <- glm(Y~ A + X)
 
 f <- function(y,a,l){
-  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l)*length(which(L$sofa_score == l$sofa_score))/n)
+  return((predict(Q_Y, list(A = a, X = l$sofa_score))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l$sofa_score))))*q_star(a,l))
 }
 
 Val.g <- 0
 for(i in 1:n){
   Val.g <- Val.g + Y[i]*f(Y[i], A[i], L[i,])
 }
+Val.g <- Val.g/n
 ## Variance estimation with bootstrap
 
 B <- 100
@@ -220,17 +221,9 @@ for(b in 1:B){
   Y_boot <- Y[boot_samp]
   X.boot <- L_boot$sofa_score
   Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
-  p_red <- length(which(L_boot$sofa_score == "(-1,7]"))/n
-  p_yellow <- length(which(L_boot$sofa_score == "(7,11]"))/n
-  p_blue <- length(which(L_boot$sofa_score == "(11,14]"))/n
+
   f.boot <- function(y,a,l){
-    if(L_boot$sofa_score == "(-1,7]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_red)
-    }else if(L_boot$sofa_score == "(7,11]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_yellow)
-    }else if(L_boot$sofa_score == "(11,14]"){
-      return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l)*p_blue)
-    }
+    return(predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))*q_star(a,l))
 }
   
   
@@ -238,6 +231,7 @@ for(b in 1:B){
   for(i in 1:n){
     Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i], A_boot[i], L_boot[i,])
   }
+  Val.g.boot[b] <- Val.g.boot[b]/n
   setTxtProgressBar(pb,b)
 }
 ### Normal approximation
