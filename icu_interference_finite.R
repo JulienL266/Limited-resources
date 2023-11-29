@@ -217,8 +217,16 @@ for(b in 1:B){
   Y_boot <- Y[boot_samp]
   Q_Y.boot <- glm(Y_boot~ A_boot + L_boot)
   p_red <- length(which(L_boot$sofa_score == "(-1,7]"))/n
+  p_yellow <- length(which(L_boot$sofa_score == "(7,11]"))/n
+  p_blue <- length(which(L_boot$sofa_score == "(11,14]"))/n
   f.boot <- function(y,a,l){
-    return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
+    if(L_boot$sofa_score == "(-1,7]"){
+      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_red)
+    }else if(L_boot$sofa_score == "(7,11]"){
+      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_yellow)
+    }else if(L_boot$sofa_score == "(11,14]"){
+      return(predict(Q_Y.boot, data.frame(A_boot = a, L_boot = l))*q_star(a,l)*p_blue)
+    }
   }
   
   
