@@ -284,9 +284,9 @@ for(b in 1:B){
   
   Val.g.boot[b] <- 0
   for(i in 1:n){
-    Val.g.boot[b] <- Val.g.boot[b] + Y[i]*f(Y[i],A[i],L[i,])
+    Val.g.boot[b] <- Val.g.boot[b] + Y[i]*f.boot(Y[i],A[i],L[i,])
   }
-  Val.g <- Val.g/n
+  Val.g.boot[b] <- Val.g.boot[b]/n
   setTxtProgressBar(pb,b)
 }
 ### Normal approximation
