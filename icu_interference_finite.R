@@ -257,7 +257,7 @@ X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "
 Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbinf(data.frame(A = a), l))))*q_star(a,l$sofa_score))
+  return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbind(data.frame(A = a), l))))*q_star(a,l$sofa_score))
 }
 
 Val.g <- 0
