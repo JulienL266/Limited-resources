@@ -68,11 +68,9 @@ q_n <- function(a,l){
   }
   return(B_n/L_n)
 }
-library(tensorflow)
-L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
 
 dims <- c(3,2,3,2,2,2,2,3,3,2)
-q_n.image <- as_tensor(rep(NA, prod(dims)), shape = dims)
+q_n.image <- array(rep(NA, prod(dims)), dim = dims)
 for(i_age in 1:length(levels(L$age))){
   for(i_male in 1:2){
     for(i_sofa_score in 1:length(levels(L$sofa_score))){
@@ -80,12 +78,10 @@ for(i_age in 1:length(levels(L$age))){
         for(i_winter in 1:2){
           for(i_periarrest in 1:2){
             for(i_out_of_hours in 1:2){
-              for(i_news_score in 1:length(levels(news_score))){
-                for(i_icnarc_score in 1:length(levels(icnarc_score))){
+              for(i_news_score in 1:length(levels(L$news_score))){
+                for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                   for(i_a in 1:2){
-                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_winter, i_periarrest,
-                            i_out_of_hours, i_news_score, i_icnarc_score, i_a]
-                    <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_winter, i_periarrest, i_out_of_hours, i_news_score, i_icnarc_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
                                                sepsis_dx = i_sepsis_dx - 1, winter = i_winter - 1,
                                                periarrest = i_periarrest - 1,
