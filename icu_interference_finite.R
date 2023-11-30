@@ -118,11 +118,85 @@ n_red <- length(which(L$sofa_score == "(-1,7]"))
 n_yellow <- length(which(L$sofa_score == "(7,11]"))
 n_blue <- length(which(L$sofa_score == "(11,14]"))
 
+### check that probs make sense
 p_1.red <- 0
+for(r in 0:n_red){
+  for(y in 0:n_yellow){
+    for(b in 0: n_blue){
+      if(r + y + b == n_samp){
+        if(r <= kappa*n_samp){
+          p_1.red <- p_1.red + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+        }else{
+            p_1.red <- p_1.red + (floor(kappa*n_samp)/r)*(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+        }
+      }
+    }
+  }
+}
+p_1.yellow <- 0
+for(r in 0:n_red){
+  for(y in 0:n_yellow){
+    for(b in 0: n_blue){
+      if(r + y + b == n_samp){
+        if(r + y <= kappa*n_samp){
+          p_1.yellow <- p_1.yellow + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+        }else{
+          if(floor(kappa*n_samp) > r){
+            if(y > 0){
+              p_1.yellow <- p_1.yellow + ((floor(kappa*n_samp) - r)/y)(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+            }else{
+              p_1.yellow <- p_1.yellow + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+            }
+          }
+        }
+      }
+    }
+  }
+}
+p_1.blue <- 0
+for(r in 0:n_red){
+  for(y in 0:n_yellow){
+    for(b in 0: n_blue){
+      if(r + y + b == n_samp){
+        if(r + y + b <= kappa*n_samp){
+          p_1.blue<- p_1.blue + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+        }else{
+          if(floor(kappa*n_samp) > r + y){
+            if(b > 0){
+              p_1.blue<- p_1.blue + ((floor(kappa*n_samp) - (r+y))/b)(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+            }else{
+              p_1.blue<- p_1.blue + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 
 q_star <- function(a,l){
-  
+  if(l$sofa_score == "(-1,7]"){
+    if(a == 0){
+      return(1 - p_1.red)
+    }else{
+      return(p_1.red)
+    }
+  }
+  if(l$sofa_score == "(7,11]"){
+    if(a == 0){
+      return(1 - p_1.yellow)
+    }else{
+      return(p_1.yellow)
+    }
+  }
+  if(l$sofa_score == "(11,14]"){
+    if(a == 0){
+      return(1 - p_1.blue)
+    }else{
+      return(p_1.blue)
+    }
+  }
 }
 #q_star <- function(a,l){
   #treated <- order[1:floor(kappa*n_samp)]
