@@ -254,7 +254,7 @@ q_star <- function(a,l){
 }
 
 X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
-Q_Y <- glm(Y~., data = cbind(A,X, A*select(X, !c(sofa_score))), family = "binomial")
+Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
 
 f <- function(y,a,l){
   return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbind(data.frame(A = a), l))))*q_star(a,l$sofa_score))
