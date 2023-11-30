@@ -253,16 +253,16 @@ q_star <- function(a,l){
   }
 }
 
-X <- L$sofa_score
+X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
 Q_Y <- glm(Y~ A*X, family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, list(A = a, X = l))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l))))*q_star(a,l))
+  return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbinf(data.frame(A = a), l))))*q_star(a,l$sofa_score))
 }
 
 Val.g <- 0
 for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f(Y[i],A[i],L[i,]$sofa_score)
+  Val.g <- Val.g + Y[i]*f(Y[i],A[i],X[i,])
 }
 Val.g <- Val.g/n
 ## Variance estimation with bootstrap
@@ -275,16 +275,16 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- L_boot$sofa_score
+  X.boot <- data[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
   Q_Y.boot <- glm(Y_boot~ A_boot*X.boot, family = "binomial")
 
   f.boot <- function(y,a,l){
-    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
+    return((y*predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)) + (1-y)*(1 - predict(Q_Y.boot, cbind(data.frame(A_boot = a), l))))*q_star(a,l$sofa_score))
 }
   
   Val.g.boot[b] <- 0
   for(i in 1:n){
-    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i],A_boot[i],L_boot[i,])
+    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i],A_boot[i],X.boot[i,])
   }
   Val.g.boot[b] <- Val.g.boot[b]/n
   setTxtProgressBar(pb,b)
