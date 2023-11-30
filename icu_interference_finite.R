@@ -25,7 +25,10 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("sofa_score")] 
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+L$age <- cut(L$age, breaks = c(17,55,69,79,104)) #categorizing age into 4 quartiles
+L$news_score <- cut(L$news_score, breaks = c(-1,4,6,8,20))
+L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,10,14,20,53))
 
 # Selecting finite sample 
 n_samp <- 20
@@ -56,7 +59,7 @@ q_n <- function(a,l){
   B_n <- 0
   L_n <- 0
   for(i in 1:n){
-    if(L[i,]$sofa_score == l$sofa_score){
+    if(L[i,] == l){
       L_n <- L_n + 1
       if(A[i] == a){
         B_n <- B_n + 1
@@ -65,6 +68,11 @@ q_n <- function(a,l){
   }
   return(B_n/L_n)
 }
+library(tensorflow)
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+
+dims <- c(4,2,3,2,2,2,2,4,4,48)
+q_n.image <- as_tensor(rep(NA, prod(dims)), shape = dims)
 
 
 #q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
