@@ -59,7 +59,13 @@ q_n <- function(a,l){
   B_n <- 0
   L_n <- 0
   for(i in 1:n){
-    if(L[i,] == l){
+    l_eq <- TRUE
+    for(j in 1:ncol(L)){
+      if(L[i,j] != l[1,j]){
+        l_eq <- FALSE
+      }
+    }
+    if(l_eq){
       L_n <- L_n + 1
       if(A[i] == a){
         B_n <- B_n + 1
