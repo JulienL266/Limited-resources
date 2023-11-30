@@ -71,7 +71,7 @@ q_n <- function(a,l){
 library(tensorflow)
 L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
 
-dims <- c(4,2,3,2,2,2,2,4,4,2)
+dims <- c(3,2,3,2,2,2,2,3,3,2)
 q_n.image <- as_tensor(rep(NA, prod(dims)), shape = dims)
 for(i_age in 1:length(levels(L$age))){
   for(i_male in 1:2){
