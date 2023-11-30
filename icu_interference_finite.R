@@ -254,7 +254,7 @@ q_star <- function(a,l){
 }
 
 X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
-Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
+Q_Y <- glm(Y~., data = cbind(A,X,A:X), family = "binomial")
 
 f <- function(y,a,l){
   return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbind(data.frame(A = a), l))))*q_star(a,l$sofa_score))
@@ -276,7 +276,7 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   X.boot <- data[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
-  Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
+  Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot, A_boot:X_boot), family = "binomial")
 
   f.boot <- function(y,a,l){
     return((y*predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)) + (1-y)*(1 - predict(Q_Y.boot, cbind(data.frame(A_boot = a), l))))*q_star(a,l$sofa_score))
