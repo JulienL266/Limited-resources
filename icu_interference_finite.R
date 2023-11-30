@@ -106,7 +106,7 @@ q_n <- function(a,l){
   return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
                    l$sepsis_dx + 1, l$winter + 1, l$periarrest + 1, l$out_of_hours + 1,
                    which(levels(L$news_score) == l$news_score),
-                   which(levels(L$icnarc_score) == l$icnarc_score)])
+                   which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
 }
 
 
