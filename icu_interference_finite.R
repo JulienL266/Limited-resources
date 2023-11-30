@@ -54,7 +54,7 @@ Gamma <- function(i_samp){
 }
 
 # IPW estimator
-#precalculate these!!
+## precalculation step
 q_n <- function(a,l){
   B_n <- 0
   L_n <- 0
