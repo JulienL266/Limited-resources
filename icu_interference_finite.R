@@ -254,7 +254,7 @@ q_star <- function(a,l){
 }
 
 X <- L$sofa_score
-Q_Y <- glm(Y~ A + X, family = "binomial")
+Q_Y <- glm(Y~ A*X, family = "binomial")
 
 f <- function(y,a,l){
   return((predict(Q_Y, list(A = a, X = l))*y + (1-y)*(1-predict(Q_Y, list(A = a, X = l))))*q_star(a,l))
@@ -276,7 +276,7 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   X.boot <- L_boot$sofa_score
-  Q_Y.boot <- glm(Y_boot~ A_boot + X.boot, family = "binomial")
+  Q_Y.boot <- glm(Y_boot~ A_boot*X.boot, family = "binomial")
 
   f.boot <- function(y,a,l){
     return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
