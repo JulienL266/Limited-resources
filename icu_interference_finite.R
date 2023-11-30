@@ -276,7 +276,7 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   X.boot <- L_boot$sofa_score
-  Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
+  Q_Y.boot <- glm(Y_boot~ A_boot + X.boot, family = "binomial")
 
   f.boot <- function(y,a,l){
     return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
@@ -293,4 +293,4 @@ for(b in 1:B){
 sigma.g <- sd(Val.g.boot)
 Val.g + c(-qnorm(0.975)*sigma.g/sqrt(n), qnorm(0.975)*sigma.g/sqrt(n))
 ### Bootstrap CI
-2*Val.IPW - c(quantile(Val.g.boot, 0.975), quantile(Val.g.boot, 0.025))
+2*Val.g - c(quantile(Val.g.boot, 0.975), quantile(Val.g.boot, 0.025))
