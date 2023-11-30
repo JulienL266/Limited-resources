@@ -112,23 +112,7 @@ q_n <- function(a,l){
 }
 
 
-#q_star <- function(a,l){ #may need to implement ranking here, right now it's not there
- # B_n_samp <- 0
-  #L_n_samp <- 0
-  #for(i in 1:n_samp){
-   # if(L_samp[i,]$sofa_score == l$sofa_score){
-    #  L_n_samp <- L_n_samp + 1
-     # if(A_samp[i] == a){
-      #  B_n_samp <- B_n_samp + 1
-      #}
-    #}
-  #}
-  #if(L_n_samp == 0){
-   # return(0)
-  #}else{
-   # return(B_n_samp/L_n_samp)
-  #}
-#}
+
 #pre-calculate these!! (see below)
 q_star <- function(a,l){
   treated <- order[1:floor(kappa*n_samp)]
