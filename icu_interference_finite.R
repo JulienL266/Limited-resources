@@ -114,9 +114,12 @@ q_n <- function(a,l){
 
 
 ## Pre-calculation
-p_red <- length(which(L$sofa_score == "(-1,7]"))/n
-p_yellow <- length(which(L$sofa_score == "(7,11]"))/n
-p_blue <- length(which(L$sofa_score == "(11,14]"))/n
+n_red <- length(which(L$sofa_score == "(-1,7]"))
+n_yellow <- length(which(L$sofa_score == "(7,11]"))
+n_blue <- length(which(L$sofa_score == "(11,14]"))
+
+p_1.red <- 0
+
 
 q_star <- function(a,l){
   
