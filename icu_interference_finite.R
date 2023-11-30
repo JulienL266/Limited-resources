@@ -266,7 +266,7 @@ for(i in 1:n){
 }
 Val.g <- Val.g/n
 ## Variance estimation with bootstrap
-
+set.seed(2023)
 B <- 100
 Val.g.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
@@ -279,12 +279,12 @@ for(b in 1:B){
   Q_Y.boot <- glm(Y_boot~ A_boot + X.boot)
 
   f.boot <- function(y,a,l){
-    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l)*length(which(L_boot$sofa_score == l$sofa_score))/n)
+    return((y*predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score)) + (1-y)*(1 - predict(Q_Y.boot, data.frame(A_boot = a, X.boot = l$sofa_score))))*q_star(a,l))
 }
   
   Val.g.boot[b] <- 0
   for(i in 1:n){
-    Val.g.boot[b] <- Val.g.boot[b] + Y[i]*f.boot(Y[i],A[i],L[i,])
+    Val.g.boot[b] <- Val.g.boot[b] + Y_boot[i]*f.boot(Y_boot[i],A_boot[i],L_boot[i,])
   }
   Val.g.boot[b] <- Val.g.boot[b]/n
   setTxtProgressBar(pb,b)
