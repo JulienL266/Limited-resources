@@ -25,7 +25,7 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
 L$age <- cut(L$age, breaks = c(17,55,69,79,104)) #categorizing age into 4 quartiles
 L$news_score <- cut(L$news_score, breaks = c(-1,4,6,8,20))
 L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,10,14,20,53))
@@ -69,9 +69,9 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 library(tensorflow)
-L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
 
-dims <- c(4,2,3,2,2,2,2,4,4,48)
+dims <- c(4,2,3,2,2,2,2,4,4)
 q_n.image <- as_tensor(rep(NA, prod(dims)), shape = dims)
 
 
