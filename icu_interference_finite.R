@@ -229,45 +229,13 @@ for(b in 1:B){
   }
   
   dims <- c(3,2,3,2,2,2,2,3,3,2)
-  q_boot.image <- array(rep(NA, prod(dims)), dim = dims)
-  for(i_age in 1:length(levels(L$age))){
-    for(i_male in 1:2){
-      for(i_sofa_score in 1:length(levels(L$sofa_score))){
-        for(i_sepsis_dx in 1:2){
-          for(i_winter in 1:2){
-            for(i_periarrest in 1:2){
-              for(i_out_of_hours in 1:2){
-                for(i_news_score in 1:length(levels(L$news_score))){
-                  for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
-                    for(i_a in 1:2){
-                      q_boot.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_winter, i_periarrest, i_out_of_hours, i_news_score, i_icnarc_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
-                                                                                                                                                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
-                                                                                                                                                                                sepsis_dx = i_sepsis_dx - 1, winter = i_winter - 1,
-                                                                                                                                                                                periarrest = i_periarrest - 1,
-                                                                                                                                                                                out_of_hours = i_out_of_hours - 1,
-                                                                                                                                                                                news_score = levels(L$news_score)[i_news_score],
-                                                                                                                                                                                icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  q_boot <- function(a,l){
-    return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
-                     l$sepsis_dx + 1, l$winter + 1, l$periarrest + 1, l$out_of_hours + 1,
-                     which(levels(L$news_score) == l$news_score),
-                     which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
-  }
-  
-  
+  q_boot.image <- rep(NA,n)
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
-    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot(A_boot[i], L_boot[i,])
+    if(is.na(q_boot.image[boot_samp[i]])){
+    q_boot.image[boot_samp[i]] <- q_boot(A_boot[i], L_boot[i,])
+    }
+    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot.image[boot_samp[i]]
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
   setTxtProgressBar(pb,b)
