@@ -281,23 +281,23 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   
-  q_boot <- function(a,l){
-    B_n <- 0
-    L_n <- 0
-    for(i in 1:n){
-      if(L_boot[i,]$sofa_score == l$sofa_score){
-        L_n <- L_n + 1
-        if(A_boot[i] == a){
-          B_n <- B_n + 1
-        }
-      }
-    }
-    return(B_n/L_n)
-  }
+  #q_boot <- function(a,l){
+   # B_n <- 0
+    #L_n <- 0
+    #for(i in 1:n){
+     # if(L_boot[i,]$sofa_score == l$sofa_score){
+      #  L_n <- L_n + 1
+       # if(A_boot[i] == a){
+        #  B_n <- B_n + 1
+        #}
+      #}
+    #}
+    #return(B_n/L_n)
+  #}
   
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
-    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot(A_boot[i], L_boot[i,])
+    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_n(A_boot[i], L_boot[i,])
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
   setTxtProgressBar(pb,b)
