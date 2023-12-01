@@ -198,61 +198,7 @@ q_star <- function(a,l){
     }
   }
 }
-#q_star <- function(a,l){
-  #treated <- order[1:floor(kappa*n_samp)]
-  #if(l$sofa_score == "(-1,7]"){
-    #a_count <- 0
-    #for(i in 1:length(red)){
-      #if(i <= length(treated)){
-        #if(a == 1){
-        #  a_count <- a_count + 1
-       # }
-      #}else{
-       # if(a == 0){
-      #    a_count <- a_count + 1
-     #   }
-    #  }
-    #}
-    #if(length(red) == 0){
-     # if(length(treated) > 0){return(1)}else{return(0)}
-    #}
-   # return(a_count/length(red))
-  #}else if(l$sofa_score == "(7,11]"){
-    #a_count <- 0
-    #for(i in 1:length(yellow)){
-      #if(i + length(red) <= length(treated)){
-        #if(a == 1){
-        #  a_count <- a_count + 1
-       # }
-      #}else{
-       # if(a == 0){
-      #    a_count <- a_count + 1
-     #   }
-    #  }
-    #}
-    #if(length(yellow) == 0){
-     # if(length(treated) > length(red)){return(1)}else{return(0)}
-    #}
-   # return(a_count/length(yellow))
-  #}else if(l$sofa_score == "(11,14]"){
-    #a_count <- 0
-    #for(i in 1:length(blue)){
-      #if(i + length(red) + length(yellow) <= length(treated)){
-        #if(a == 1){
-        #  a_count <- a_count + 1
-       # }
-      #}else{
-        #if(a == 0){
-       #   a_count <- a_count + 1
-      #  }
-     # }
-    #}
-    #if(length(yellow) == 0){
-    #  if(length(treated) > length(red) + length(yellow)){return(1)}else{return(0)}
-   # }
-  #  return(a_count/length(blue))
- # }
-#}
+
 
 Val.IPW <- 0
 pb <- txtProgressBar(min = 0, max = n, initial = 0, style = 3)
