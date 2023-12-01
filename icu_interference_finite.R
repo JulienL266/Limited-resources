@@ -310,11 +310,38 @@ for(b in 1:B){
     return(B_n/L_n)
   }
   q_boot.image <- rep(NA,n)
+  q_n.image <- array(rep(NA, prod(dims)), dim = dims)
+  for(i_age in 1:length(levels(L$age))){
+    for(i_male in 1:2){
+      for(i_sofa_score in 1:length(levels(L$sofa_score))){
+        for(i_sepsis_dx in 1:2){
+          for(i_periarrest in 1:2){
+            for(i_news_score in 1:length(levels(L$news_score))){
+              for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
+                for(i_a in 1:2){
+                  q_boot.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_icnarc_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                                                                                                                                                  sofa_score = levels(L$sofa_score)[i_sofa_score],
+                                                                                                                                                  sepsis_dx = i_sepsis_dx - 1,
+                                                                                                                                                  periarrest = i_periarrest - 1,
+                                                                                                                                                  news_score = levels(L$news_score)[i_news_score],
+                                                                                                                                                  icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  q_boot <- function(a,l){
+    return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
+                     l$sepsis_dx + 1, l$periarrest + 1,
+                     which(levels(L$news_score) == l$news_score),
+                     which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
+  }
+  
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
-    if(is.na(q_boot.image[boot_samp[i]])){
-    q_boot.image[boot_samp[i]] <- q_boot(A_boot[i], L_boot[i,])
-    }
     Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot.image[boot_samp[i]]
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
