@@ -227,23 +227,66 @@ for(b in 1:B){
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
   
-  #q_boot <- function(a,l){
-   # B_n <- 0
-    #L_n <- 0
-    #for(i in 1:n){
-     # if(L_boot[i,]$sofa_score == l$sofa_score){
-      #  L_n <- L_n + 1
-       # if(A_boot[i] == a){
-        #  B_n <- B_n + 1
-        #}
-      #}
-    #}
-    #return(B_n/L_n)
-  #}
+  q_boot <- function(a,l){
+    B_n <- 0
+    L_n <- 0
+    for(i in 1:n){
+      l_eq <- TRUE
+      for(j in 1:ncol(L)){
+        if(L_boot[i,j] != l[1,j]){
+          l_eq <- FALSE
+        }
+      }
+      if(l_eq){
+        L_n <- L_n + 1
+        if(A_boot[i] == a){
+          B_n <- B_n + 1
+        }
+      }
+    }
+    return(B_n/L_n)
+  }
+  
+  dims <- c(3,2,3,2,2,2,2,3,3,2)
+  q_boot.image <- array(rep(NA, prod(dims)), dim = dims)
+  for(i_age in 1:length(levels(L$age))){
+    for(i_male in 1:2){
+      for(i_sofa_score in 1:length(levels(L$sofa_score))){
+        for(i_sepsis_dx in 1:2){
+          for(i_winter in 1:2){
+            for(i_periarrest in 1:2){
+              for(i_out_of_hours in 1:2){
+                for(i_news_score in 1:length(levels(L$news_score))){
+                  for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
+                    for(i_a in 1:2){
+                      q_boot.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_winter, i_periarrest, i_out_of_hours, i_news_score, i_icnarc_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                                                                                                                                                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
+                                                                                                                                                                                sepsis_dx = i_sepsis_dx - 1, winter = i_winter - 1,
+                                                                                                                                                                                periarrest = i_periarrest - 1,
+                                                                                                                                                                                out_of_hours = i_out_of_hours - 1,
+                                                                                                                                                                                news_score = levels(L$news_score)[i_news_score],
+                                                                                                                                                                                icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  q_boot <- function(a,l){
+    return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
+                     l$sepsis_dx + 1, l$winter + 1, l$periarrest + 1, l$out_of_hours + 1,
+                     which(levels(L$news_score) == l$news_score),
+                     which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
+  }
+  
   
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
-    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_n(A_boot[i], L_boot[i,])
+    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot(A_boot[i], L_boot[i,])
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
   setTxtProgressBar(pb,b)
@@ -256,61 +299,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator[NOT RUN YET]
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-q_star <- function(a,l){
-  treated <- order[1:floor(kappa*n_samp)]
-  if(l == "(-1,7]"){
-    a_count <- 0
-    for(i in 1:length(red)){
-      if(i <= length(treated)){
-        if(a == 1){
-          a_count <- a_count + 1
-        }
-      }else{
-        if(a == 0){
-          a_count <- a_count + 1
-        }
-      }
-    }
-    if(length(red) == 0){
-      if(length(treated) > 0){return(1)}else{return(0)}
-    }
-    return(a_count/length(red))
-  }else if(l == "(7,11]"){
-    a_count <- 0
-    for(i in 1:length(yellow)){
-      if(i + length(red) <= length(treated)){
-        if(a == 1){
-          a_count <- a_count + 1
-        }
-      }else{
-        if(a == 0){
-          a_count <- a_count + 1
-        }
-      }
-    }
-    if(length(yellow) == 0){
-      if(length(treated) > length(red)){return(1)}else{return(0)}
-    }
-    return(a_count/length(yellow))
-  }else if(l == "(11,14]"){
-    a_count <- 0
-    for(i in 1:length(blue)){
-      if(i + length(red) + length(yellow) <= length(treated)){
-        if(a == 1){
-          a_count <- a_count + 1
-        }
-      }else{
-        if(a == 0){
-          a_count <- a_count + 1
-        }
-      }
-    }
-    if(length(yellow) == 0){
-      if(length(treated) > length(red) + length(yellow)){return(1)}else{return(0)}
-    }
-    return(a_count/length(blue))
-  }
-}
+
 
 X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
 Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
@@ -338,7 +327,7 @@ for(b in 1:B){
   Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
 
   f.boot <- function(y,a,l){
-    return((y*predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)) + (1-y)*(1 - predict(Q_Y.boot, cbind(data.frame(A_boot = a), l))))*q_star(a,l$sofa_score))
+    return((y*predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)) + (1-y)*(1 - predict(Q_Y.boot, cbind(data.frame(A_boot = a), l))))*q_star(a,l))
 }
   
   Val.g.boot[b] <- 0
