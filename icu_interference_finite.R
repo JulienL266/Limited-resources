@@ -202,11 +202,97 @@ for(i in 1:n){
 B <- 100
 Val.IPW.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
+set.seed(1)
 for(b in 1:B){
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
+  ## Pre-calculation
+  n_red.boot <- length(which(L_boot$sofa_score == "(-1,7]"))
+  n_yellow.boot <- length(which(L_boot$sofa_score == "(7,11]"))
+  n_blue.boot <- length(which(L_boot$sofa_score == "(11,14]"))
+  
+  ### check that probs make sense
+  p_1.red_boot <- 0
+  for(r in 0:n_red.boot){
+    for(y in 0:n_yellow.boot){
+      for(b in 0: n_blue.boot){
+        if(r + y + b == n_samp){
+          if(r <= kappa*n_samp){
+            p_1.red_boot <- p_1.red_boot + (choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+          }else{
+            p_1.red_boot <- p_1.red_boot + (floor(kappa*n_samp)/r)*(choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+          }
+        }
+      }
+    }
+  }
+  p_1.yellow_boot <- 0
+  for(r in 0:n_red.boot){
+    for(y in 0:n_yellow.boot){
+      for(b in 0: n_blue.boot){
+        if(r + y + b == n_samp){
+          if(r + y <= kappa*n_samp){
+            p_1.yellow_boot <- p_1.yellow_boot + (choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+          }else{
+            if(floor(kappa*n_samp) > r){
+              if(y > 0){
+                p_1.yellow_boot <- p_1.yellow_boot + ((floor(kappa*n_samp) - r)/y)*(choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+              }else{
+                p_1.yellow_boot <- p_1.yellow_boot + (choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  p_1.blue_boot <- 0
+  for(r in 0:n_red.boot){
+    for(y in 0:n_yellow.boot){
+      for(b in 0: n_blue.boot){
+        if(r + y + b == n_samp){
+          if(r + y + b <= kappa*n_samp){
+            p_1.blue_boot <- p_1.blue_boot + (choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+          }else{
+            if(floor(kappa*n_samp) > r + y){
+              if(b > 0){
+                p_1.blue_boot<- p_1.blue_boot + ((floor(kappa*n_samp) - (r+y))/b)*(choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+              }else{
+                p_1.blue_boot<- p_1.blue_boot + (choose(n_red.boot,r)*choose(n_yellow.boot,y)*choose(n_blue.boot,b)/choose(n, n_samp))
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  
+  q_star.boot <- function(a,l){
+    if(l$sofa_score == "(-1,7]"){
+      if(a == 0){
+        return(1 - p_1.red_boot)
+      }else{
+        return(p_1.red_boot)
+      }
+    }
+    if(l$sofa_score == "(7,11]"){
+      if(a == 0){
+        return(1 - p_1.yellow_boot)
+      }else{
+        return(p_1.yellow_boot)
+      }
+    }
+    if(l$sofa_score == "(11,14]"){
+      if(a == 0){
+        return(1 - p_1.blue_boot)
+      }else{
+        return(p_1.blue_boot)
+      }
+    }
+  }
   
   q_boot <- function(a,l){
     B_n <- 0
@@ -227,7 +313,6 @@ for(b in 1:B){
     }
     return(B_n/L_n)
   }
-  
   dims <- c(3,2,3,2,2,2,2,3,3,2)
   q_boot.image <- rep(NA,n)
   Val.IPW.boot[b] <- 0 
