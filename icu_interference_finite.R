@@ -25,10 +25,9 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score", "icnarc_score")]
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score")]
 L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
 L$news_score <- cut(L$news_score, breaks = c(-1,quantile(L$news_score, 0.5),20))
-L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,quantile(L$icnarc_score, 0.5),53))
 
 # Selecting finite sample size
 n_samp <- 20
@@ -56,7 +55,7 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-dims <- c(3,2,3,2,2,2,2,2)
+dims <- c(3,2,3,2,2,2,2)
 q_n.image <- array(rep(NA, prod(dims)), dim = dims)
 for(i_age in 1:length(levels(L$age))){
   for(i_male in 1:2){
@@ -64,14 +63,12 @@ for(i_age in 1:length(levels(L$age))){
       for(i_sepsis_dx in 1:2){
           for(i_periarrest in 1:2){
               for(i_news_score in 1:length(levels(L$news_score))){
-                for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                   for(i_a in 1:2){
-                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_icnarc_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
                                                sepsis_dx = i_sepsis_dx - 1,
                                                periarrest = i_periarrest - 1,
-                                               news_score = levels(L$news_score)[i_news_score],
-                                               icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
+                                               news_score = levels(L$news_score)[i_news_score]))
                   }
                 }
               }
@@ -79,13 +76,11 @@ for(i_age in 1:length(levels(L$age))){
           }
         }
       }
-    }
 
 q_n <- function(a,l){
   return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
                    l$sepsis_dx + 1, l$periarrest + 1,
-                   which(levels(L$news_score) == l$news_score),
-                   which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
+                   which(levels(L$news_score) == l$news_score), a + 1])
 }
 
 
@@ -317,14 +312,12 @@ for(b in 1:B){
         for(i_sepsis_dx in 1:2){
           for(i_periarrest in 1:2){
             for(i_news_score in 1:length(levels(L$news_score))){
-              for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                 for(i_a in 1:2){
-                  q_boot.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_icnarc_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                  q_boot.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
                                                                                                                                                   sofa_score = levels(L$sofa_score)[i_sofa_score],
                                                                                                                                                   sepsis_dx = i_sepsis_dx - 1,
                                                                                                                                                   periarrest = i_periarrest - 1,
-                                                                                                                                                  news_score = levels(L$news_score)[i_news_score],
-                                                                                                                                                  icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
+                                                                                                                                                  news_score = levels(L$news_score)[i_news_score]))
                 }
               }
             }
@@ -332,12 +325,10 @@ for(b in 1:B){
         }
       }
     }
-  }
   q_boot <- function(a,l){
     return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
                      l$sepsis_dx + 1, l$periarrest + 1,
-                     which(levels(L$news_score) == l$news_score),
-                     which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
+                     which(levels(L$news_score) == l$news_score), a + 1])
   }
   
   Val.IPW.boot[b] <- 0 
@@ -377,7 +368,7 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- L[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score", "icnarc_score")]
+  X.boot <- L[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score")]
   Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
 
   f.boot <- function(y,a,l){
