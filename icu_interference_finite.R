@@ -86,7 +86,7 @@ for(i_age in 1:length(levels(L$age))){
 
 q_n <- function(a,l){
   return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
-                   l$sepsis_dx + 1, l$winter + 1, l$periarrest + 1, l$out_of_hours + 1,
+                   l$sepsis_dx + 1, l$periarrest + 1, l$out_of_hours + 1,
                    which(levels(L$news_score) == l$news_score),
                    which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
 }
@@ -312,7 +312,6 @@ for(b in 1:B){
     }
     return(B_n/L_n)
   }
-  dims <- c(3,2,3,2,2,2,2,3,3,2)
   q_boot.image <- rep(NA,n)
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
@@ -332,7 +331,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
 Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
 
 f <- function(y,a,l){
@@ -354,7 +353,7 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- data[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+  X.boot <- data[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
   Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
 
   f.boot <- function(y,a,l){
