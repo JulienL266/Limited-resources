@@ -66,7 +66,7 @@ for(i_age in 1:length(levels(L$age))){
               for(i_news_score in 1:length(levels(L$news_score))){
                 for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                   for(i_a in 1:2){
-                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_out_of_hours, i_news_score, i_icnarc_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                  q_n.image[i_age, i_male, i_sofa_score, i_sepsis_dx, i_periarrest, i_news_score, i_icnarc_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
                                                sepsis_dx = i_sepsis_dx - 1,
                                                periarrest = i_periarrest - 1,
