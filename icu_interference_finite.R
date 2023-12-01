@@ -25,7 +25,7 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score", "icnarc_score")]
 L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
 L$news_score <- cut(L$news_score, breaks = c(-1,quantile(L$news_score, c(1/3,2/3)),20))
 L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,quantile(L$icnarc_score, c(1/3, 2/3)),53))
@@ -63,7 +63,7 @@ for(i_age in 1:length(levels(L$age))){
     for(i_sofa_score in 1:length(levels(L$sofa_score))){
       for(i_sepsis_dx in 1:2){
           for(i_periarrest in 1:2){
-            for(i_out_of_hours in 1:2){
+
               for(i_news_score in 1:length(levels(L$news_score))){
                 for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                   for(i_a in 1:2){
@@ -71,7 +71,6 @@ for(i_age in 1:length(levels(L$age))){
                                                sofa_score = levels(L$sofa_score)[i_sofa_score],
                                                sepsis_dx = i_sepsis_dx - 1,
                                                periarrest = i_periarrest - 1,
-                                               out_of_hours = i_out_of_hours - 1,
                                                news_score = levels(L$news_score)[i_news_score],
                                                icnarc_score = levels(L$icnarc_score)[i_icnarc_score]))
                   }
@@ -82,11 +81,10 @@ for(i_age in 1:length(levels(L$age))){
         }
       }
     }
-  }
 
 q_n <- function(a,l){
   return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score),
-                   l$sepsis_dx + 1, l$periarrest + 1, l$out_of_hours + 1,
+                   l$sepsis_dx + 1, l$periarrest + 1,
                    which(levels(L$news_score) == l$news_score),
                    which(levels(L$icnarc_score) == l$icnarc_score), a + 1])
 }
@@ -331,8 +329,8 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-X <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
-Q_Y <- glm(Y~., data = cbind(A,X), family = "binomial")
+
+Q_Y <- glm(Y~., data = cbind(A,L), family = "binomial")
 
 f <- function(y,a,l){
   return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbind(data.frame(A = a), l))))*q_star(a,l))
@@ -340,7 +338,7 @@ f <- function(y,a,l){
 
 Val.g <- 0
 for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f(Y[i],A[i],X[i,])
+  Val.g <- Val.g + Y[i]*f(Y[i],A[i],L[i,])
 }
 Val.g <- Val.g/n
 ## Variance estimation with bootstrap
@@ -353,7 +351,7 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- data[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "out_of_hours", "news_score", "icnarc_score")]
+  X.boot <- L[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score", "icnarc_score")]
   Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
 
   f.boot <- function(y,a,l){
