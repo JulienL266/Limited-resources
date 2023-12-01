@@ -27,8 +27,8 @@ data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score", "icnarc_score")]
 L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
-L$news_score <- cut(L$news_score, breaks = c(-1,quantile(L$news_score, c(1/3,2/3)),20))
-L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,quantile(L$icnarc_score, c(1/3, 2/3)),53))
+L$news_score <- cut(L$news_score, breaks = c(-1,quantile(L$news_score, 0.5),20))
+L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,quantile(L$icnarc_score, 0.5),53))
 
 # Selecting finite sample size
 n_samp <- 20
@@ -56,14 +56,13 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-dims <- c(3,2,3,2,2,2,3,3,2)
+dims <- c(3,2,3,2,2,2,2,2)
 q_n.image <- array(rep(NA, prod(dims)), dim = dims)
 for(i_age in 1:length(levels(L$age))){
   for(i_male in 1:2){
     for(i_sofa_score in 1:length(levels(L$sofa_score))){
       for(i_sepsis_dx in 1:2){
           for(i_periarrest in 1:2){
-
               for(i_news_score in 1:length(levels(L$news_score))){
                 for(i_icnarc_score in 1:length(levels(L$icnarc_score))){
                   for(i_a in 1:2){
