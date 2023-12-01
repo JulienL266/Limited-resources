@@ -304,8 +304,7 @@ for(b in 1:B){
     }
     return(B_n/L_n)
   }
-  q_boot.image <- rep(NA,n)
-  q_n.image <- array(rep(NA, prod(dims)), dim = dims)
+  q_boot.image <- array(rep(NA, prod(dims)), dim = dims)
   for(i_age in 1:length(levels(L$age))){
     for(i_male in 1:2){
       for(i_sofa_score in 1:length(levels(L$sofa_score))){
