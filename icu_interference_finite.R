@@ -332,7 +332,7 @@ for(b in 1:B){
   
   Val.IPW.boot[b] <- 0 
   for(i in 1:n){
-    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star(A_boot[i], L_boot[i,])/q_boot(A[i],L[i,])
+    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star.boot(A_boot[i], L_boot[i,])/q_boot(A[i],L[i,])
   }
   Val.IPW.boot[b] <- Val.IPW.boot[b]/n
   setTxtProgressBar(pb,b)
