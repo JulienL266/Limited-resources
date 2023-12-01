@@ -30,10 +30,8 @@ L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizi
 L$news_score <- cut(L$news_score, breaks = c(-1,quantile(L$news_score, c(1/3,2/3)),20))
 L$icnarc_score <- cut(L$icnarc_score, breaks = c(-1,quantile(L$icnarc_score, c(1/3, 2/3)),53))
 
-# Selecting finite sample 
+# Selecting finite sample size
 n_samp <- 20
-
-
 
 
 # IPW estimator
