@@ -143,7 +143,7 @@ for(r in 0:n_red){
         }else{
           if(floor(kappa*n_samp) > r){
             if(y > 0){
-              p_1.yellow <- p_1.yellow + ((floor(kappa*n_samp) - r)/y)(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+              p_1.yellow <- p_1.yellow + ((floor(kappa*n_samp) - r)/y)*(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
             }else{
               p_1.yellow <- p_1.yellow + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
             }
@@ -163,7 +163,7 @@ for(r in 0:n_red){
         }else{
           if(floor(kappa*n_samp) > r + y){
             if(b > 0){
-              p_1.blue<- p_1.blue + ((floor(kappa*n_samp) - (r+y))/b)(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
+              p_1.blue<- p_1.blue + ((floor(kappa*n_samp) - (r+y))/b)*(choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
             }else{
               p_1.blue<- p_1.blue + (choose(n_red,r)*choose(n_yellow,y)*choose(n_blue,b)/choose(n, n_samp))
             }
