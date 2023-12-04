@@ -183,7 +183,7 @@ B <- 100
 Val.IPW.boot <- rep(NA,B)
 pb <- txtProgressBar(min = 0, max = B, initial = 0, style = 3)
 set.seed(1)
-for(b in 1:B){
+for(b_ind in 1:B){
   boot_samp <- sample(1:n, size = n, replace = TRUE)
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
@@ -308,12 +308,12 @@ for(b in 1:B){
     return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
   }
   
-  Val.IPW.boot[b] <- 0 
+  Val.IPW.boot[b_ind] <- 0 
   for(i in 1:n){
-    Val.IPW.boot[b] <- Val.IPW.boot[b] + Y_boot[i]*q_star.boot(A_boot[i], L_boot[i,])/q_boot(A_boot[i],L_boot[i,])
+    Val.IPW.boot[b_ind] <- Val.IPW.boot[b_ind] + Y_boot[i]*q_star.boot(A_boot[i], L_boot[i,])/q_boot(A_boot[i],L_boot[i,])
   }
-  Val.IPW.boot[b] <- Val.IPW.boot[b]/n
-  setTxtProgressBar(pb,b)
+  Val.IPW.boot[b_ind] <- Val.IPW.boot[b_ind]/n
+  setTxtProgressBar(pb,b_ind)
 }
 ### Normal approximation
 sigma <- sd(Val.IPW.boot)
