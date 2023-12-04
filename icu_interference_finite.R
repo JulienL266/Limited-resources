@@ -304,9 +304,6 @@ for(b in 1:B){
               }
             }
           }
-        }
-      }
-    }
   q_boot <- function(a,l){
     return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
   }
