@@ -54,7 +54,7 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-dims <- c(3,2,3,2,2,2,2)
+dims <- c(3,2,3,2)
 q_n.image <- array(rep(NA, prod(dims)), dim = dims)
 for(i_age in 1:length(levels(L$age))){
   for(i_male in 1:2){
@@ -348,7 +348,7 @@ for(b in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- L[boot_samp,c("age", "male", "sofa_score", "sepsis_dx", "periarrest", "news_score")]
+  X.boot <- L[boot_samp,c("age", "male", "sofa_score")]
   Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
 
   f.boot <- function(y,a,l){
