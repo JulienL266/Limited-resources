@@ -331,7 +331,7 @@ f <- function(y,a,l){
 
 Val.g <- 0
 for(i in 1:n){
-  Val.g <- Val.g + Y[i]*f(Y[i],A[i],L[i,])
+  Val.g <- Val.g + f(Y[i],A[i],L[i,])
 }
 Val.g <- Val.g/n
 ## Variance estimation with bootstrap
@@ -438,7 +438,7 @@ for(b_ind in 1:B){
   
   Val.g.boot[b_ind] <- 0
   for(i in 1:n){
-    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + Y_boot[i]*f.boot(Y_boot[i],A_boot[i],X.boot[i,])
+    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + f.boot(Y_boot[i],A_boot[i],X.boot[i,])
   }
   Val.g.boot[b_ind] <- Val.g.boot[b_ind]/n
   setTxtProgressBar(pb,b_ind)
