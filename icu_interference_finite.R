@@ -77,7 +77,7 @@ dims <- c(3,2)
 q_n.image <- array(rep(NA, prod(dims)), dim = dims)
 for(i_sofa_score in 1:length(levels(L$sofa_score))){
   for(i_a in 1:2){
-    q_n.image[ i_sofa_score, i_a] <- q_n(i_a - 1, sofa_score = levels(L$sofa_score)[i_sofa_score])
+    q_n.image[ i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(sofa_score = levels(L$sofa_score)[i_sofa_score]))
   }
 }
 q_n <- function(a,l){
@@ -345,6 +345,7 @@ for(i in 1:n){
   Val.g <- Val.g + f(Y[i],A[i],L[i,])
 }
 Val.g <- Val.g/n
+Val.g
 ## Variance estimation with bootstrap
 set.seed(2023)
 B <- 100
@@ -355,8 +356,7 @@ for(b_ind in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  X.boot <- L[boot_samp,c("age", "male", "sofa_score")]
-  Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, X.boot), family = "binomial")
+  Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, L_boot), family = "binomial")
 
   n_red.boot <- length(which(L_boot$sofa_score == "(-1,7]"))
   n_yellow.boot <- length(which(L_boot$sofa_score == "(7,11]"))
