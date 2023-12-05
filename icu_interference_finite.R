@@ -334,10 +334,15 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 
 # Parametric g-formula estimator
 ### see Theorem 1 and pages 17-18 for an equation describing the g-formula
-Q_Y <- glm(Y~., data = cbind(A,L), family = "binomial")
-
+#Q_Y <- glm(Y~., data = cbind(A,L), family = "binomial")
+#f <- function(y,a,l){
+ # return((predict(Q_Y, cbind(data.frame(A = a),l)))*q_star(a,l))
+#}
+#saturated case
+X <- L$sofa_score
+Q_Y <- glm(Y~A*X, family = "binomial")
 f <- function(y,a,l){
-  return((predict(Q_Y, cbind(data.frame(A = a), l)))*q_star(a,l))
+ return((predict(Q_Y, data.frame(A = a, X = l$sofa_score)))*q_star(a,l))
 }
 
 Val.g <- 0
