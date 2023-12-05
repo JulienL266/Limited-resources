@@ -326,7 +326,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 Q_Y <- glm(Y~., data = cbind(A,L), family = "binomial")
 
 f <- function(y,a,l){
-  return((predict(Q_Y, cbind(data.frame(A = a), l))*y + (1-y)*(1-predict(Q_Y, cbind(data.frame(A = a), l))))*q_star(a,l))
+  return((predict(Q_Y, cbind(data.frame(A = a), l)))*q_star(a,l))
 }
 
 Val.g <- 0
@@ -433,7 +433,7 @@ for(b_ind in 1:B){
   }
   
   f.boot <- function(y,a,l){
-    return((y*predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)) + (1-y)*(1 - predict(Q_Y.boot, cbind(data.frame(A_boot = a), l))))*q_star.boot(a,l))
+    return((predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)))*q_star.boot(a,l))
 }
   
   Val.g.boot[b_ind] <- 0
