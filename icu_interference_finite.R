@@ -184,7 +184,7 @@ for(i in 1:n){
   }
   #Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
   #saturated try-outs
-  Val.IPW <- Val.IPW + Y[i]*A[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
+  Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
   setTxtProgressBar(pb,i)
 }
 Val.IPW
