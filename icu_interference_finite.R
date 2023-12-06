@@ -76,7 +76,7 @@ n_samp <- 20
 #q_n <- function(a,l){
  # return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
 #}
-q_n.fm <- glm(A~L, family = "binomial") #maybe make more flexible??
+q_n.fm <- glm(A~., data = L, family = "binomial") #maybe make more flexible??
 q_n <- function(a,l){
   pred <- predict(q_n.fm, l)
   return(a*pred + (1-a)*(1-pred))
@@ -327,7 +327,7 @@ for(b_ind in 1:B){
   #q_boot <- function(a,l){
    # return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
   #}
-  q_boot.fm <- glm(A~L, family = "binomial")
+  q_boot.fm <- glm(A_boot~., data = L_boot, family = "binomial")
   q_boot <- function(a,l){
     pred <- predict(q_boot.fm, l)
     return(a*pred + (1-a)*(1-pred))
