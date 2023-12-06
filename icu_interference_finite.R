@@ -347,7 +347,7 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
 # Parametric g-formula estimator
-Q_Y <- glm(Y~ A + age + sofa_score + male + A:age + A:sofa_score + A:male, data = cbind(A,L))#, family = "binomial")
+Q_Y <- glm(Y~ A + age + sofa_score + male + sepsis_dx + winter + periarrest + out_of_hours + news_score + icnarc_score + site + A:age + A:sofa_score + A:male + A:sepsis_dx + A:winter + A:periarrest + A:out_of_hours + A:news_score + A:icnarc_score + A:site, data = cbind(A,L))#, family = "binomial")
 f <- function(l){
   return((predict(Q_Y, cbind(data.frame(A = 1),l)))*q_star(1,l) + (predict(Q_Y, cbind(data.frame(A = 0),l)))*q_star(0,l))
 }
