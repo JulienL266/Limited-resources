@@ -339,19 +339,26 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 #f <- function(y,a,l){
  # return((predict(Q_Y, cbind(data.frame(A = a),l)))*q_star(a,l))
 #}
-#saturated case
+#Val.g <- 0
+#for(i in 1:n){
+# Val.g <- Val.g + f(Y[i],A[i],L[i,])
+#}
+#Val.g <- Val.g/n
+#Val.g
+#saturated case test
 X <- L$sofa_score
 Q_Y <- glm(Y~A*X, family = "binomial")
-f <- function(y,a,l){
- return((predict(Q_Y, data.frame(A = a, X = l$sofa_score)))*q_star(a,l))
+f <- function(l){
+ return((predict(Q_Y, data.frame(A = 1, X = l$sofa_score)))*q_star(1,l) + (predict(Q_Y, data.frame(A = 0, X = l$sofa_score)))*q_star(0,l))
 }
 
-Val.g <- 0
+Val.g <-0
 for(i in 1:n){
-  Val.g <- Val.g + f(Y[i],A[i],L[i,])
+  Val.g <- Val.g + f(l)
 }
 Val.g <- Val.g/n
-Val.g
+
+#Val.g
 ## Variance estimation with bootstrap
 set.seed(2023)
 B <- 100
