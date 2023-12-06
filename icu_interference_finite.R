@@ -25,10 +25,10 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-#L <- data[,c("age", "male", "sofa_score")]
-#L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
+L <- data[,c("age", "male", "sofa_score")]
+L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
 # saturated case test
-L <- data[,c("sofa_score")]
+#L <- data[,c("sofa_score")]
 # Selecting finite sample size
 n_samp <- 20
 
@@ -55,34 +55,34 @@ q_n <- function(a,l){
   return(B_n/L_n)
 }
 
-#dims <- c(3,2,3,2)
-#q_n.image <- array(rep(NA, prod(dims)), dim = dims)
-#for(i_age in 1:length(levels(L$age))){
- # for(i_male in 1:2){
-  #  for(i_sofa_score in 1:length(levels(L$sofa_score))){
-
-   #               for(i_a in 1:2){
-    #              q_n.image[i_age, i_male, i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
-     #                                          sofa_score = levels(L$sofa_score)[i_sofa_score]))
-      #            }
-       #         }
-        #      }
-         #   }
-
-#q_n <- function(a,l){
- # return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
-#}
-# saturated case test
-dims <- c(3,2)
+dims <- c(3,2,3,2)
 q_n.image <- array(rep(NA, prod(dims)), dim = dims)
-for(i_sofa_score in 1:length(levels(L$sofa_score))){
-  for(i_a in 1:2){
-    q_n.image[ i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(sofa_score = levels(L$sofa_score)[i_sofa_score]))
-  }
-}
+for(i_age in 1:length(levels(L$age))){
+  for(i_male in 1:2){
+    for(i_sofa_score in 1:length(levels(L$sofa_score))){
+
+                  for(i_a in 1:2){
+                  q_n.image[i_age, i_male, i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+                                               sofa_score = levels(L$sofa_score)[i_sofa_score]))
+                  }
+                }
+              }
+            }
+
 q_n <- function(a,l){
-   return(q_n.image[which(levels(L$sofa_score) == l$sofa_score), a + 1])
-  }
+  return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
+}
+# saturated case test
+#dims <- c(3,2)
+#q_n.image <- array(rep(NA, prod(dims)), dim = dims)
+#for(i_sofa_score in 1:length(levels(L$sofa_score))){
+ # for(i_a in 1:2){
+  #  q_n.image[ i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(sofa_score = levels(L$sofa_score)[i_sofa_score]))
+  #}
+#}
+#q_n <- function(a,l){
+ #  return(q_n.image[which(levels(L$sofa_score) == l$sofa_score), a + 1])
+  #}
 
 
 ## Pre-calculation
@@ -182,8 +182,6 @@ for(i in 1:n){
     print("NaN problem")
     break
   }
-  #Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
-  #saturated try-outs
   Val.IPW <- Val.IPW + Y[i]*q_star(A[i], L[i,])/(n*q_n(A[i], L[i,]))
   setTxtProgressBar(pb,i)
 }
@@ -335,30 +333,30 @@ Val.IPW + c(-qnorm(0.975)*sigma/sqrt(n), qnorm(0.975)*sigma/sqrt(n))
 2*Val.IPW - c(quantile(Val.IPW.boot, 0.975), quantile(Val.IPW.boot, 0.025))
 
 # Parametric g-formula estimator
-#Q_Y <- glm(Y~., data = cbind(A,L), family = "binomial")
-#f <- function(y,a,l){
- # return((predict(Q_Y, cbind(data.frame(A = a),l)))*q_star(a,l))
+Q_Y <- glm(Y~ A + age + sofa_score + male + A:age + A:sofa_score + A:male, data = cbind(A,L))#, family = "binomial")
+f <- function(l){
+  return((predict(Q_Y, cbind(data.frame(A = 1),l)))*q_star(1,l) + (predict(Q_Y, cbind(data.frame(A = 0),l)))*q_star(0,l))
+}
+Val.g <- 0
+for(i in 1:n){
+ Val.g <- Val.g + f(L[i,])
+}
+Val.g <- Val.g/n
+Val.g
+#saturated case test
+#X <- L$sofa_score
+#Q_Y <- glm(Y~A*X) #, family = "binomial")
+#f <- function(l){
+ #return((predict(Q_Y, data.frame(A = 1, X = l$sofa_score)))*q_star(1,l) + (predict(Q_Y, data.frame(A = 0, X = l$sofa_score)))*q_star(0,l))
 #}
-#Val.g <- 0
+
+#Val.g <-0
 #for(i in 1:n){
-# Val.g <- Val.g + f(Y[i],A[i],L[i,])
+ # Val.g <- Val.g + f(L[i,])
 #}
 #Val.g <- Val.g/n
 #Val.g
-#saturated case test
-X <- L$sofa_score
-Q_Y <- glm(Y~A*X, family = "binomial")
-f <- function(l){
- return((predict(Q_Y, data.frame(A = 1, X = l$sofa_score)))*q_star(1,l) + (predict(Q_Y, data.frame(A = 0, X = l$sofa_score)))*q_star(0,l))
-}
 
-Val.g <-0
-for(i in 1:n){
-  Val.g <- Val.g + f(L[i,])
-}
-Val.g <- Val.g/n
-
-#Val.g
 ## Variance estimation with bootstrap
 set.seed(2023)
 B <- 100
@@ -369,7 +367,7 @@ for(b_ind in 1:B){
   A_boot <- A[boot_samp]
   L_boot <- L[boot_samp,]
   Y_boot <- Y[boot_samp]
-  Q_Y.boot <- glm(Y_boot~ ., data = cbind(A_boot, L_boot), family = "binomial")
+  Q_Y.boot <- glm(Y_boot~  A_boot + age + sofa_score + male + A_boot:age + A_boot:sofa_score + A_boot:male, data = cbind(A_boot, L_boot))#, family = "binomial")
 
   n_red.boot <- length(which(L_boot$sofa_score == "(-1,7]"))
   n_yellow.boot <- length(which(L_boot$sofa_score == "(7,11]"))
@@ -456,13 +454,13 @@ for(b_ind in 1:B){
     }
   }
   
-  f.boot <- function(y,a,l){
-    return((predict(Q_Y.boot, cbind(data.frame(A_boot = a), l)))*q_star.boot(a,l))
+  f.boot <- function(l){
+    return((predict(Q_Y.boot, cbind(data.frame(A_boot = 1), l)))*q_star.boot(1,l) + (predict(Q_Y.boot, cbind(data.frame(A_boot = 0), l)))*q_star.boot(0,l))
 }
   
   Val.g.boot[b_ind] <- 0
   for(i in 1:n){
-    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + f.boot(Y_boot[i],A_boot[i],X.boot[i,])
+    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + f.boot(X.boot[i,])
   }
   Val.g.boot[b_ind] <- Val.g.boot[b_ind]/n
   setTxtProgressBar(pb,b_ind)
