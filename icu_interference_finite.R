@@ -354,7 +354,7 @@ f <- function(l){
 
 Val.g <-0
 for(i in 1:n){
-  Val.g <- Val.g + f(l)
+  Val.g <- Val.g + f(L[i,])
 }
 Val.g <- Val.g/n
 
