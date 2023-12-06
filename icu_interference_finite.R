@@ -76,7 +76,7 @@ n_samp <- 20
 #q_n <- function(a,l){
  # return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
 #}
-q_n.fm <- glm(A~L, family = "binomial")
+q_n.fm <- glm(A~L, family = "binomial") #maybe make more flexible??
 q_n <- function(a,l){
   pred <- predict(q_n.fm, l)
   return(a*pred + (1-a)*(1-pred))
@@ -294,38 +294,43 @@ for(b_ind in 1:B){
     }
   }
   
+  #q_boot <- function(a,l){
+   # B_n <- 0
+    #L_n <- 0
+    #for(i in 1:n){
+     # l_eq <- TRUE
+      #for(j in 1:ncol(L)){
+       # if(L_boot[i,j] != l[1,j]){
+        #  l_eq <- FALSE
+        #}
+      #}
+      #if(l_eq){
+       # L_n <- L_n + 1
+        #if(A_boot[i] == a){
+         # B_n <- B_n + 1
+        #}
+      #}
+    #}
+    #return(B_n/L_n)
+  #}
+  #q_boot.image <- array(rep(NA, prod(dims)), dim = dims)
+  #for(i_age in 1:length(levels(L$age))){
+   # for(i_male in 1:2){
+    #  for(i_sofa_score in 1:length(levels(L$sofa_score))){
+     #           for(i_a in 1:2){
+      #            q_boot.image[i_age, i_male, i_sofa_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+       #                                                                                                                                           sofa_score = levels(L$sofa_score)[i_sofa_score]))
+        #        }
+         #     }
+          #  }
+          #}
+  #q_boot <- function(a,l){
+   # return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
+  #}
+  q_boot.fm <- glm(A~L, family = "binomial")
   q_boot <- function(a,l){
-    B_n <- 0
-    L_n <- 0
-    for(i in 1:n){
-      l_eq <- TRUE
-      for(j in 1:ncol(L)){
-        if(L_boot[i,j] != l[1,j]){
-          l_eq <- FALSE
-        }
-      }
-      if(l_eq){
-        L_n <- L_n + 1
-        if(A_boot[i] == a){
-          B_n <- B_n + 1
-        }
-      }
-    }
-    return(B_n/L_n)
-  }
-  q_boot.image <- array(rep(NA, prod(dims)), dim = dims)
-  for(i_age in 1:length(levels(L$age))){
-    for(i_male in 1:2){
-      for(i_sofa_score in 1:length(levels(L$sofa_score))){
-                for(i_a in 1:2){
-                  q_boot.image[i_age, i_male, i_sofa_score, i_a] <- q_boot(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
-                                                                                                                                                  sofa_score = levels(L$sofa_score)[i_sofa_score]))
-                }
-              }
-            }
-          }
-  q_boot <- function(a,l){
-    return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
+    pred <- predict(q_boot.fm, l)
+    return(a*pred + (1-a)*(1-pred))
   }
   
   Val.IPW.boot[b_ind] <- 0 
