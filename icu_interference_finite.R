@@ -29,8 +29,8 @@ data <- select(data, !c(id))
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
-L <- data[,c("age", "male", "sofa_score")]
-L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+#L$age <- cut(L$age, breaks = c(17,quantile(L$age, c(1/3, 2/3)),104)) #categorizing age into 3 quartiles
 # saturated case test
 #L <- data[,c("sofa_score")]
 # Selecting finite sample size
@@ -39,42 +39,47 @@ n_samp <- 20
 
 # IPW estimator
 ## precalculation step
+#q_n <- function(a,l){
+ # B_n <- 0
+  #L_n <- 0
+  #for(i in 1:n){
+   # l_eq <- TRUE
+    #for(j in 1:ncol(L)){
+     # if(L[i,j] != l[1,j]){
+      #  l_eq <- FALSE
+      #}
+    #}
+    #if(l_eq){
+     # L_n <- L_n + 1
+      #if(A[i] == a){
+       # B_n <- B_n + 1
+      #}
+    #}
+  #}
+  #return(B_n/L_n)
+#}
+
+#dims <- c(3,2,3,2)
+#q_n.image <- array(rep(NA, prod(dims)), dim = dims)
+#for(i_age in 1:length(levels(L$age))){
+  #for(i_male in 1:2){
+   # for(i_sofa_score in 1:length(levels(L$sofa_score))){
+
+    #              for(i_a in 1:2){
+     #             q_n.image[i_age, i_male, i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
+      #                                         sofa_score = levels(L$sofa_score)[i_sofa_score]))
+       #           }
+        #        }
+         #     }
+          #  }
+
+#q_n <- function(a,l){
+ # return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
+#}
+q_n.fm <- glm(A~L, family = "binomial")
 q_n <- function(a,l){
-  B_n <- 0
-  L_n <- 0
-  for(i in 1:n){
-    l_eq <- TRUE
-    for(j in 1:ncol(L)){
-      if(L[i,j] != l[1,j]){
-        l_eq <- FALSE
-      }
-    }
-    if(l_eq){
-      L_n <- L_n + 1
-      if(A[i] == a){
-        B_n <- B_n + 1
-      }
-    }
-  }
-  return(B_n/L_n)
-}
-
-dims <- c(3,2,3,2)
-q_n.image <- array(rep(NA, prod(dims)), dim = dims)
-for(i_age in 1:length(levels(L$age))){
-  for(i_male in 1:2){
-    for(i_sofa_score in 1:length(levels(L$sofa_score))){
-
-                  for(i_a in 1:2){
-                  q_n.image[i_age, i_male, i_sofa_score, i_a] <- q_n(i_a - 1, data.frame(age = levels(L$age)[i_age], male = i_male - 1, 
-                                               sofa_score = levels(L$sofa_score)[i_sofa_score]))
-                  }
-                }
-              }
-            }
-
-q_n <- function(a,l){
-  return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
+  pred <- predict(q_n.fm, l)
+  return(a*pred + (1-a)*(1-pred))
 }
 # saturated case test
 #dims <- c(3,2)
