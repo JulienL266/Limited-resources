@@ -27,6 +27,8 @@ data <- select(data, !c(id))
 
 ## Categorizing sofa score as in the guidelines
 data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
+data$site <- as.factor(data$site)
+data$news_score <- as.factor(data$news_score)
 
 #chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
@@ -327,7 +329,7 @@ for(b_ind in 1:B){
   #q_boot <- function(a,l){
    # return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
   #}
-  q_boot.fm <- glm(A_boot~., data = L_boot, family = "binomial")
+  q_boot.fm <- glm(A_boot~., data = L_boot)#, family = "binomial")
   q_boot <- function(a,l){
     pred <- predict(q_boot.fm, l)
     return(a*pred + (1-a)*(1-pred))
