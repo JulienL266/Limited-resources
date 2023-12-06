@@ -5,6 +5,10 @@ data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
 
+#Add same covariates as in semi-parametric case
+#Estimate q_n with flexible parametric model instead of empirical stuff
+#Make sure IPW and g-formula give similar estimates before running bootstrap
+
 # Defining variables
 Y <- (1 - data$dead90)
 data <- select(data, !c(dead7, dead28, dead90))
