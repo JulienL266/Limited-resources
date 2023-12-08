@@ -1,3 +1,38 @@
+# Reading icu data
+library(haven)
+library(dplyr)
+data <- read_dta("~/Downloads/icu_pseudo_data.dta")
+set.seed(2023)
+n <- nrow(data)
+
+## Defining variables
+Y <- (1 - data$dead90)
+data <- select(data, !c(dead7, dead28, dead90))
+
+A <- data$icu_accept
+data <- select(data, !c(icu_accept))
+
+## define kappa (might change later)
+kappa <- mean(A)/2
+#kappa <- mean(A)
+#kappa <- mean(data$icu_recommend)
+#kappa <- 1
+
+## Removing uninteresting variables
+data <- select(data, !c(id))
+
+## Categorizing sofa score as in the guidelines
+data$sofa_score <- cut(data$sofa_score, breaks = c(-1,7,11,14))
+data$site <- as.factor(data$site)
+data$news_score <- as.factor(data$news_score)
+
+## chosen variables, may change, follows Wang, Qi and Shi (2022)
+L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
+n_samp <- 20
+
+
+
+
 # Functions.R part
 fullsim<-function(n, kappa,  p_Y_i, p_L_i=NULL, seed=1, conditional=F, comp_in=NULL,  estimate=F,   B){
   
