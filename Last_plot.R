@@ -119,7 +119,16 @@ q_star <- function(a,l){
   }
 }
 
-
+# Dependencies part
+library(dplyr)
+library(pracma)
+library(mc2d)
+library(dplyr)
+library("multicool")
+library(xtable)
+library("latex2exp")
+library(parallel)
+expit<-function(x){1/(1+exp(-x))}
 
 # Functions.R part
 fullsim<-function(n, kappa,  p_Y_i, p_L_i=NULL, seed=1, conditional=F, comp_in=NULL,  estimate=F,   B){
