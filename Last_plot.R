@@ -29,8 +29,7 @@ data$news_score <- as.factor(data$news_score)
 ## chosen variables, may change, follows Wang, Qi and Shi (2022)
 L <- data[,c("age", "male", "sofa_score", "sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
 n_samp <- 20
-
-
+#simulations are done according to SEM in following -> change to param. g-formula and IPW
 
 
 # Functions.R part
