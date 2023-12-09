@@ -852,7 +852,7 @@ gformtable<-rbind(unlist(cbind(sim1[["gform"]][["L_grid_l"]], sim1[["gform"]][["
 )
 
 
-print(xtable(gformtable, type = "latex", digits=c(rep(0, 9), rep(3, 5))), file = "/Users/asarvet/Dropbox/Harvard PhD/Classes/Dissertation/FinitePopID_gformtable.tex")
+print(xtable(gformtable, type = "latex", digits=c(rep(0, 9), rep(3, 5))))
 
 
 
@@ -893,4 +893,4 @@ gformestable<-rbind(
   cbind(	quantile(stimation_sim1[["Properties"]][[2]], c(0.025, 0.975)),apply(stimation_sim1[["Properties"]][[1]], 2, FUN=function(x){quantile(x, c(0.025, 0.975))}))
 )
 
-print(xtable(gformestable, type = "latex", digits=rep(3, 13)), file = "/Users/asarvet/Dropbox/Harvard PhD/Classes/Dissertation/FinitePopID_gformesttable.tex")
+print(xtable(gformestable, type = "latex", digits=rep(3, 13)))
