@@ -870,7 +870,7 @@ graph(sim4, 50, conditional=T)
 ##Evaluating estimator performance, Figure 3#####################################################################################
 Start<-Sys.time()	
 estimation_sim1<-estimate(
-  n_star_sim = 10, #value added by me, Julien 
+  n_star_sim = 20, #value added by me, Julien 
   n_sim = 10, 
   kappa_sim = 6/15, 
   p_Y_i_sim = rep(.25,4),
