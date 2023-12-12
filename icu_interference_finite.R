@@ -80,9 +80,9 @@ n_samp <- 20
 #}
 library(glmnet)
 #q_n.fm <- glm(A~., data = L, family = "binomial") #maybe make more flexible??, more covariates seem to make IPW worse...
-q_n.fm <- glmnet(A~., data = L, family = "binomial")
+q_n.fm <- glmnet(x = L,y = A, family = "binomial")
 q_n <- function(a,l){
-  pred <- predict(q_n.fm, l)
+  pred <- predict(q_n.fm, newx = L[1,],type = "response")
   return(a*pred + (1-a)*(1-pred))
 }
 # saturated case test
