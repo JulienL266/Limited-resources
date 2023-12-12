@@ -80,9 +80,10 @@ n_samp <- 20
 #}
 library(glmnet)
 #q_n.fm <- glm(A~., data = L, family = "binomial") #maybe make more flexible??, more covariates seem to make IPW worse...
-q_n.fm <- cv.glmnet(x = as.matrix(L),y = A, family = "binomial")
+x_train <- model.matrix( ~ .-1, L)
+q_n.fm <- cv.glmnet(x = x_train,y = A, family = "binomial")
 q_n <- function(a,l){
-  pred <- predict(q_n.fm, newx = L[1,],type = "response")
+  pred <- predict(q_n.fm, newx = model.matrix(~ .-1,l),s = "lambda.1se",type = "response")
   return(a*pred + (1-a)*(1-pred))
 }
 # saturated case test
@@ -331,9 +332,15 @@ for(b_ind in 1:B){
   #q_boot <- function(a,l){
    # return(q_boot.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
   #}
-  q_boot.fm <- glm(A_boot~., data = L_boot)#, family = "binomial")
+  #q_boot.fm <- glm(A_boot~., data = L_boot)#, family = "binomial")
+  #q_boot <- function(a,l){
+   # pred <- predict(q_boot.fm, l)
+    #return(a*pred + (1-a)*(1-pred))
+  #}
+  x_boot <- model.matrix( ~ .-1, L_boot)
+  q_boot.fm <- cv.glmnet(x = x_boot,y = A_boot, family = "binomial")
   q_boot <- function(a,l){
-    pred <- predict(q_boot.fm, l)
+    pred <- predict(q_boot.fm, newx = model.matrix(~ .-1,l),s = "lambda.1se",type = "response")
     return(a*pred + (1-a)*(1-pred))
   }
   
@@ -478,7 +485,7 @@ for(b_ind in 1:B){
   
   Val.g.boot[b_ind] <- 0
   for(i in 1:n){
-    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + f.boot(X.boot[i,])
+    Val.g.boot[b_ind] <- Val.g.boot[b_ind] + f.boot(L_boot[i,])
   }
   Val.g.boot[b_ind] <- Val.g.boot[b_ind]/n
   setTxtProgressBar(pb,b_ind)
