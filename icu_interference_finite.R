@@ -78,7 +78,9 @@ n_samp <- 20
 #q_n <- function(a,l){
  # return(q_n.image[which(levels(L$age) == l$age), l$male + 1, which(levels(L$sofa_score) == l$sofa_score), a + 1])
 #}
-q_n.fm <- glm(A~(age+male+sofa_score+sepsis_dx+winter+periarrest+out_of_hours+news_score+icnarc_score+site)^2, data = L, family = "binomial") #maybe make more flexible??, more covariates seem to make IPW worse...
+library(glmnet)
+#q_n.fm <- glm(A~., data = L, family = "binomial") #maybe make more flexible??, more covariates seem to make IPW worse...
+q_n.fm <- glmnet(A~., data = L, family = "binomial")
 q_n <- function(a,l){
   pred <- predict(q_n.fm, l)
   return(a*pred + (1-a)*(1-pred))
