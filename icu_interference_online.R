@@ -63,6 +63,7 @@ g_n <- function(a,w,j){
 }
 #precomputing to make function better
 g_cutoffs <- c()
+pb <- txtProgressBar(min = 1, max = n, initial = 0, style = 3)
 for(j in (cutoffs + 1)){
   if(j == l_n + 1){
     k <- j
@@ -73,6 +74,7 @@ for(j in (cutoffs + 1)){
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
   g_cutoffs <- c(g_cutoffs, SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam"))
+  setTxtProgressBar(pb,j)
 }
 g_n <- function(a,w,j){
   g_j <- g_cutoffs[max(which(cutoffs < j))]
@@ -108,6 +110,7 @@ Q_n <- function(a,w,j){
   return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
 }
 Q_cutoffs <- c()
+pb <- txtProgressBar(min = 1, max = n, initial = 0, style = 3)
 for(j in (cutoffs + 1)){
   if(j == l_n + 1){
     k <- j
@@ -119,6 +122,7 @@ for(j in (cutoffs + 1)){
   L_j <- L[1:k-1,]
   X_j <- cbind(A_j, L_j)
   Q_cutoffs <- c(Q_cutoffs, SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam"))
+  setTxtProgressBar(pb,j)
 }
 Q_n <- function(a,w,j){
   Q_j <- Q_cutoffs[max(which(cutoffs < j))]
