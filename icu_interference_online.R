@@ -35,6 +35,7 @@ D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(a*g(1,w,j) + (1-a)*g(0,w,j)))*(y - Q(a,w,j))
   return(D_1 + Q(d(w,j),w,j))
 }
+#precompute models for each cutoff
 g_n <- function(a,w,j){
   if(j == l_n + 1){
     k <- j
@@ -70,21 +71,25 @@ Q_n <- function(a,w,j){
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
-  Y_ja <- Y_j[which(A_j == a)]
-  L_ja <- L_j[which(A_j == a),]
-  if(length(Y_ja == 0)){
-    return(0)
-  }
-  Y_jaw <- c()
-  for(i in 1:length(L_ja)){
-    if(sum(L_ja[i,] == w) == length(w)){
-      Y_jaw <- c(Y_jaw, Y_ja[i])
-    }
-  }
-  if(length(Y_jaw) == 0){
-    return(0)
-  }
-  return(mean(Y_jaw))
+  #empirical approach
+  #Y_ja <- Y_j[which(A_j == a)]
+  #L_ja <- L_j[which(A_j == a),]
+  #if(length(Y_ja == 0)){
+   # return(0)
+  #}
+  #Y_jaw <- c()
+  #for(i in 1:length(L_ja)){
+   # if(sum(L_ja[i,] == w) == length(w)){
+    #  Y_jaw <- c(Y_jaw, Y_ja[i])
+    #}
+  #}
+  #if(length(Y_jaw) == 0){
+    #return(0)
+  #}
+  #return(mean(Y_jaw))
+  X_j <- cbind(A_j, L_j)
+  Q_j <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
+  return(predict(Q_j, cbind(data.frame(A = a), w)))
 }
 
 d_n <- function(w,j){
