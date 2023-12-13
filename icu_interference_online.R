@@ -15,9 +15,7 @@ data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
 kappa <- mean(A)
-#kappa <- 0.2
-#kappa <- 0.6
-#kappa <- 0.05
+
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
