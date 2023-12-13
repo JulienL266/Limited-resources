@@ -81,7 +81,7 @@ g_n <- function(a,w,j){
     k <- cutoffs[max(which(cutoffs < j))] + 1
   }
   g_j <- g_cutoffs[max(which(cutoffs < j))]
-  return(predict(g_j, a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
+  return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
 }
 Q_n <- function(a,w,j){
   if(j == l_n + 1){
