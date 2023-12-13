@@ -63,7 +63,7 @@ g_n <- function(a,w,j){
 }
 #precomputing to make function better
 g_cutoffs <- c()
-pb <- txtProgressBar(min = 1, max = n, initial = 0, style = 3)
+pb <- txtProgressBar(min = 1, max = n, initial = 1, style = 3)
 for(j in (cutoffs + 1)){
   if(j == l_n + 1){
     k <- j
@@ -110,7 +110,7 @@ Q_n <- function(a,w,j){
   return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
 }
 Q_cutoffs <- c()
-pb <- txtProgressBar(min = 1, max = n, initial = 0, style = 3)
+pb <- txtProgressBar(min = 1, max = n, initial = 1, style = 3)
 for(j in (cutoffs + 1)){
   if(j == l_n + 1){
     k <- j
@@ -147,11 +147,12 @@ sigma_n <- function(j){
 
 Psi_hat <- 0
 Gamma_n <- 0
-pb <- txtProgressBar(min = 115, max = 13011, initial = 115, style = 3)
+pb <- txtProgressBar(min = 116, max = 13011, initial = 115, style = 3)
 for(j in (l_n + 1):n){
   setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
   Gamma_n <- Gamma_n + 1/sigma_n(j)
+  setTxtProgressBar(pb,j)
 }
 Gamma_n <- Gamma_n/(n - l_n)
 Psi_hat <- Psi_hat/(Gamma_n*(n - l_n))
