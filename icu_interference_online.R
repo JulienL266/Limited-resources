@@ -127,7 +127,7 @@ Q_n <- function(a,w,j){
   cov <- cbind(data.frame(A_j = a), as.data.frame(w))
   return(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], cov)$pred)
 }
-
+## need to change to our optimal regime
 d_n <- function(w,j){
   return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > 0))
 }
