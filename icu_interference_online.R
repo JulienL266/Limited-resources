@@ -156,6 +156,9 @@ for(j in (l_n + 1):n){
   if(is.na(D_n(Y[j], A[j], L[j,],j))){
     print("D_n")
   }
+  if(is.na(sigma_n(j))){
+    print("sigma is NA")
+  }
   if(sigma_n(j) == 0){
     print("sigma = 0")
   }
