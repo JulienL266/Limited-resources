@@ -137,10 +137,11 @@ D_n <- function(y,a,w,j){
 }
 
 sigma_n <- function(j){
-  res <- c()
-  for(i in 1:(j-1)){
-    res <- c(res, D_n(Y[i],A[i],L[i,],j))
-  }
+  #res <- c()
+  #for(i in 1:(j-1)){
+   # res <- c(res, D_n(Y[i],A[i],L[i,],j))
+  #}
+  res <- D_n(Y[1:(j-1)], A[1:(j-1)], L[1:(j-1),],j)
   return(sd(res))
 }
 
