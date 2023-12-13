@@ -77,7 +77,7 @@ for(j in (cutoffs + 1)){
   setTxtProgressBar(pb,j)
 }
 g_n <- function(a,w,j){
-  return(a*predict(g_cutoffs[[max(which(cutoffs < j)) + 1]], w)$pred + (1-a)*(1-predict(g_cutoffs[[max(which(cutoffs < j)) + 1]],w)$pred))
+  return(a*predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], w)$pred + (1-a)*(1-predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred))
 }
 Q_n <- function(a,w,j){
   if(j == l_n + 1){
@@ -125,7 +125,7 @@ for(j in (cutoffs + 1)){
 }
 Q_n <- function(a,w,j){
   cov <- cbind(data.frame(A_j = a), as.data.frame(w))
-  return(predict.SuperLearner(Q_cutoffs[[max(which(cutoffs < j)) + 1]], cov)$pred)
+  return(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], cov)$pred)
 }
 
 d_n <- function(w,j){
