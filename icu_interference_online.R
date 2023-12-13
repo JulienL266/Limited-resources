@@ -137,11 +137,10 @@ D_n <- function(y,a,w,j){
 }
 
 sigma_n <- function(j){
-  #res <- c()
-  #for(i in l_n:(j-1)){
-   # res <- c(res, D_n(Y[i],A[i],L[i,],j))
-  #}
-  res <- D_n(Y[l_n:(j-1)], A[l_n:(j-1)], L[l_n:(j-1),],j)
+  res <- c()
+  for(i in l_n:(j-1)){
+    res <- c(res, D_n(Y[i],A[i],L[i,],j))
+  }
   return(sd(res))
 }
 
@@ -151,6 +150,15 @@ pb <- txtProgressBar(min = 1, max = 13011, initial = 1, style = 3)
 for(j in (l_n + 1):n){
   setTxtProgressBar(pb,j)
   Psi_hat <- Psi_hat + D_n(Y[j], A[j], L[j,],j)/sigma_n(j)
+  if(is.na(Psi_hat)){
+    print(j)
+  }
+  if(is.na(D_n(Y[j], A[j], L[j,],j))){
+    print("D_n")
+  }
+  if(sigma_n(j) == 0){
+    print("sigma = 0")
+  }
   Gamma_n <- Gamma_n + 1/sigma_n(j)
   setTxtProgressBar(pb,j)
 }
