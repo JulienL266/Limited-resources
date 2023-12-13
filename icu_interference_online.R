@@ -63,7 +63,7 @@ g_n <- function(a,w,j){
 }
 #precomputing to make function better
 g_cutoffs <- c()
-for(j in 1:cutoffs){
+for(j in cutoffs){
   if(j == l_n + 1){
     k <- j
   }else{
@@ -74,7 +74,14 @@ for(j in 1:cutoffs){
   L_j <- L[1:k-1,]
   g_cutoffs <- c(g_cutoffs, SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam"))
 }
-
+g_n <- function(a,w,j){
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  return(predict(g_cutoffs[max(which(cutoffs < j))]))
+}
 Q_n <- function(a,w,j){
   if(j == l_n + 1){
     k <- j
