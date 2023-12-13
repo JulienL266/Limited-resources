@@ -126,7 +126,8 @@ for(j in (cutoffs + 1)){
 }
 Q_n <- function(a,w,j){
   Q_j <- Q_cutoffs[max(which(cutoffs < j))]
-  return(predict.SuperLearner(Q_j, cbind(data.frame(A = a), data.frame(lapply(w, function(x) t(data.frame(x))))))$pred)
+  cov <- cbind(data.frame(A_j = a), as.data.frame(w))
+  return(predict.SuperLearner(Q_j, cov)$pred)
 }
 
 d_n <- function(w,j){
