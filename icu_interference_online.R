@@ -75,11 +75,6 @@ for(j in cutoffs){
   g_cutoffs <- c(g_cutoffs, SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam"))
 }
 g_n <- function(a,w,j){
-  if(j == l_n + 1){
-    k <- j
-  }else{
-    k <- cutoffs[max(which(cutoffs < j))] + 1
-  }
   g_j <- g_cutoffs[max(which(cutoffs < j))]
   return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
 }
@@ -110,7 +105,7 @@ Q_n <- function(a,w,j){
   #return(mean(Y_jaw))
   X_j <- cbind(A_j, L_j)
   Q_j <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
-  return(predict(Q_j, cbind(data.frame(A = a), w)))
+  return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
 }
 Q_cutoffs <- c()
 for(j in cutoffs){
@@ -124,6 +119,10 @@ for(j in cutoffs){
   L_j <- L[1:k-1,]
   X_j <- cbind(A_j, L_j)
   Q_cutoffs <- c(Q_cutoffs, SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam"))
+}
+Q_n <- function(a,w,j){
+  Q_j <- Q_cutoffs[max(which(cutoffs < j))]
+  return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
 }
 
 d_n <- function(w,j){
