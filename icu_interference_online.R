@@ -2,6 +2,7 @@
 # Have issues with certain values not existing
 library(haven)
 library(dplyr)
+library(SuperLearner)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
@@ -43,17 +44,21 @@ g_n <- function(a,w,j){
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
-  A_jw <- c()
-  for(i in 1:(k-1)){
-    w_i <- L_j[i,]
-    if(sum(w_i == w) == length(w)){
-      A_jw <- c(A_jw, A_j[i])
-    }
-  }
-  if(length(A_jw) == 0){
-    return(0)
-  }
-  return(a*mean(A_jw) + (1-a)*mean(1-A_jw))
+  #empirical approach
+  #A_jw <- c()
+  #for(i in 1:(k-1)){
+   # w_i <- L_j[i,]
+    #if(sum(w_i == w) == length(w)){
+     # A_jw <- c(A_jw, A_j[i])
+    #}
+  #}
+  #if(length(A_jw) == 0){
+   # return(0)
+  #}
+  #return(a*mean(A_jw) + (1-a)*mean(1-A_jw))
+  #model approach
+  g_j <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam")
+  return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
 }
 
 Q_n <- function(a,w,j){
