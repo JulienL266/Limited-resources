@@ -61,6 +61,19 @@ g_n <- function(a,w,j){
   g_j <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam")
   return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
 }
+#precomputing to make function better
+g_cutoffs <- c()
+for(j in 1:cutoffs){
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  A_j <- A[1:k-1]
+  Y_j <- Y[1:k-1]
+  L_j <- L[1:k-1,]
+  g_cutoffs <- c(g_cutoffs, SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam"))
+}
 
 Q_n <- function(a,w,j){
   if(j == l_n + 1){
