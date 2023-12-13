@@ -126,7 +126,7 @@ for(j in (cutoffs + 1)){
 }
 Q_n <- function(a,w,j){
   Q_j <- Q_cutoffs[max(which(cutoffs < j))]
-  return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
+  return(predict(Q_j, cbind(data.frame(A = a), as.data.frame(w)))$pred)
 }
 
 d_n <- function(w,j){
