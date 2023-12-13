@@ -112,6 +112,19 @@ Q_n <- function(a,w,j){
   Q_j <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
   return(predict(Q_j, cbind(data.frame(A = a), w)))
 }
+Q_cutoffs <- c()
+for(j in cutoffs){
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  A_j <- A[1:k-1]
+  Y_j <- Y[1:k-1]
+  L_j <- L[1:k-1,]
+  X_j <- cbind(A_j, L_j)
+  Q_cutoffs <- c(Q_cutoffs, SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam"))
+}
 
 d_n <- function(w,j){
   return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > 0))
