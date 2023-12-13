@@ -36,15 +36,15 @@ D_tilde <- function(d, Q, g, y,a,w,j){
   return(D_1 + Q(d(w,j),w,j))
 }
 #precompute models for each cutoff
-g_n <- function(a,w,j){
-  if(j == l_n + 1){
-    k <- j
-  }else{
-    k <- cutoffs[max(which(cutoffs < j))] + 1
-  }
-  A_j <- A[1:k-1]
-  Y_j <- Y[1:k-1]
-  L_j <- L[1:k-1,]
+#g_n <- function(a,w,j){
+ # if(j == l_n + 1){
+  #  k <- j
+  #}else{
+   # k <- cutoffs[max(which(cutoffs < j))] + 1
+  #}
+  #A_j <- A[1:k-1]
+  #Y_j <- Y[1:k-1]
+  #L_j <- L[1:k-1,]
   #empirical approach
   #A_jw <- c()
   #for(i in 1:(k-1)){
@@ -58,9 +58,9 @@ g_n <- function(a,w,j){
   #}
   #return(a*mean(A_jw) + (1-a)*mean(1-A_jw))
   #model approach
-  g_j <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam")
-  return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
-}
+  #g_j <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.gam")
+  #return(a*predict(g_j, w)$pred + (1-a)*(1-predict(g_j,w)$pred))
+#}
 #precomputing to make function better
 g_cutoffs <- list()
 pb <- txtProgressBar(min = 1, max = n, initial = 1, style = 3)
@@ -79,15 +79,15 @@ for(j in (cutoffs + 1)){
 g_n <- function(a,w,j){
   return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], w)$pred) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred)))
 }
-Q_n <- function(a,w,j){
-  if(j == l_n + 1){
-    k <- j
-  }else{
-    k <- cutoffs[max(which(cutoffs < j))] + 1
-  }
-  A_j <- A[1:k-1]
-  Y_j <- Y[1:k-1]
-  L_j <- L[1:k-1,]
+#Q_n <- function(a,w,j){
+ # if(j == l_n + 1){
+  #  k <- j
+  #}else{
+   # k <- cutoffs[max(which(cutoffs < j))] + 1
+  #}
+  #A_j <- A[1:k-1]
+  #Y_j <- Y[1:k-1]
+  #L_j <- L[1:k-1,]
   #empirical approach
   #Y_ja <- Y_j[which(A_j == a)]
   #L_ja <- L_j[which(A_j == a),]
@@ -104,10 +104,10 @@ Q_n <- function(a,w,j){
     #return(0)
   #}
   #return(mean(Y_jaw))
-  X_j <- cbind(A_j, L_j)
-  Q_j <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
-  return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
-}
+  #X_j <- cbind(A_j, L_j)
+  #Q_j <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
+  #return(predict(Q_j, cbind(data.frame(A = a), w))$pred)
+#}
 Q_cutoffs <- list()
 pb <- txtProgressBar(min = 1, max = n, initial = 1, style = 3)
 for(j in (cutoffs + 1)){
