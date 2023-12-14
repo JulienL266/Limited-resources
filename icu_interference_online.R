@@ -15,8 +15,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -133,11 +133,20 @@ Q_n <- function(a,w,j){
 ## need to change to our optimal regime
 eta_n <- rep(NA,n)
 tau_n <- rep(NA,n)
-pb <- txtProgressBar(min = l_n + 1, max = 13011, initial = l_n + 1, style = 3)
-for(j in (l_n + 1):n){
-  Y_tilde <- (2*A[1:(j-1)] - 1)*(Y[1:(j-1)] - mean(Y[1:(j-1)]))/((g_n(A[1:(j-1)],L[1:(j-1),],j)))
+pb <- txtProgressBar(min = 1, max = 13011, initial = 1, style = 3)
+for(j in cutoffs){
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  A_j <- A[1:k-1]
+  Y_j <- Y[1:k-1]
+  L_j <- L[1:k-1,]
+  X_j <- cbind(A_j, L_j)
+  Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  Q_b <- SuperLearner(Y_tilde, L[1:(j-1),], SL.library = "SL.gam")
+  Q_b <- SuperLearner(Y_tilde, L_j, SL.library = "SL.gam")
   ## Estimating d_0 (might change in new setting)
   eta_n[j] <- quantile(predict(Q_b,L[1:(j-1),])$pred, probs = c(1-kappa)) 
   tau_n[j] <- max(0,eta_n[j])
