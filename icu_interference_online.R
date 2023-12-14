@@ -135,7 +135,7 @@ eta_n <- rep(NA,n)
 tau_n <- rep(NA,n)
 pb <- txtProgressBar(min = l_n + 1, max = 13011, initial = l_n + 1, style = 3)
 for(j in (l_n + 1):n){
-  Y_tilde <- (2*A[1:(j-1)] - 1)*(Y[1:(j-1)] - mean(Y[1:(j-1)]))/(A[1:(j-1)]*predict(g_n, L[1:(j-1),])$pred + (1-A[1:(j-1)])*(1-predict(g_n,L[1:(j-1),])$pred))
+  Y_tilde <- (2*A[1:(j-1)] - 1)*(Y[1:(j-1)] - mean(Y[1:(j-1)]))/(A[1:(j-1)]*(g_n(A[1:(j-1)],L[1:(j-1),],j)))
   ### Data adaptative
   Q_b <- SuperLearner(Y_tilde, L[1:(j-1),], SL.library = "SL.gam")
   ## Estimating d_0 (might change in new setting)
