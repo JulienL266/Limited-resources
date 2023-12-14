@@ -149,7 +149,7 @@ for(j in (cutoffs + 1)){
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
-  return(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa)))  
+  return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
 }
 tau_n <- function(j){
   return(max(0, eta_n(j)))
