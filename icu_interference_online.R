@@ -134,7 +134,7 @@ Q_n <- function(a,w,j){
 eta_n <- rep(NA,n)
 tau_n <- rep(NA,n)
 pb <- txtProgressBar(min = 1, max = 13011, initial = 1, style = 3)
-for(j in cutoffs){
+for(j in (cutoffs + 1)){
   if(j == l_n + 1){
     k <- j
   }else{
