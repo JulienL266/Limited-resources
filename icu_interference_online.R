@@ -15,7 +15,10 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa (might change later)
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
+#kappa <- mean(data$icu_recommend)
+#kappa <- 1
 
 
 ## Removing uninteresting variables
@@ -128,8 +131,16 @@ Q_n <- function(a,w,j){
   return(as.numeric(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], cov)$pred))
 }
 ## need to change to our optimal regime
+eta_n <- rep(NA,n)
+tau_n <- rep(NA,n)
+pb <- txtProgressBar(min = l_n + 1, max = 13011, initial = l_n + 1, style = 3)
+for(j in (l_n + 1):n){
+  eta_n[j] <- quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0,L[1:(j-1),],j), probs = c(1-kappa))
+  tau_n[j] <- max(0,eta_n[j])
+  setTxtProgressBar(pb,j)
+}
 d_n <- function(w,j){
-  return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > 0))
+  return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n[j]))
 }
 
 D_n <- function(y,a,w,j){
