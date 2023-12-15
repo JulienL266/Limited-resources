@@ -155,7 +155,7 @@ tau_n <- function(j){
   return(max(0, eta_n(j)))
 }
 d_n <- function(w,j){
-  return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
+  return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
 }
 
 D_n <- function(y,a,w,j){
