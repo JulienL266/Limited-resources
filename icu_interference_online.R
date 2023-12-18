@@ -14,7 +14,7 @@ data <- select(data, !c(dead7, dead28, dead90))
 A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
-## define kappa (might change later)
+## define kappa
 #kappa <- mean(A)/2
 kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
