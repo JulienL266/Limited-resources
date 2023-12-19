@@ -34,10 +34,6 @@ S <- (n-l_n)/l_n
 
 cutoffs <- l_n + ceiling(S*(0:((n - l_n)/S)))
 
-D_tilde <- function(d, Q, g, y,a,w,j){
-  D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(g(a,w,j)))*(y - Q(a,w,j))
-  return(D_1 + Q(d(w,j),w,j))
-}
 #precompute models for each cutoff
 #g_n <- function(a,w,j){
  # if(j == l_n + 1){
@@ -158,6 +154,10 @@ tau_n <- function(j){
 d_n <- function(w,j){
   #return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
   return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
+}
+D_tilde <- function(d, Q, g, y,a,w,j){
+  D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(g(a,w,j)))*(y - Q(a,w,j))
+  return(D_1 + Q(d(w,j),w,j))
 }
 
 D_n <- function(y,a,w,j){
