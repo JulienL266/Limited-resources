@@ -141,7 +141,7 @@ for(j in (cutoffs + 1)){
   X_j <- cbind(A_j, L_j)
   Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.gam")
+  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.randomForest")
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
