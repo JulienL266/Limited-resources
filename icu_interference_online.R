@@ -7,6 +7,10 @@ data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
 
+#Mixing variable order(online procedure)
+order <- sample(1:n,n)
+data <- data[order,]
+
 # Defining variables
 Y <- (1 - data$dead90)
 data <- select(data, !c(dead7, dead28, dead90))
@@ -151,6 +155,12 @@ eta_n <- function(j){
 tau_n <- function(j){
   return(max(0, eta_n(j)))
 }
+t <- c()
+for(j in (l_n + 1):n){
+  t <- c(t, tau_n(j))
+}
+summary(t)
+  
 d_n <- function(w,j){
   return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
   #return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
