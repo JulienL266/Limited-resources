@@ -14,6 +14,7 @@ data <- data[order,]
 # Defining variables
 Y <- (1 - data$dead90)
 data <- select(data, !c(dead7, dead28, dead90))
+Y <- as.factor(Y)
 
 A <- data$icu_bed
 data <- select(data, !c(icu_bed))
@@ -76,7 +77,7 @@ for(j in (cutoffs + 1)){
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
-  g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.earth")
+  g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.glmnet")
   setTxtProgressBar(pb,j)
 }
 g_n <- function(a,w,j){
@@ -123,7 +124,7 @@ for(j in (cutoffs + 1)){
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
   X_j <- cbind(A_j, L_j)
-  Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.earth")
+  Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.glmnet")
   setTxtProgressBar(pb,j)
 }
 Q_n <- function(a,w,j){
@@ -145,7 +146,7 @@ for(j in (cutoffs + 1)){
   X_j <- cbind(A_j, L_j)
   Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.earth")
+  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.glmnet")
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
