@@ -20,14 +20,18 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
 
 ## Removing uninteresting variables
 data <- select(data, !c(id))
+## Categorizing sofa score as in the guidelines
+data$sofa_score <- as.factor(data$sofa_score)
+data$site <- as.factor(data$site)
+data$news_score <- as.factor(data$news_score)
 
 #chosen variables, may change, needs to be low-dimensional
 L <- data[,c("age", "male", "sofa_score","sepsis_dx", "winter", "periarrest", "out_of_hours", "news_score", "icnarc_score","site")]
