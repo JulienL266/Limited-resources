@@ -19,8 +19,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -145,7 +145,7 @@ for(j in (cutoffs + 1)){
   X_j <- cbind(A_j, L_j)
   Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.lm")
+  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.mean")
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
