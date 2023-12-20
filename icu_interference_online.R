@@ -19,8 +19,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -76,7 +76,7 @@ for(j in (cutoffs + 1)){
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
-  g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.glmnet")
+  g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.earth")
   setTxtProgressBar(pb,j)
 }
 g_n <- function(a,w,j){
@@ -123,7 +123,7 @@ for(j in (cutoffs + 1)){
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
   X_j <- cbind(A_j, L_j)
-  Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.gam")
+  Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.earth")
   setTxtProgressBar(pb,j)
 }
 Q_n <- function(a,w,j){
