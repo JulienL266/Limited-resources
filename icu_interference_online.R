@@ -129,31 +129,31 @@ Q_n <- function(a,w,j){
 ## need to change to our optimal regime
 pb <- txtProgressBar(min = 1, max = 13011, initial = 1, style = 3)
 Q_b <- list()
-#for(j in (cutoffs + 1)){
-  #if(j == l_n + 1){
-   # k <- j
-  #}else{
-   # k <- cutoffs[max(which(cutoffs < j))] + 1
-  #}
-  #A_j <- A[1:k-1]
-  #Y_j <- Y[1:k-1]
-  #L_j <- L[1:k-1,]
-  #X_j <- cbind(A_j, L_j)
-  #Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
+for(j in (cutoffs + 1)){
+  if(j == l_n + 1){
+    k <- j
+  }else{
+    k <- cutoffs[max(which(cutoffs < j))] + 1
+  }
+  A_j <- A[1:k-1]
+  Y_j <- Y[1:k-1]
+  L_j <- L[1:k-1,]
+  X_j <- cbind(A_j, L_j)
+  Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  #Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.glm")
- # setTxtProgressBar(pb,j)
-#}
+  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.gam")
+  setTxtProgressBar(pb,j)
+}
 eta_n <- function(j){
-  #return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
-  return(as.numeric(quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0, L[1:(j-1),],j), probs = c(1-kappa))))
+  return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
+  #return(as.numeric(quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0, L[1:(j-1),],j), probs = c(1-kappa))))
 }
 tau_n <- function(j){
   return(max(0, eta_n(j)))
 }
 d_n <- function(w,j){
-  #return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
-  return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
+  return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
+  #return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
 }
 D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(g(a,w,j)))*(y - Q(a,w,j))
