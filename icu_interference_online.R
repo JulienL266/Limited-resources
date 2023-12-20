@@ -14,7 +14,7 @@ data <- data[order,]
 # Defining variables
 Y <- (1 - data$dead90)
 data <- select(data, !c(dead7, dead28, dead90))
-Y <- as.factor(Y)
+
 
 A <- data$icu_bed
 data <- select(data, !c(icu_bed))
