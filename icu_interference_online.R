@@ -89,7 +89,7 @@ for(j in (cutoffs + 1)){
 }
 g_n <- function(a,w,j){
   #return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], w)$pred) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred)))
-  return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,w),s = "lambda.1se",type = "response")) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],newx = model.matrix(~ .-1,l),s = "lambda.1se",type = "response"))))
+  return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,w),s = "lambda.1se",type = "response")) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],newx = model.matrix(~ .-1,w),s = "lambda.1se",type = "response"))))
 }
 #Q_n <- function(a,w,j){
  # if(j == l_n + 1){
@@ -159,7 +159,7 @@ for(j in (cutoffs + 1)){
   ### Data adaptative
   #Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.glmnet")
   x_train <- model.matrix( ~ .-1, L_j)
-  Q_b[[j]] <- cv.glmnet(x_train, Y_j, family = "binomial")
+  Q_b[[j]] <- cv.glmnet(x_train, Y_j)
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
