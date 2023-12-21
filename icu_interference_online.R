@@ -21,8 +21,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
