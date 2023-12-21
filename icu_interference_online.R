@@ -183,7 +183,7 @@ d_n <- function(w,j){
 }
 D_tilde <- function(d, Q, g, y,a,w,j){
   D_1 <- ((a*d(w,j) + (1-a)*(1-d(w,j)))/(g(a,w,j)))*(y - Q(a,w,j))
-  return(D_1 + Q(d(w,j),w,j))
+  return(D_1 + Q(d(w,j),w,j) - tau_n(j)*(d_n(w,j) - kappa)) #added this term to influence function
 }
 
 D_n <- function(y,a,w,j){
