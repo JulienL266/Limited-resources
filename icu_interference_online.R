@@ -3,6 +3,7 @@
 library(haven)
 library(dplyr)
 library(SuperLearner)
+library(glmnet)
 data <- read_dta("~/Downloads/icu_pseudo_data.dta")
 set.seed(2023)
 n <- nrow(data)
@@ -81,11 +82,14 @@ for(j in (cutoffs + 1)){
   A_j <- A[1:k-1]
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
-  g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.glmnet")
+  #g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.glmnet")
+  x_train <- model.matrix( ~ .-1, L_j)
+  g_cutoffs[[j]] <- cv.glmnet(x_train, A_j, family = "binomial")
   setTxtProgressBar(pb,j)
 }
 g_n <- function(a,w,j){
-  return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], w)$pred) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred)))
+  #return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], w)$pred) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred)))
+  return(a*as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,w),s = "lambda.1se",type = "response")) + (1-a)*(1-as.numeric(predict(g_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]],newx = model.matrix(~ .-1,l),s = "lambda.1se",type = "response"))))
 }
 #Q_n <- function(a,w,j){
  # if(j == l_n + 1){
@@ -128,12 +132,15 @@ for(j in (cutoffs + 1)){
   Y_j <- Y[1:k-1]
   L_j <- L[1:k-1,]
   X_j <- cbind(A_j, L_j)
-  Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.glmnet")
+  #Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.glmnet")
+  x_train <- model.matrix( ~ .-1, X_j)
+  Q_cutoffs[[j]] <- cv.glmnet(x_train, Y_j, family = "binomial")
   setTxtProgressBar(pb,j)
 }
 Q_n <- function(a,w,j){
   cov <- cbind(data.frame(A_j = a), as.data.frame(w))
-  return(as.numeric(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], cov)$pred))
+  #return(as.numeric(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], cov)$pred))
+  return(as.numeric(predict(Q_cutoffs[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,cov),s = "lambda.1se",type = "response")))
 }
 ## need to change to our optimal regime
 pb <- txtProgressBar(min = 1, max = 13011, initial = 1, style = 3)
@@ -150,11 +157,14 @@ for(j in (cutoffs + 1)){
   X_j <- cbind(A_j, L_j)
   Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
-  Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.glmnet")
+  #Q_b[[j]] <- SuperLearner(Y_tilde, L_j, SL.library = "SL.glmnet")
+  x_train <- model.matrix( ~ .-1, L_j)
+  Q_b[[j]] <- cv.glmnet(x_train, Y_j, family = "binomial")
   setTxtProgressBar(pb,j)
 }
 eta_n <- function(j){
-  return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
+  #return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
+  return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,L[1:(j-1)]),s = "lambda.1se",type = "response"), probs = c(1-kappa))))
   #return(as.numeric(quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0, L[1:(j-1),],j), probs = c(1-kappa))))
 }
 tau_n <- function(j){
@@ -167,7 +177,8 @@ for(j in (l_n + 1):n){
 summary(t)
   
 d_n <- function(w,j){
-  return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
+  #return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],w)$pred > tau_n(j)))
+  return(as.integer(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,w),s = "lambda.1se",type = "response") > tau_n(j)))
   #return(as.integer(Q_n(1,w,j) - Q_n(0,w,j) > tau_n(j)))
 }
 D_tilde <- function(d, Q, g, y,a,w,j){
