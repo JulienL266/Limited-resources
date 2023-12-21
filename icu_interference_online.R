@@ -21,8 +21,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -164,8 +164,8 @@ for(j in (cutoffs + 1)){
 }
 eta_n <- function(j){
   #return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]],L[1:(j-1),])$pred, probs = c(1-kappa))))  
-  return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,L[1:(j-1),]),s = "lambda.1se",type = "response"), probs = c(1-kappa))))
-  #return(as.numeric(quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0, L[1:(j-1),],j), probs = c(1-kappa))))
+  #return(as.numeric(quantile(predict(Q_b[[cutoffs[max(which(cutoffs < j))] + 1]], newx = model.matrix(~ .-1,L[1:(j-1),]),s = "lambda.1se",type = "response"), probs = c(1-kappa))))
+  return(as.numeric(quantile(Q_n(1,L[1:(j-1),],j) - Q_n(0, L[1:(j-1),],j), probs = c(1-kappa))))
 }
 tau_n <- function(j){
   return(max(0, eta_n(j)))
