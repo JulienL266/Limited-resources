@@ -40,9 +40,11 @@ L <- data[,c("age", "male", "sofa_score","sepsis_dx", "winter", "periarrest", "o
 #Estimation 
 l_n <- ceiling(sqrt(n))
   
-S <- (n-l_n)/l_n
+#S <- (n-l_n)/l_n
+ 
 
-cutoffs <- l_n + ceiling((n-l_n)/S*(0:S))
+#cutoffs <- l_n + ceiling((n-l_n)/S*(0:S))
+cutoffs <- c(n)
 
 #precompute models for each cutoff
 #g_n <- function(a,w,j){
