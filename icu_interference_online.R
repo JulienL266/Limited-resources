@@ -21,8 +21,8 @@ A <- data$icu_bed
 data <- select(data, !c(icu_bed))
 
 ## define kappa
-#kappa <- mean(A)/2
-kappa <- mean(A)
+kappa <- mean(A)/2
+#kappa <- mean(A)
 #kappa <- mean(data$icu_recommend)
 #kappa <- 1
 
@@ -42,7 +42,7 @@ l_n <- ceiling(sqrt(n))
   
 S <- (n-l_n)/l_n
 
-cutoffs <- l_n + ceiling(S*(0:((n-l_n)/S)))
+cutoffs <- l_n + ceiling((n-l_n)/S*(0:S))
 
 #precompute models for each cutoff
 #g_n <- function(a,w,j){
