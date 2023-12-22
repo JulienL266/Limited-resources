@@ -42,7 +42,7 @@ l_n <- ceiling(sqrt(n))
   
 S <- (n-l_n)/l_n
 
-cutoffs <- l_n + ceiling(S*(0:((n - l_n)/S)))
+cutoffs <- l_n + ceiling(S*(0:((n-l_n)/S)))
 
 #precompute models for each cutoff
 #g_n <- function(a,w,j){
