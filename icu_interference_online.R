@@ -41,7 +41,6 @@ L <- data[,c("age", "male", "sofa_score","sepsis_dx", "winter", "periarrest", "o
 l_n <- ceiling(sqrt(n))
   
 S <- (n-l_n)/l_n
-S <- 1
  
 
 cutoffs <- l_n + ceiling((n-l_n)/S*(0:S))
