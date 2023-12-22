@@ -81,9 +81,9 @@ for(j in (cutoffs + 1)){
   }else{
     k <- cutoffs[max(which(cutoffs < j))] + 1
   }
-  A_j <- A[1:k-1]
-  Y_j <- Y[1:k-1]
-  L_j <- L[1:k-1,]
+  A_j <- A[1:(k-1)]
+  Y_j <- Y[1:(k-1)]
+  L_j <- L[1:(k-1),]
   #g_cutoffs[[j]] <- SuperLearner(A_j, L_j, family = binomial, SL.library = "SL.glmnet")
   x_train <- model.matrix( ~ .-1, L_j)
   g_cutoffs[[j]] <- cv.glmnet(x_train, A_j, family = "binomial")
@@ -130,9 +130,9 @@ for(j in (cutoffs + 1)){
   }else{
     k <- cutoffs[max(which(cutoffs < j))] + 1
   }
-  A_j <- A[1:k-1]
-  Y_j <- Y[1:k-1]
-  L_j <- L[1:k-1,]
+  A_j <- A[1:(k-1)]
+  Y_j <- Y[1:(k-1)]
+  L_j <- L[1:(k-1),]
   X_j <- cbind(A_j, L_j)
   #Q_cutoffs[[j]] <- SuperLearner(Y_j, X_j, family = binomial, SL.library = "SL.glmnet")
   x_train <- model.matrix( ~ .-1, X_j)
@@ -153,9 +153,9 @@ for(j in (cutoffs + 1)){
   }else{
     k <- cutoffs[max(which(cutoffs < j))] + 1
   }
-  A_j <- A[1:k-1]
-  Y_j <- Y[1:k-1]
-  L_j <- L[1:k-1,]
+  A_j <- A[1:(k-1)]
+  Y_j <- Y[1:(k-1)]
+  L_j <- L[1:(k-1),]
   X_j <- cbind(A_j, L_j)
   Y_tilde <- (2*A_j - 1)*(Y_j - mean(Y_j))/((g_n(A_j,L_j,j)))
   ### Data adaptative
